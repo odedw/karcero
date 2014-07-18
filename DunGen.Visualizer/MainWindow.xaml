@@ -1,0 +1,49 @@
+﻿<Window x:Class="DunGen.Visualizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DunGen.Visualizer"
+        xmlns:models="clr-namespace:DunGen.Engine.Models;assembly=DunGen.Engine"
+        Icon="Resources\cursorSword_silver.png"
+        Title="DunGenerator Visualizer" SizeToContent="WidthAndHeight"  Background="#e6e6e6" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <local:ViewModel />
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Space"
+                    Command="{Binding GenerateCommand}" />
+    </Window.InputBindings>
+    <Grid>
+        <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
+        <ItemsControl ItemsSource="{Binding Cells}" x:Name="ItemsControl"  >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"
+                               Width="{Binding Width, Converter={StaticResource WidthToContainerWidth}, ConverterParameter={StaticResource TileSize}}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+
+                    <DockPanel LastChildFill="False" Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" 
+                                Background="{Binding TileType, Converter={StaticResource TileTypeToBackgroundColorConverter}}">
+                        <!--<Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Right" 
+                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=East}"/>
+                        <Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Left"
+                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=West}"/>
+                        <Grid Background="Black" Width="{StaticResource TileSize}" Height="1" DockPanel.Dock="Top"
+                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=North}"/>
+                        <Grid Background="Black" Width="{StaticResource TileSize}" Height="1" DockPanel.Dock="Bottom"
+                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=South}"/>-->
+
+                        <Border Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" BorderBrush="Black"
+                            BorderThickness="{Binding Sides, Converter={StaticResource SidesToBorderThickness}}"/>
+                        <!--<TextBlock Text="{Binding Location.X}" Foreground="White"></TextBlock>
+                        <TextBlock Text="," Foreground="White"></TextBlock>
+                        <TextBlock Text="{Binding Location.Y}" Foreground="White"></TextBlock>-->
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--</ScrollViewer>-->
+    </Grid>
+</Window>
