@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunGen.Engine", "DunGen.Engine.csproj", "{488E9141-477C-4432-A95F-CF58CDF0A666}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunGen.Engine", "DunGen.Engine\DunGen.Engine.csproj", "{488E9141-477C-4432-A95F-CF58CDF0A666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunGen.Tests", "..\DunGen.Tests\DunGen.Tests.csproj", "{202CDF85-BA0F-4CDA-9CE7-D3611FB6396F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunGen.Tests", "DunGen.Tests\DunGen.Tests.csproj", "{202CDF85-BA0F-4CDA-9CE7-D3611FB6396F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunGen.Visualizer", "..\DunGen.Visualizer\DunGen.Visualizer.csproj", "{68C7A45C-7F69-4810-B207-BCB074922082}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunGen.Visualizer", "DunGen.Visualizer\DunGen.Visualizer.csproj", "{68C7A45C-7F69-4810-B207-BCB074922082}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
