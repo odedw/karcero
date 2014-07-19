@@ -10,6 +10,8 @@ namespace DunGen.Engine.Implementations
     public class MazeGenerator : IMapProcessor
     {
         private readonly IRandomizer mRandomizer;
+        public event MapChangedDelegate MapChanged;
+        public string ActionString { get { return "Generating maze"; } }
 
         public MazeGenerator(IRandomizer randomizer)
         {
@@ -91,8 +93,6 @@ namespace DunGen.Engine.Implementations
             var adjacentCell = map.GetAdjacentCell(cell, direction);
             return adjacentCell != null && !visitedCells.Contains(adjacentCell);
 
-        }
-
-        public event MapChangedDelegate MapChanged;
+        }   
     }
 }

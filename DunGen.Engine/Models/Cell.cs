@@ -61,6 +61,18 @@ namespace DunGen.Engine.Models
             }
             return Direction.East;
         }
+        
+        public static Direction Rotate(this Direction direction, bool clockwise = true)
+        {
+            switch (direction)
+            {
+                case Direction.East: return clockwise ? Direction.South : Direction.North;
+                case Direction.North: return clockwise ? Direction.East : Direction.West;
+                case Direction.South: return clockwise ? Direction.West : Direction.East;
+                case Direction.West: return clockwise ? Direction.North : Direction.South;
+            }
+            return Direction.East;
+        }
     }
 
     public enum SideType

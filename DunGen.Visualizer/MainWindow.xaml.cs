@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using DunGen.Engine.Models;
 
 namespace DunGen.Visualizer
@@ -16,6 +17,10 @@ namespace DunGen.Visualizer
             InitializeComponent();
             mViewModel = (ViewModel) DataContext;
             mViewModel.Dispatcher = Dispatcher;
+        }
+
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
         }
     }
 }

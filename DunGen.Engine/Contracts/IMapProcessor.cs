@@ -8,6 +8,8 @@ namespace DunGen.Engine.Contracts
         void ProcessMap(Map map, DungeonConfiguration configuration);
 
         event MapChangedDelegate MapChanged;
+
+        string ActionString { get; }
     }
 
     public delegate void MapChangedDelegate(IMapProcessor sender, MapChangedDelegateArgs args);

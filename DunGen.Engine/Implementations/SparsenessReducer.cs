@@ -10,6 +10,9 @@ namespace DunGen.Engine.Implementations
 {
     public class SparsenessReducer : IMapProcessor
     {
+        public event MapChangedDelegate MapChanged;
+        public string ActionString { get { return "Reducing sparseness"; } }
+
         public void ProcessMap(Map map, DungeonConfiguration configuration)
         {
             for (int i = 0; i < configuration.Sparseness; i++)
@@ -38,7 +41,5 @@ namespace DunGen.Engine.Implementations
                 //Repeat step #1 sparseness times
             }
         }
-
-        public event MapChangedDelegate MapChanged;
     }
 }

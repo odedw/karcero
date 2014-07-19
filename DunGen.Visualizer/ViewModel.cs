@@ -41,6 +41,20 @@ namespace DunGen.Visualizer
             }
         }
 
+        private string mStatus;
+
+        public string Status
+        {
+            get { return mStatus; }
+            set
+            {
+                if (mStatus == value) return;
+                mStatus = value;
+                RaisePropertyChanged("Status");
+            }
+        }
+
+
         public ICommand GenerateCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         private readonly DunGenerator mGenerator = new DunGenerator();
@@ -50,12 +64,13 @@ namespace DunGen.Visualizer
             mGenerator.MapChanged += MapChangedHandler;
             mConfiguration = new DungeonConfiguration()
             {
-                Height = 20,
-                Width = 20,
-                //Randomness = 0.2,
-                Sparseness = 5
-
+                Height = 40,
+                Width = 40,
+                Randomness = 0.2,
+                Sparseness = 30,
+                ChanceToRemoveDeadends = 1
             };
+
             Width = mConfiguration.Width;
 
             GenerateCommand = new RelayCommand(StartGeneration);
@@ -96,44 +111,45 @@ namespace DunGen.Visualizer
             mWorkerThread.Start();
         }
 
-        void MapChangedHandler(Engine.Contracts.IMapProcessor sender, Engine.Contracts.MapChangedDelegateArgs args)
+        void MapChangedHandler(IMapProcessor sender, MapChangedDelegateArgs args)
         {
             DelayForVisualEffect(sender);
             Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
+            {
+                if (sender != null) Status = sender.ActionString;
+                if (Cells.Count == 0)
                 {
-                    if (Cells.Count == 0)
+                    for (int j = 0; j < mConfiguration.Height; j++)
                     {
-                        for (int j = 0; j < mConfiguration.Height; j++)
+                        for (var i = 0; i < mConfiguration.Width; i++)
                         {
-                            for (var i = 0; i < mConfiguration.Width; i++)
-                            {
-                                Cells.Add(args.Map.GetCell(i, j));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var cell in args.CellsChanged)
-                        {
-                            var index = Cells.IndexOf(cell);
-                            Cells.Remove(cell);
-                            Cells.Insert(index, cell);
+                            Cells.Add(args.Map.GetCell(i, j));
                         }
                     }
                 }
+                else
+                {
+                    foreach (var cell in args.CellsChanged)
+                    {
+                        var index = Cells.IndexOf(cell);
+                        Cells.Remove(cell);
+                        Cells.Insert(index, cell);
+                    }
+                }
+            }
             ));
-           
-
         }
 
         private void DelayForVisualEffect(IMapProcessor sender)
         {
             if (sender == null) return;
-            
+
             if (sender.GetType() == typeof(SparsenessReducer))
-                Thread.Sleep(300);
+                Thread.Sleep(100);
+            else if (sender.GetType() == typeof(DeadendsRemover))
+                Thread.Sleep(100);
             else
-                Thread.Sleep(10);
+                Thread.Sleep(5);
 
         }
 

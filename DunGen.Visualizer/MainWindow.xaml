@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:DunGen.Visualizer"
         xmlns:models="clr-namespace:DunGen.Engine.Models;assembly=DunGen.Engine"
         Icon="Resources\cursorSword_silver.png"
-        Title="DunGen Visualizer" SizeToContent="WidthAndHeight"  Background="#e6e6e6" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="{Binding Status, Converter={StaticResource StatusToWindowTitle}}" Width="816" Height="839"  Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Window.DataContext>
         <local:ViewModel />
     </Window.DataContext>
@@ -12,7 +12,7 @@
         <KeyBinding Key="Space" Command="{Binding GenerateCommand}" />
         <KeyBinding Key="R" Command="{Binding RefreshCommand}" />
     </Window.InputBindings>
-    <Grid>
+    <Grid MouseDown="UIElement_OnMouseDown">
         <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
         <ItemsControl ItemsSource="{Binding Cells}" x:Name="ItemsControl"  >
             <ItemsControl.ItemsPanel>

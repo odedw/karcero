@@ -17,7 +17,8 @@ namespace DunGen.Engine
             mMapProcessors = new List<IMapProcessor>()
             {
                 new MazeGenerator(mRandomizer),
-                new SparsenessReducer()
+                new SparsenessReducer(),
+                new DeadendsRemover(mRandomizer)
             };
             foreach (var mapProcessor in mMapProcessors)
             {

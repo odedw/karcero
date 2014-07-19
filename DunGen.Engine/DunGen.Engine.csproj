@@ -48,6 +48,7 @@
     <Compile Include="Contracts\IMapProcessor.cs" />
     <Compile Include="Contracts\IRandomizer.cs" />
     <Compile Include="DunGenerator.cs" />
+    <Compile Include="Implementations\DeadendsRemover.cs" />
     <Compile Include="Implementations\MazeGenerator.cs" />
     <Compile Include="Implementations\Randomizer.cs" />
     <Compile Include="Implementations\SparsenessReducer.cs" />

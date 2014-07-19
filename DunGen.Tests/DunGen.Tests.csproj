@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeadendsRemoverTests.cs" />
     <Compile Include="DunGeneratorTests.cs" />
     <Compile Include="MazeGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
