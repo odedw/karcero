@@ -4,13 +4,13 @@
         xmlns:local="clr-namespace:DunGen.Visualizer"
         xmlns:models="clr-namespace:DunGen.Engine.Models;assembly=DunGen.Engine"
         Icon="Resources\cursorSword_silver.png"
-        Title="DunGenerator Visualizer" SizeToContent="WidthAndHeight"  Background="#e6e6e6" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="DunGen Visualizer" SizeToContent="WidthAndHeight"  Background="#e6e6e6" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Window.DataContext>
         <local:ViewModel />
     </Window.DataContext>
     <Window.InputBindings>
-        <KeyBinding Key="Space"
-                    Command="{Binding GenerateCommand}" />
+        <KeyBinding Key="Space" Command="{Binding GenerateCommand}" />
+        <KeyBinding Key="R" Command="{Binding RefreshCommand}" />
     </Window.InputBindings>
     <Grid>
         <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
@@ -25,7 +25,8 @@
                 <DataTemplate>
 
                     <DockPanel LastChildFill="False" Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" 
-                                Background="{Binding TileType, Converter={StaticResource TileTypeToBackgroundColorConverter}}">
+                                Background="{Binding TileType, Converter={StaticResource TileTypeToBackgroundColorConverter}}"
+                               ToolTip="{Binding Description}">
                         <!--<Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Right" 
                               Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=East}"/>
                         <Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Left"

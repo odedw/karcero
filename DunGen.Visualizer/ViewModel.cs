@@ -6,6 +6,8 @@ using System.Threading;
 using System.Windows.Input;
 using System.Windows.Threading;
 using DunGen.Engine;
+using DunGen.Engine.Contracts;
+using DunGen.Engine.Implementations;
 using DunGen.Engine.Models;
 using System.Linq;
 namespace DunGen.Visualizer
@@ -40,6 +42,7 @@ namespace DunGen.Visualizer
         }
 
         public ICommand GenerateCommand { get; set; }
+        public ICommand RefreshCommand { get; set; }
         private readonly DunGenerator mGenerator = new DunGenerator();
         private readonly DungeonConfiguration mConfiguration;
         public ViewModel()
@@ -47,12 +50,26 @@ namespace DunGen.Visualizer
             mGenerator.MapChanged += MapChangedHandler;
             mConfiguration = new DungeonConfiguration()
             {
-                Height = 40,
-                Width = 40,
-                Randomness = 0.2
+                Height = 20,
+                Width = 20,
+                //Randomness = 0.2,
+                Sparseness = 5
+
             };
             Width = mConfiguration.Width;
+
             GenerateCommand = new RelayCommand(StartGeneration);
+            RefreshCommand = new RelayCommand(o =>
+            {
+                var cells = Cells.ToList();
+                Cells.Clear();
+                foreach (var cell in cells)
+                {
+                    Cells.Add(cell);
+                }
+            });
+
+
             for (int j = 0; j < mConfiguration.Height; j++)
             {
                 for (var i = 0; i < mConfiguration.Width; i++)
@@ -81,6 +98,7 @@ namespace DunGen.Visualizer
 
         void MapChangedHandler(Engine.Contracts.IMapProcessor sender, Engine.Contracts.MapChangedDelegateArgs args)
         {
+            DelayForVisualEffect(sender);
             Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
                 {
                     if (Cells.Count == 0)
@@ -104,7 +122,18 @@ namespace DunGen.Visualizer
                     }
                 }
             ));
-            //Thread.Sleep(10);
+           
+
+        }
+
+        private void DelayForVisualEffect(IMapProcessor sender)
+        {
+            if (sender == null) return;
+            
+            if (sender.GetType() == typeof(SparsenessReducer))
+                Thread.Sleep(300);
+            else
+                Thread.Sleep(10);
 
         }
 

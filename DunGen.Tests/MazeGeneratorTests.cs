@@ -57,5 +57,27 @@ namespace DunGen.Tests
             }
             Assert.AreEqual(map.AllCells.Count(), visitedCells.Count);
         }
+
+         [Test]
+        public void ProcessMap_ValidInput_SideTypesInAdjacentCellsMatch()
+        {
+            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+
+            var mazeGenerator = new MazeGenerator(new Randomizer());
+            mazeGenerator.ProcessMap(map, new DungeonConfiguration(){Height = SOME_HEIGHT, Width = SOME_WIDTH});
+
+            for (int j = 0; j < SOME_HEIGHT; j++)
+            {
+                for (var i = 0; i < SOME_WIDTH; i++)
+                {
+                    var currentCell = map.GetCell(i, j);
+                    var adjacentCellsByDirection = currentCell.Sides.Keys.ToDictionary(key => key, key => map.GetAdjacentCell(currentCell, key));
+                    foreach (var kvp in adjacentCellsByDirection.Where(kvp => kvp.Value != null))
+                    {
+                        Assert.AreEqual(currentCell.Sides[kvp.Key], kvp.Value.Sides[kvp.Key.Opposite()]);
+                    }
+                }
+            }
+        }
     }
 }

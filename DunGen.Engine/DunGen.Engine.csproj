@@ -50,6 +50,7 @@
     <Compile Include="DunGenerator.cs" />
     <Compile Include="Implementations\MazeGenerator.cs" />
     <Compile Include="Implementations\Randomizer.cs" />
+    <Compile Include="Implementations\SparsenessReducer.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\DungeonConfiguration.cs" />
     <Compile Include="Models\Map.cs" />

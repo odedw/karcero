@@ -21,7 +21,17 @@ namespace DunGen.Engine.Models
             }
         }
 
-        public String Text { get; set; }
+        public String Description
+        {
+            get
+            {
+                return string.Format("Location: {0},{1}{2}", Location.X, Location.Y, Environment.NewLine) +
+                       string.Format("TileType: {0}{1}{1}", TileType, Environment.NewLine) +
+                       string.Format("       {0}      {1}", Sides[Direction.North], Environment.NewLine) +
+                       string.Format("{0}       {1}{2}", Sides[Direction.West], Sides[Direction.East], Environment.NewLine) +
+                       string.Format("       {0}      {1}", Sides[Direction.South], Environment.NewLine);
+            }
+        }
     }
 
     public enum TileType
