@@ -28,5 +28,10 @@ namespace DunGen.Engine.Implementations
             var cleanCollection = collection.Except(excluded).ToList();
             return !cleanCollection.Any() ? default(T) : cleanCollection[(mRandom.Next(cleanCollection.Count))];
         }
+
+        public double GetRandomDouble()
+        {
+            return mRandom.NextDouble();
+        }
     }
 }

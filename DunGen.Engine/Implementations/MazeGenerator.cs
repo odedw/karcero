@@ -21,6 +21,7 @@ namespace DunGen.Engine.Implementations
             //Start with a rectangular grid, x units wide and y units tall. Mark each cell in the grid unvisited
             var visitedCells = new HashSet<Cell>();
             var deadEndCells = new HashSet<Cell>();
+            Direction? previousDirection = null;
 
             //Pick a random cell in the grid and mark it visited. This is the current cell. 
             var currentCell = mRandomizer.GetRandomCell(map);
@@ -35,7 +36,7 @@ namespace DunGen.Engine.Implementations
                 //If (1) there is no cell adjacent to the current cell in that direction, or (2) if 
                 //the adjacent cell in that direction has been visited, then that direction 
                 //is invalid, and you must pick a different random direction. 
-                var direction = GetRandomValidDirection(map, currentCell, visitedCells);
+                var direction = GetRandomValidDirection(map, currentCell, visitedCells, configuration.Randomness, previousDirection);
                 if (direction.HasValue)
                 {
                     //Let's call the cell in the chosen direction C. Create a corridor between the 
@@ -43,6 +44,7 @@ namespace DunGen.Engine.Implementations
                     changed = currentCell.Sides[direction.Value] != SideType.Open;
                     currentCell = map.GetAdjacentCell(currentCell, direction.Value);
                     currentCell.Sides[direction.Value.Opposite()] = oldCell.Sides[direction.Value] = SideType.Open;
+                    previousDirection = direction;
                 }
                 else
                 {
@@ -62,8 +64,17 @@ namespace DunGen.Engine.Implementations
             }
         }
 
-        private Direction? GetRandomValidDirection(Map map, Cell cell, ICollection<Cell> visitedCells)
+        private Direction? GetRandomValidDirection(Map map, Cell cell, ICollection<Cell> visitedCells, double randomness, Direction? previousDirection)
         {
+            //Randomness determines how often the direction of a corridor changes
+            if (previousDirection.HasValue &&
+                randomness < 1 && 
+                mRandomizer.GetRandomDouble() > randomness &&
+                IsDirectionValid(map, cell, previousDirection.Value, visitedCells))
+            {
+                return previousDirection;
+            }
+
             var invalidDirections = new List<Direction>();
             while (invalidDirections.Count < Enum.GetValues(typeof (Direction)).Length)
             {

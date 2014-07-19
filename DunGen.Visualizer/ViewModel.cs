@@ -48,7 +48,8 @@ namespace DunGen.Visualizer
             mConfiguration = new DungeonConfiguration()
             {
                 Height = 40,
-                Width = 40
+                Width = 40,
+                Randomness = 0.2
             };
             Width = mConfiguration.Width;
             GenerateCommand = new RelayCommand(StartGeneration);
