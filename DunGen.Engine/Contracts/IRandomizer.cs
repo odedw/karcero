@@ -7,7 +7,7 @@ namespace DunGen.Engine.Contracts
     {
         Cell GetRandomCell(Map map);
         T GetRandomEnumValue<T>(IEnumerable<T> excluded = null);
-        T GetRandomItem<T>(ICollection<T> collection, ICollection<T> excluded);
+        T GetRandomItem<T>(IEnumerable<T> collection, IEnumerable<T> excluded = null);
 
     }
 }

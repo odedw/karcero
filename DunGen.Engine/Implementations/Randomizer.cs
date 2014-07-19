@@ -11,6 +11,7 @@ namespace DunGen.Engine.Implementations
         private readonly Random mRandom = new Random();
         public Cell GetRandomCell(Map map)
         {
+            if (map.Height == 0 || map.Width == 0) return null;
             return map.GetCell(mRandom.Next(map.Width), mRandom.Next(map.Height));
         }
 
@@ -21,8 +22,9 @@ namespace DunGen.Engine.Implementations
             return values[mRandom.Next(values.Count)];
         }
 
-        public T GetRandomItem<T>(ICollection<T> collection, ICollection<T> excluded) 
+        public T GetRandomItem<T>(IEnumerable<T> collection, IEnumerable<T> excluded = null) 
         {
+            excluded = excluded ?? new List<T>();
             var cleanCollection = collection.Except(excluded).ToList();
             return !cleanCollection.Any() ? default(T) : cleanCollection[(mRandom.Next(cleanCollection.Count))];
         }
