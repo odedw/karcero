@@ -35,8 +35,8 @@ namespace DunGen.Engine.Implementations
                     if (!direction.HasValue) break;
 
                     var adjacentCell = map.GetAdjacentCell(currentCell, direction.Value);
-                    connected = adjacentCell.TileType == TileType.Floor;
-                    adjacentCell.TileType = TileType.Floor;
+                    connected = adjacentCell.Terrain == TerrainType.Floor;
+                    adjacentCell.Terrain = TerrainType.Floor;
                     currentCell.Sides[direction.Value] = adjacentCell.Sides[direction.Value.Opposite()] = SideType.Open;
                     if (MapChanged != null)
                     {
@@ -58,7 +58,7 @@ namespace DunGen.Engine.Implementations
                 if (IsDirectionValid(map, currentCell, direction, previousCell))
                 {
                     var nextCell = map.GetAdjacentCell(currentCell, direction);
-                    var willCreateSquare = nextCell.TileType == TileType.Floor && 
+                    var willCreateSquare = nextCell.Terrain == TerrainType.Floor && 
                         ((nextCell.Sides[direction.Rotate()] == SideType.Open && currentCell.Sides[direction.Rotate()] == SideType.Open) ||
                         (nextCell.Sides[direction.Rotate(false)] == SideType.Open && currentCell.Sides[direction.Rotate(false)] == SideType.Open));
                     if (!willCreateSquare) return direction;

@@ -27,7 +27,7 @@ namespace DunGen.Engine.Implementations
 
             //Pick a random cell in the grid and mark it visited. This is the current cell. 
             var currentCell = mRandomizer.GetRandomCell(map);
-            currentCell.TileType = TileType.Floor;
+            currentCell.Terrain = TerrainType.Floor;
             while (visitedCells.Count < map.Width*map.Height)
             {
                 var oldCell = currentCell;
@@ -54,9 +54,9 @@ namespace DunGen.Engine.Implementations
                     deadEndCells.Add(currentCell);
                     currentCell = mRandomizer.GetRandomItem(visitedCells, deadEndCells);
                 }
-                if (currentCell.TileType == TileType.Floor && !changed) continue;
+                if (currentCell.Terrain == TerrainType.Floor && !changed) continue;
 
-                currentCell.TileType = TileType.Floor;
+                currentCell.Terrain = TerrainType.Floor;
                 if (MapChanged != null)
                 {
                     MapChanged(this, new MapChangedDelegateArgs(){Map = map, CellsChanged = new Cell[]{currentCell, oldCell}});

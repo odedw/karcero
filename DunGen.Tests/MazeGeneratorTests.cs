@@ -26,7 +26,7 @@ namespace DunGen.Tests
 
             foreach (var cell in map.AllCells)
             {
-                Assert.AreEqual(TileType.Floor, cell.TileType);
+                Assert.AreEqual(TerrainType.Floor, cell.Terrain);
             }
         }
   

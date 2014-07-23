@@ -22,7 +22,7 @@ namespace DunGen.Tests
             var map = new Map(2, 2);
             foreach (var cell in map.AllCells)
             {
-                cell.TileType = TileType.Floor;
+                cell.Terrain = TerrainType.Floor;
             }
             map.GetCell(0, 0).Sides[Direction.South] = map.GetCell(1, 0).Sides[Direction.South] = SideType.Open;
             map.GetCell(0, 1).Sides[Direction.North] = map.GetCell(1, 1).Sides[Direction.North] = SideType.Open;
@@ -32,10 +32,10 @@ namespace DunGen.Tests
             sparsenessReducer.ProcessMap(map, new DungeonConfiguration(){Sparseness = 1});
 
             //Assert tile types
-            Assert.AreEqual(TileType.Rock, map.GetCell(0,0).TileType);
-            Assert.AreEqual(TileType.Rock, map.GetCell(1, 0).TileType);
-            Assert.AreEqual(TileType.Floor, map.GetCell(0, 1).TileType);
-            Assert.AreEqual(TileType.Floor, map.GetCell(1, 1).TileType);
+            Assert.AreEqual(TerrainType.Rock, map.GetCell(0,0).Terrain);
+            Assert.AreEqual(TerrainType.Rock, map.GetCell(1, 0).Terrain);
+            Assert.AreEqual(TerrainType.Floor, map.GetCell(0, 1).Terrain);
+            Assert.AreEqual(TerrainType.Floor, map.GetCell(1, 1).Terrain);
 
             //Assert walls
             Assert.AreEqual(SideType.Wall, map.GetCell(0, 0).Sides[Direction.South]);

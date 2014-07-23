@@ -8,7 +8,7 @@ namespace DunGen.Engine.Models
     {
         public Point Location { get; set; }
 
-        public TileType TileType { get; set; }
+        public TerrainType Terrain { get; set; }
 
         public Dictionary<Direction,SideType> Sides { get; set; }
 
@@ -26,7 +26,7 @@ namespace DunGen.Engine.Models
             get
             {
                 return string.Format("Location: {0},{1}{2}", Location.X, Location.Y, Environment.NewLine) +
-                       string.Format("TileType: {0}{1}{1}", TileType, Environment.NewLine) +
+                       string.Format("Terrain: {0}{1}{1}", Terrain, Environment.NewLine) +
                        string.Format("       {0}      {1}", Sides[Direction.North], Environment.NewLine) +
                        string.Format("{0}       {1}{2}", Sides[Direction.West], Sides[Direction.East], Environment.NewLine) +
                        string.Format("       {0}      {1}", Sides[Direction.South], Environment.NewLine);
@@ -34,7 +34,7 @@ namespace DunGen.Engine.Models
         }
     }
 
-    public enum TileType
+    public enum TerrainType
     {
         Rock,
         Floor

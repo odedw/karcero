@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:DunGen.Visualizer"
         xmlns:models="clr-namespace:DunGen.Engine.Models;assembly=DunGen.Engine"
         Icon="Resources\cursorSword_silver.png"
-        Title="{Binding Status, Converter={StaticResource StatusToWindowTitle}}" Width="816" Height="839"  Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="{Binding Status, Converter={StaticResource StatusToWindowTitle}}" SizeToContent="WidthAndHeight"  Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Window.DataContext>
         <local:ViewModel />
     </Window.DataContext>
@@ -25,7 +25,7 @@
                 <DataTemplate>
 
                     <DockPanel LastChildFill="False" Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" 
-                                Background="{Binding TileType, Converter={StaticResource TileTypeToBackgroundColorConverter}}"
+                                Background="{Binding Terrain, Converter={StaticResource TileTypeToBackgroundColorConverter}}"
                                ToolTip="{Binding Description}">
                         <!--<Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Right" 
                               Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=East}"/>

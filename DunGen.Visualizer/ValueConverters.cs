@@ -16,8 +16,8 @@ namespace DunGen.Visualizer
         public object Convert(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            var tile = (TileType) value;
-            return new SolidColorBrush(tile == TileType.Floor ? Colors.Lavender : Colors.Black);
+            var tile = (TerrainType) value;
+            return new SolidColorBrush(tile == TerrainType.Floor ? Colors.Lavender : Colors.Black);
         }
 
         public object ConvertBack(object value, Type targetType,
