@@ -51,10 +51,12 @@
     <Compile Include="Implementations\DeadendsRemover.cs" />
     <Compile Include="Implementations\MazeGenerator.cs" />
     <Compile Include="Implementations\Randomizer.cs" />
+    <Compile Include="Implementations\RoomGenerator.cs" />
     <Compile Include="Implementations\SparsenessReducer.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\DungeonConfiguration.cs" />
     <Compile Include="Models\Map.cs" />
+    <Compile Include="Models\Room.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

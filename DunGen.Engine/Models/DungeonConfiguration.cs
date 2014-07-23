@@ -22,6 +22,30 @@
         /// Value is between 0 and 1, higher value == less deadends.
         /// </summary>
         public double ChanceToRemoveDeadends { get; set; }
+
+        /// <summary>
+        /// Minimum width for room generation
+        /// </summary>
+        public int MinRoomWidth { get; set; }
+        /// <summary>
+        /// Maximum width for room generation
+        /// </summary>
+        public int MaxRoomWidth { get; set; }
+        
+        /// <summary>
+        /// Minimum height for room generation
+        /// </summary>
+        public int MinRoomHeight { get; set; }
+        /// <summary>
+        /// Maximum height for room generation
+        /// </summary>
+        public int MaxRoomHeight { get; set; }
+
+        /// <summary>
+        /// Number of rooms to generate
+        /// </summary>
+        public int RoomCount { get; set; }
+
         public DungeonConfiguration()
         {
             Randomness = 1;

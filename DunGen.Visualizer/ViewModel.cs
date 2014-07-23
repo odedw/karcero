@@ -64,11 +64,16 @@ namespace DunGen.Visualizer
             mGenerator.MapChanged += MapChangedHandler;
             mConfiguration = new DungeonConfiguration()
             {
-                Height = 40,
-                Width = 40,
-                Randomness = 0.2,
-                Sparseness = 30,
-                ChanceToRemoveDeadends = 1
+                Height = 33,
+                Width = 33,
+                Randomness = 0.4,
+                Sparseness = 2,
+                ChanceToRemoveDeadends = 0,
+                MinRoomHeight = 2,
+                MaxRoomHeight = 5,
+                MinRoomWidth = 2,
+                MaxRoomWidth = 5,
+                RoomCount = 10
             };
 
             Width = mConfiguration.Width;
@@ -145,11 +150,13 @@ namespace DunGen.Visualizer
             if (sender == null) return;
 
             if (sender.GetType() == typeof(SparsenessReducer))
-                Thread.Sleep(100);
+                Thread.Sleep(0);
             else if (sender.GetType() == typeof(DeadendsRemover))
-                Thread.Sleep(100);
+                Thread.Sleep(0);
+            else if (sender.GetType() == typeof (RoomGenerator))
+                Thread.Sleep(500);
             else
-                Thread.Sleep(5);
+                Thread.Sleep(0);
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using DunGen.Engine.Contracts;
 using DunGen.Engine.Models;
@@ -32,6 +33,11 @@ namespace DunGen.Engine.Implementations
         public double GetRandomDouble()
         {
             return mRandom.NextDouble();
+        }
+
+        public Size GetRandomRoomSize(int maxWidth, int minWidth, int maxHeight, int minHeight)
+        {
+            return new Size(mRandom.Next(maxWidth - minWidth) + minWidth, mRandom.Next(maxHeight - minHeight) + minHeight);
         }
     }
 }
