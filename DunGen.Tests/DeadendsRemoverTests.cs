@@ -17,7 +17,7 @@ namespace DunGen.Tests
         private const int SOME_HEIGHT = 30;
         private readonly Randomizer mRandomizer = new Randomizer();
         private readonly DungeonConfiguration mConfiguration = 
-            new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1};
+            new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 2};
 
         [Test]
         public void ProcessMap_RemoveAllDeadEnds_AllDeadEndsRemoved()
@@ -26,6 +26,9 @@ namespace DunGen.Tests
 
             var mazeGenerator = new MazeGenerator(mRandomizer);
             mazeGenerator.ProcessMap(map, mConfiguration);
+            var sparsenessReducer = new SparsenessReducer(new Randomizer());
+            sparsenessReducer.ProcessMap(map, mConfiguration);
+
             var remover = new DeadendsRemover(mRandomizer);
             remover.ProcessMap(map, mConfiguration);
 

@@ -13,8 +13,8 @@ namespace DunGen.Tests
     [TestFixture]
     public class MazeGeneratorTests
     {
-        private const int SOME_WIDTH = 30;
-        private const int SOME_HEIGHT = 30;
+        private const int SOME_WIDTH = 5;
+        private const int SOME_HEIGHT = 5;
 
         [Test]
         public void ProcessMap_ValidInput_AllCellsHasFloorTileType()

@@ -21,7 +21,7 @@ namespace DunGen.Tests
             var randomizer = new Randomizer();
             var randomCell = randomizer.GetRandomCell(map);
 
-            Assert.AreEqual(map.GetCell(randomCell.Location.X, randomCell.Location.Y), randomCell);
+            Assert.AreEqual(map.GetCell(randomCell.Row, randomCell.Column), randomCell);
         }
 
         [Test]

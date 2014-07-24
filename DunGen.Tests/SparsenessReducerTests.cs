@@ -24,23 +24,23 @@ namespace DunGen.Tests
             {
                 cell.Terrain = TerrainType.Floor;
             }
-            map.GetCell(0, 0).Sides[Direction.South] = map.GetCell(1, 0).Sides[Direction.South] = SideType.Open;
-            map.GetCell(0, 1).Sides[Direction.North] = map.GetCell(1, 1).Sides[Direction.North] = SideType.Open;
-            map.GetCell(0, 1).Sides[Direction.East] = map.GetCell(1, 1).Sides[Direction.West] = SideType.Open;
+            map.GetCell(0, 0).Sides[Direction.South] = map.GetCell(0, 1).Sides[Direction.South] = SideType.Open;
+            map.GetCell(1, 0).Sides[Direction.North] = map.GetCell(1, 1).Sides[Direction.North] = SideType.Open;
+            map.GetCell(1, 0).Sides[Direction.East] = map.GetCell(1, 1).Sides[Direction.West] = SideType.Open;
 
-            var sparsenessReducer = new SparsenessReducer();
-            sparsenessReducer.ProcessMap(map, new DungeonConfiguration(){Sparseness = 1});
+            var sparsenessReducer = new SparsenessReducer(new Randomizer());
+            sparsenessReducer.ProcessMap(map, new DungeonConfiguration(){Sparseness = 2, Height = 2, Width = 2});
 
             //Assert tile types
             Assert.AreEqual(TerrainType.Rock, map.GetCell(0,0).Terrain);
-            Assert.AreEqual(TerrainType.Rock, map.GetCell(1, 0).Terrain);
-            Assert.AreEqual(TerrainType.Floor, map.GetCell(0, 1).Terrain);
+            Assert.AreEqual(TerrainType.Rock, map.GetCell(0, 1).Terrain);
+            Assert.AreEqual(TerrainType.Floor, map.GetCell(1, 0).Terrain);
             Assert.AreEqual(TerrainType.Floor, map.GetCell(1, 1).Terrain);
 
             //Assert walls
             Assert.AreEqual(SideType.Wall, map.GetCell(0, 0).Sides[Direction.South]);
-            Assert.AreEqual(SideType.Wall, map.GetCell(1, 0).Sides[Direction.South]);
-            Assert.AreEqual(SideType.Wall, map.GetCell(0, 1).Sides[Direction.North]);
+            Assert.AreEqual(SideType.Wall, map.GetCell(0, 1).Sides[Direction.South]);
+            Assert.AreEqual(SideType.Wall, map.GetCell(1, 0).Sides[Direction.North]);
             Assert.AreEqual(SideType.Wall, map.GetCell(1, 1).Sides[Direction.North]);
         }
 
@@ -51,7 +51,7 @@ namespace DunGen.Tests
 
             var mazeGenerator = new MazeGenerator(new Randomizer());
             mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH });
-            var sparseness = new SparsenessReducer();
+            var sparseness = new SparsenessReducer(new Randomizer());
             sparseness.ProcessMap(map, new DungeonConfiguration() { Sparseness = 10 });
 
             for (int j = 0; j < SOME_HEIGHT; j++)

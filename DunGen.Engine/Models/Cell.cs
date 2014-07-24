@@ -6,7 +6,9 @@ namespace DunGen.Engine.Models
 {
     public class Cell
     {
-        public Point Location { get; set; }
+        public int Row { get; set; }
+
+        public int Column { get; set; }
 
         public TerrainType Terrain { get; set; }
 
@@ -25,7 +27,7 @@ namespace DunGen.Engine.Models
         {
             get
             {
-                return string.Format("Location: {0},{1}{2}", Location.X, Location.Y, Environment.NewLine) +
+                return string.Format("Location: {0},{1}{2}", Row, Column, Environment.NewLine) +
                        string.Format("Terrain: {0}{1}{1}", Terrain, Environment.NewLine) +
                        string.Format("       {0}      {1}", Sides[Direction.North], Environment.NewLine) +
                        string.Format("{0}       {1}{2}", Sides[Direction.West], Sides[Direction.East], Environment.NewLine) +

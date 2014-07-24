@@ -13,7 +13,7 @@ namespace DunGen.Engine.Implementations
         public Cell GetRandomCell(Map map)
         {
             if (map.Height == 0 || map.Width == 0) return null;
-            return map.GetCell(mRandom.Next(map.Width), mRandom.Next(map.Height));
+            return map.GetCell(mRandom.Next(map.Height), mRandom.Next(map.Width));
         }
 
         public T GetRandomEnumValue<T>(IEnumerable<T> excluded = null)

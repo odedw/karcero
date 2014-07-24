@@ -68,7 +68,7 @@ namespace DunGen.Visualizer
                 Width = 33,
                 Randomness = 0.4,
                 Sparseness = 2,
-                ChanceToRemoveDeadends = 0,
+                ChanceToRemoveDeadends = 1,
                 MinRoomHeight = 2,
                 MaxRoomHeight = 5,
                 MinRoomWidth = 2,
@@ -124,9 +124,9 @@ namespace DunGen.Visualizer
                 if (sender != null) Status = sender.ActionString;
                 if (Cells.Count == 0)
                 {
-                    for (int j = 0; j < mConfiguration.Height; j++)
+                    for (int i = 0; i < mConfiguration.Height; i++)
                     {
-                        for (var i = 0; i < mConfiguration.Width; i++)
+                        for (var j = 0; j < mConfiguration.Width; j++)
                         {
                             Cells.Add(args.Map.GetCell(i, j));
                         }
@@ -150,7 +150,7 @@ namespace DunGen.Visualizer
             if (sender == null) return;
 
             if (sender.GetType() == typeof(SparsenessReducer))
-                Thread.Sleep(0);
+                Thread.Sleep(10);
             else if (sender.GetType() == typeof(DeadendsRemover))
                 Thread.Sleep(0);
             else if (sender.GetType() == typeof (RoomGenerator))

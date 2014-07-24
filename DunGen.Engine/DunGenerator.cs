@@ -18,8 +18,8 @@ namespace DunGen.Engine
             {
                 new MazeGenerator(mRandomizer),
                 new SparsenessReducer(mRandomizer),
-                new DeadendsRemover(mRandomizer),
-                new RoomGenerator(mRandomizer)
+                new DeadendsRemover(mRandomizer)
+                //new RoomGenerator(mRandomizer)
             };
             foreach (var mapProcessor in mMapProcessors)
             {
