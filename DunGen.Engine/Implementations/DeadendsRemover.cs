@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,20 +49,34 @@ namespace DunGen.Engine.Implementations
         private Direction? GetRandomValidDirection(Map map, Cell currentCell, Cell previousCell, IRandomizer randomizer)
         {
             var invalidDirections = new List<Direction>();
-            while (invalidDirections.Count < Enum.GetValues(typeof(Direction)).Length)
+            var squareDirections = new List<Direction>();
+            while (invalidDirections.Count + squareDirections.Count < Enum.GetValues(typeof(Direction)).Length)
             {
-                var direction = randomizer.GetRandomEnumValue(invalidDirections);
+                var direction = randomizer.GetRandomEnumValue(invalidDirections.Union(squareDirections));
                 if (IsDirectionValid(map, currentCell, direction, previousCell))
                 {
                     var nextCell = map.GetAdjacentCell(currentCell, direction);
-                    var willCreateSquare = nextCell.Terrain == TerrainType.Floor && 
-                        ((nextCell.Sides[direction.Rotate()] == SideType.Open && currentCell.Sides[direction.Rotate()] == SideType.Open) ||
-                        (nextCell.Sides[direction.Rotate(false)] == SideType.Open && currentCell.Sides[direction.Rotate(false)] == SideType.Open));
-                    if (!willCreateSquare) return direction;
+
+                    //Try to avoid creating squares, but do it if there's no other way
+                    if (nextCell.Terrain == TerrainType.Floor &&
+                        ((nextCell.Sides[direction.Rotate()] == SideType.Open &&
+                          currentCell.Sides[direction.Rotate()] == SideType.Open) ||
+                         (nextCell.Sides[direction.Rotate(false)] == SideType.Open &&
+                          currentCell.Sides[direction.Rotate(false)] == SideType.Open)))
+                    {
+                        squareDirections.Add(direction);
+                    }
+                    else
+                    {
+                        return direction;
+                    }
                 }
-                invalidDirections.Add(direction);
+                else
+                {
+                    invalidDirections.Add(direction);
+                }
             }
-            return null;
+            return squareDirections.Any() ? randomizer.GetRandomItem(squareDirections) : (Direction?)null;
         }
 
         private bool IsDirectionValid(Map map, Cell cell, Direction direction, Cell previousCell)
