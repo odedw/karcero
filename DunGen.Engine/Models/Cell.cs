@@ -34,6 +34,7 @@ namespace DunGen.Engine.Models
                        string.Format("       {0}      {1}", Sides[Direction.South], Environment.NewLine);
             }
         }
+
     }
 
     public enum TerrainType

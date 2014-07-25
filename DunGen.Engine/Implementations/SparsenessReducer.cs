@@ -20,7 +20,7 @@ namespace DunGen.Engine.Implementations
         public event MapChangedDelegate MapChanged;
         public string ActionString { get { return "Reducing sparseness"; } }
 
-        public void ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration)
         {
             var sparseness = ComputeSparseness(configuration.Sparseness, configuration.Width, configuration.Height);
             for (int i = 0; i < sparseness; i++)
@@ -48,6 +48,7 @@ namespace DunGen.Engine.Implementations
 
                 //Repeat step #1 sparseness times
             }
+            return map;
         }
 
         private int ComputeSparseness(int sparseness, int width, int height)

@@ -13,11 +13,11 @@ namespace DunGen.Tests
     [TestFixture]
     public class DeadendsRemoverTests
     {
-        private const int SOME_WIDTH = 30;
-        private const int SOME_HEIGHT = 30;
+        private const int SOME_WIDTH = 16;
+        private const int SOME_HEIGHT = 16;
         private readonly Randomizer mRandomizer = new Randomizer();
         private readonly DungeonConfiguration mConfiguration = 
-            new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 2};
+            new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 2, Randomness = 1};
 
         [Test]
         public void ProcessMap_RemoveAllDeadEnds_AllDeadEndsRemoved()

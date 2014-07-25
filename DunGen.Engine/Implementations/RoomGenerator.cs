@@ -18,7 +18,7 @@ namespace DunGen.Engine.Implementations
             mRandomizer = randomizer;
         }
 
-        public void ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration)
         {
             //for (var i = 0; i < configuration.RoomCount; i++)
             //{
@@ -68,6 +68,8 @@ namespace DunGen.Engine.Implementations
             //    }
 
             //}
+            return map;
+
         }
 
         

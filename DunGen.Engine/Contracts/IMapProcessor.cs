@@ -5,7 +5,7 @@ namespace DunGen.Engine.Contracts
 {
     public interface IMapProcessor
     {
-        void ProcessMap(Map map, DungeonConfiguration configuration);
+        Map ProcessMap(Map map, DungeonConfiguration configuration);
 
         event MapChangedDelegate MapChanged;
 

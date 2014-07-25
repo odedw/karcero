@@ -19,7 +19,7 @@ namespace DunGen.Engine.Implementations
             mRandomizer = randomizer;
         }
 
-        public void ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration)
         {
             var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1).ToList();
             foreach (var cell in deadends)
@@ -46,6 +46,8 @@ namespace DunGen.Engine.Implementations
                     currentCell = adjacentCell;
                 }
             }
+            return map;
+
         }
 
 

@@ -18,7 +18,7 @@ namespace DunGen.Engine.Implementations
             mRandomizer = randomizer;
         }
 
-        public void ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration)
         {
             //Start with a rectangular grid, x units wide and y units tall. Mark each cell in the grid unvisited
             var visitedCells = new HashSet<Cell>();
@@ -64,6 +64,8 @@ namespace DunGen.Engine.Implementations
 
                 //Repeat until all cells in the grid have been visited.
             }
+            return map;
+
         }
 
         private Direction? GetRandomValidDirection(Map map, Cell cell, ICollection<Cell> visitedCells, double randomness, Direction? previousDirection)

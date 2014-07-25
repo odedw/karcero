@@ -14,6 +14,20 @@ namespace DunGen.Visualizer
 {
     public class ViewModel
     {
+        private readonly DungeonConfiguration mConfiguration = new DungeonConfiguration()
+        {
+            Height = 16,
+            Width = 16,
+            Randomness = 1,
+            Sparseness = 2,
+            ChanceToRemoveDeadends = 1,
+            MinRoomHeight = 2,
+            MaxRoomHeight = 5,
+            MinRoomWidth = 2,
+            MaxRoomWidth = 5,
+            RoomCount = 10
+        };
+
         public Dispatcher Dispatcher { get; set; }
         private BindingList<Cell> mCells = new BindingList<Cell>();
         private Thread mWorkerThread;
@@ -58,24 +72,10 @@ namespace DunGen.Visualizer
         public ICommand GenerateCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
         private readonly DunGenerator mGenerator = new DunGenerator();
-        private readonly DungeonConfiguration mConfiguration;
+
         public ViewModel()
         {
             mGenerator.MapChanged += MapChangedHandler;
-            mConfiguration = new DungeonConfiguration()
-            {
-                Height = 33,
-                Width = 33,
-                Randomness = 0.4,
-                Sparseness = 2,
-                ChanceToRemoveDeadends = 1,
-                MinRoomHeight = 2,
-                MaxRoomHeight = 5,
-                MinRoomWidth = 2,
-                MaxRoomWidth = 5,
-                RoomCount = 10
-            };
-
             Width = mConfiguration.Width;
 
             GenerateCommand = new RelayCommand(StartGeneration);
@@ -150,13 +150,13 @@ namespace DunGen.Visualizer
             if (sender == null) return;
 
             if (sender.GetType() == typeof(SparsenessReducer))
-                Thread.Sleep(10);
+                Thread.Sleep(100);
             else if (sender.GetType() == typeof(DeadendsRemover))
-                Thread.Sleep(0);
+                Thread.Sleep(100);
             else if (sender.GetType() == typeof (RoomGenerator))
                 Thread.Sleep(500);
             else
-                Thread.Sleep(0);
+                Thread.Sleep(10);
 
         }
 

@@ -39,7 +39,7 @@ namespace DunGen.Engine
             TriggerMapChanged(null, new MapChangedDelegateArgs(){Map = map,CellsChanged = map.AllCells});
             foreach (var mapProcessor in mMapProcessors)
             {
-                mapProcessor.ProcessMap(map, config);
+                map = mapProcessor.ProcessMap(map, config);
             }
             return map;
         }
