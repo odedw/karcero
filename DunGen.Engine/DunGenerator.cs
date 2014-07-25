@@ -9,17 +9,16 @@ namespace DunGen.Engine
     public class DunGenerator
     {
         private readonly IEnumerable<IMapProcessor> mMapProcessors;
-        private readonly IRandomizer mRandomizer = new Randomizer();
 
         public event MapChangedDelegate MapChanged;
         public DunGenerator()
         {
             mMapProcessors = new List<IMapProcessor>()
             {
-                new MazeGenerator(mRandomizer),
-                new SparsenessReducer(mRandomizer),
-                new DeadendsRemover(mRandomizer)
-                //new RoomGenerator(mRandomizer)
+                new MazeGenerator(),
+                new SparsenessReducer(),
+                new DeadendsRemover()
+                //new RoomGenerator()
             };
             foreach (var mapProcessor in mMapProcessors)
             {
@@ -33,13 +32,15 @@ namespace DunGen.Engine
                 MapChanged(sender, args);
         }
 
-        public Map Generate(DungeonConfiguration config)
+        public Map Generate(DungeonConfiguration config, int? seed = null)
         {
+            var randomizer = new Randomizer();
+            if (seed.HasValue) randomizer.SetSeed(seed.Value);
             var map = new Map(config.Width, config.Height);
             TriggerMapChanged(null, new MapChangedDelegateArgs(){Map = map,CellsChanged = map.AllCells});
             foreach (var mapProcessor in mMapProcessors)
             {
-                map = mapProcessor.ProcessMap(map, config);
+                map = mapProcessor.ProcessMap(map, config, randomizer);
             }
             return map;
         }

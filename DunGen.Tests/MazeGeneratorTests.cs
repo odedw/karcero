@@ -15,14 +15,29 @@ namespace DunGen.Tests
     {
         private const int SOME_WIDTH = 5;
         private const int SOME_HEIGHT = 5;
+        private readonly Randomizer mRandomizer = new Randomizer();
+        private int mSeed;
+
+        [SetUp]
+        public void SetUp()
+        {
+            mSeed = Guid.NewGuid().GetHashCode();
+            mRandomizer.SetSeed(mSeed);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Console.WriteLine("Seed = {0}", mSeed);
+        }
 
         [Test]
         public void ProcessMap_ValidInput_AllCellsHasFloorTileType()
         {
             var map = new Map(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator(new Randomizer());
-            mazeGenerator.ProcessMap(map, new DungeonConfiguration(){Height = SOME_HEIGHT, Width = SOME_WIDTH});
+            var mazeGenerator = new MazeGenerator();
+            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
 
             foreach (var cell in map.AllCells)
             {
@@ -35,8 +50,8 @@ namespace DunGen.Tests
         {
             var map = new Map(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator(new Randomizer());
-            mazeGenerator.ProcessMap(map, new DungeonConfiguration(){Height = SOME_HEIGHT, Width = SOME_WIDTH});
+            var mazeGenerator = new MazeGenerator();
+            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
 
             var visitedCells = new HashSet<Cell>();
             var discoveredCells = new HashSet<Cell>(){map.GetCell(0,0)};
@@ -63,8 +78,8 @@ namespace DunGen.Tests
         {
             var map = new Map(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator(new Randomizer());
-            mazeGenerator.ProcessMap(map, new DungeonConfiguration(){Height = SOME_HEIGHT, Width = SOME_WIDTH});
+            var mazeGenerator = new MazeGenerator();
+            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, new Randomizer());
 
             for (int j = 0; j < SOME_HEIGHT; j++)
             {

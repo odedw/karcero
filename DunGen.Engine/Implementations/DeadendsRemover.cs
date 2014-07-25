@@ -10,28 +10,22 @@ namespace DunGen.Engine.Implementations
 {
     public class DeadendsRemover : IMapProcessor
     {
-        private readonly IRandomizer mRandomizer;
         public event MapChangedDelegate MapChanged;
         public string ActionString { get { return "Removing dead ends"; } }
 
-        public DeadendsRemover(IRandomizer randomizer)
-        {
-            mRandomizer = randomizer;
-        }
-
-        public Map ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1).ToList();
             foreach (var cell in deadends)
             {
-                if (mRandomizer.GetRandomDouble() > configuration.ChanceToRemoveDeadends) continue;
+                if (randomizer.GetRandomDouble() > configuration.ChanceToRemoveDeadends) continue;
 
                 var currentCell = cell;
                 var previousCell = map.GetAdjacentCell(cell, cell.Sides.First(pair => pair.Value == SideType.Open).Key);
                 var connected = false;
                 while (!connected)
                 {
-                    var direction = GetRandomValidDirection(map, currentCell, previousCell);
+                    var direction = GetRandomValidDirection(map, currentCell, previousCell, randomizer);
                     if (!direction.HasValue) break;
 
                     var adjacentCell = map.GetAdjacentCell(currentCell, direction.Value);
@@ -51,12 +45,12 @@ namespace DunGen.Engine.Implementations
         }
 
 
-        private Direction? GetRandomValidDirection(Map map, Cell currentCell, Cell previousCell)
+        private Direction? GetRandomValidDirection(Map map, Cell currentCell, Cell previousCell, IRandomizer randomizer)
         {
             var invalidDirections = new List<Direction>();
             while (invalidDirections.Count < Enum.GetValues(typeof(Direction)).Length)
             {
-                var direction = mRandomizer.GetRandomEnumValue(invalidDirections);
+                var direction = randomizer.GetRandomEnumValue(invalidDirections);
                 if (IsDirectionValid(map, currentCell, direction, previousCell))
                 {
                     var nextCell = map.GetAdjacentCell(currentCell, direction);

@@ -9,7 +9,13 @@ namespace DunGen.Engine.Implementations
 {
     public class Randomizer : IRandomizer
     {
-        private readonly Random mRandom = new Random();
+        private Random mRandom = new Random();
+
+        public void SetSeed(int seed)
+        {
+            mRandom = new Random(seed);
+        }
+
         public Cell GetRandomCell(Map map)
         {
             if (map.Height == 0 || map.Width == 0) return null;

@@ -6,6 +6,7 @@ namespace DunGen.Engine.Contracts
 {
     public interface IRandomizer
     {
+        void SetSeed(int seed);
         Cell GetRandomCell(Map map);
         T GetRandomEnumValue<T>(IEnumerable<T> excluded = null);
         T GetRandomItem<T>(IEnumerable<T> collection, IEnumerable<T> excluded = null);

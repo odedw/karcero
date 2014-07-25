@@ -11,14 +11,7 @@ namespace DunGen.Engine.Implementations
 {
     public class RoomGenerator : IMapProcessor
     {
-        private readonly IRandomizer mRandomizer;
-
-        public RoomGenerator(IRandomizer randomizer)
-        {
-            mRandomizer = randomizer;
-        }
-
-        public Map ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             //for (var i = 0; i < configuration.RoomCount; i++)
             //{

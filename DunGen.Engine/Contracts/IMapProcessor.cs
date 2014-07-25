@@ -5,7 +5,7 @@ namespace DunGen.Engine.Contracts
 {
     public interface IMapProcessor
     {
-        Map ProcessMap(Map map, DungeonConfiguration configuration);
+        Map ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer);
 
         event MapChangedDelegate MapChanged;
 

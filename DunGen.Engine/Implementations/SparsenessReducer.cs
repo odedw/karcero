@@ -10,17 +10,10 @@ namespace DunGen.Engine.Implementations
 {
     public class SparsenessReducer : IMapProcessor
     {
-        private IRandomizer mRandomizer;
-
-        public SparsenessReducer(IRandomizer randomizer)
-        {
-            mRandomizer = randomizer;
-        }
-
         public event MapChangedDelegate MapChanged;
         public string ActionString { get { return "Reducing sparseness"; } }
 
-        public Map ProcessMap(Map map, DungeonConfiguration configuration)
+        public Map ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var sparseness = ComputeSparseness(configuration.Sparseness, configuration.Width, configuration.Height);
             for (int i = 0; i < sparseness; i++)

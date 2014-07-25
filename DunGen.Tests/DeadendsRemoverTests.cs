@@ -15,22 +15,36 @@ namespace DunGen.Tests
     {
         private const int SOME_WIDTH = 16;
         private const int SOME_HEIGHT = 16;
+        private int mSeed;
         private readonly Randomizer mRandomizer = new Randomizer();
         private readonly DungeonConfiguration mConfiguration = 
             new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 2, Randomness = 1};
+
+        [SetUp]
+        public void SetUp()
+        {
+            mSeed = Guid.NewGuid().GetHashCode();
+            mRandomizer.SetSeed(mSeed);    
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Console.WriteLine("Seed = {0}", mSeed);            
+        }
 
         [Test]
         public void ProcessMap_RemoveAllDeadEnds_AllDeadEndsRemoved()
         {
             var map = new Map(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator(mRandomizer);
-            mazeGenerator.ProcessMap(map, mConfiguration);
-            var sparsenessReducer = new SparsenessReducer(new Randomizer());
-            sparsenessReducer.ProcessMap(map, mConfiguration);
+            var mazeGenerator = new MazeGenerator();
+            mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
+            var sparsenessReducer = new SparsenessReducer();
+            sparsenessReducer.ProcessMap(map, mConfiguration, mRandomizer);
 
-            var remover = new DeadendsRemover(mRandomizer);
-            remover.ProcessMap(map, mConfiguration);
+            var remover = new DeadendsRemover();
+            remover.ProcessMap(map, mConfiguration, mRandomizer);
 
             Assert.AreEqual(0, map.AllCells.Count(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1));
         }

@@ -110,7 +110,7 @@ namespace DunGen.Visualizer
             IsRunning = true;
             mWorkerThread = new Thread(() =>
             {
-                mGenerator.Generate(mConfiguration);
+                mGenerator.Generate(mConfiguration, 5);
                 IsRunning = false;
             }) { IsBackground = true };
             mWorkerThread.Start();
