@@ -84,14 +84,14 @@ namespace DunGen.Engine.Models
             for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
             {
                 if (room.Row >= 1) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.North));
-                if (room.Row < Height - 1) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.South));
+                if (room.Bottom <= Height - 1) cells.Add(GetAdjacentCell(GetCell(room.Bottom-1, j), Direction.South));
             }
 
             for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
             {
 
                 if (room.Column >= 1) cells.Add(GetAdjacentCell(GetCell(i, room.Column), Direction.West));
-                if (room.Right < Width - 1) cells.Add(GetAdjacentCell(GetCell(i, room.Right), Direction.East));
+                if (room.Right <= Width - 1) cells.Add(GetAdjacentCell(GetCell(i, room.Right-1), Direction.East));
 
             }
             return cells;

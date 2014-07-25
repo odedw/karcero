@@ -23,8 +23,8 @@ namespace DunGen.Visualizer
             ChanceToRemoveDeadends = 0.6,
             MinRoomHeight = 3,
             MaxRoomHeight = 6,
-            MinRoomWidth = 2,
-            MaxRoomWidth = 5,
+            MinRoomWidth = 3,
+            MaxRoomWidth = 6,
             RoomCount = 10
         };
 

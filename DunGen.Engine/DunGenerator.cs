@@ -38,6 +38,7 @@ namespace DunGen.Engine
         {
             var randomizer = new Randomizer();
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();
+            Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
             var map = new Map(config.Width, config.Height);
             TriggerMapChanged(null, new MapChangedDelegateArgs(){Map = map,CellsChanged = map.AllCells});
