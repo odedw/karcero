@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -21,6 +22,12 @@ namespace DunGen.Visualizer
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+        }
+
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Console.WriteLine("Width = {0}, Height = {1}",ActualWidth, ActualHeight);
+
         }
     }
 }

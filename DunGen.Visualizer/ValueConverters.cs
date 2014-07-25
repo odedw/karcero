@@ -77,19 +77,4 @@ namespace DunGen.Visualizer
             return null;
         }
     }
-
-    public class StatusToWindowTitle : IValueConverter
-    {
-        public object Convert(object value, Type targetType,
-            object parameter, CultureInfo culture)
-        {
-            return "DunGen Visualizer" + (value != null ? " - " + value + "..." : "");
-        }
-
-        public object ConvertBack(object value, Type targetType,
-            object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-    }
 }

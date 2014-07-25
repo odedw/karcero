@@ -25,7 +25,7 @@ namespace DunGen.Tests
                 Randomness = 1,
                 ChanceToRemoveDeadends = 1
             });
-            double totalSeconds = DateTime.Now.Subtract(start).TotalSeconds;
+            Console.WriteLine("Total time = {0} seconds", DateTime.Now.Subtract(start).TotalSeconds);
         }
     }
 }

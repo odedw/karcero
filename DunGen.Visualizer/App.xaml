@@ -9,7 +9,6 @@
         <l:WidthToContainerWidth x:Key="WidthToContainerWidth" />
         <l:SidesToBorderThickness x:Key="SidesToBorderThickness" />
         <l:SideTypeToVisibility x:Key="SideTypeToVisibility" />
-        <l:StatusToWindowTitle x:Key="StatusToWindowTitle" />
         <system:Double x:Key="TileSize">20</system:Double>
     </Application.Resources>
 </Application>

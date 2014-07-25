@@ -13,8 +13,8 @@ namespace DunGen.Tests
     [TestFixture]
     public class DeadendsRemoverTests
     {
-        private const int SOME_WIDTH = 16;
-        private const int SOME_HEIGHT = 16;
+        private const int SOME_WIDTH = 30;
+        private const int SOME_HEIGHT = 30;
         private int mSeed;
         private readonly Randomizer mRandomizer = new Randomizer();
         private readonly DungeonConfiguration mConfiguration = 

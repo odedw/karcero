@@ -12,17 +12,17 @@ using DunGen.Engine.Models;
 using System.Linq;
 namespace DunGen.Visualizer
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged
     {
         private readonly DungeonConfiguration mConfiguration = new DungeonConfiguration()
         {
             Height = 16,
             Width = 16,
-            Randomness = 1,
-            Sparseness = 2,
-            ChanceToRemoveDeadends = 1,
-            MinRoomHeight = 2,
-            MaxRoomHeight = 5,
+            Randomness = 0.4,
+            Sparseness = 1,
+            ChanceToRemoveDeadends = 0.6,
+            MinRoomHeight = 3,
+            MaxRoomHeight = 6,
             MinRoomWidth = 2,
             MaxRoomWidth = 5,
             RoomCount = 10
@@ -54,20 +54,6 @@ namespace DunGen.Visualizer
                 RaisePropertyChanged("Width");
             }
         }
-
-        private string mStatus;
-
-        public string Status
-        {
-            get { return mStatus; }
-            set
-            {
-                if (mStatus == value) return;
-                mStatus = value;
-                RaisePropertyChanged("Status");
-            }
-        }
-
 
         public ICommand GenerateCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -101,6 +87,8 @@ namespace DunGen.Visualizer
 
         private void StartGeneration(object input)
         {
+            Width = mConfiguration.Width;
+
             if (IsRunning)
             {
                 mWorkerThread.Abort();
@@ -110,7 +98,7 @@ namespace DunGen.Visualizer
             IsRunning = true;
             mWorkerThread = new Thread(() =>
             {
-                mGenerator.Generate(mConfiguration, 5);
+                mGenerator.Generate(mConfiguration);
                 IsRunning = false;
             }) { IsBackground = true };
             mWorkerThread.Start();
@@ -121,12 +109,16 @@ namespace DunGen.Visualizer
             DelayForVisualEffect(sender);
             Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
             {
-                if (sender != null) Status = sender.ActionString;
+                if (Width != args.Map.Width)
+                {
+                    Width = args.Map.Width;
+                    Cells.Clear();
+                }
                 if (Cells.Count == 0)
                 {
-                    for (int i = 0; i < mConfiguration.Height; i++)
+                    for (int i = 0; i < args.Map.Height; i++)
                     {
-                        for (var j = 0; j < mConfiguration.Width; j++)
+                        for (var j = 0; j < args.Map.Width; j++)
                         {
                             Cells.Add(args.Map.GetCell(i, j));
                         }
@@ -155,6 +147,8 @@ namespace DunGen.Visualizer
                 Thread.Sleep(100);
             else if (sender.GetType() == typeof (RoomGenerator))
                 Thread.Sleep(500);
+            else if (sender.GetType() == typeof (MapDoubler))
+                Thread.Sleep(0);
             else
                 Thread.Sleep(10);
 

@@ -35,6 +35,20 @@ namespace DunGen.Engine.Models
             }
         }
 
+        public Cell Clone()
+        {
+            var clone = new Cell()
+            {
+                Column = Column,
+                Row = Row,
+                Terrain = Terrain
+            };
+            foreach (var kvp in Sides)
+            {
+                clone.Sides[kvp.Key] = kvp.Value;
+            }
+            return clone;
+        }
     }
 
     public enum TerrainType

@@ -12,9 +12,8 @@ namespace DunGen.Engine.Implementations
     public class DeadendsRemover : IMapProcessor
     {
         public event MapChangedDelegate MapChanged;
-        public string ActionString { get { return "Removing dead ends"; } }
 
-        public Map ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1).ToList();
             foreach (var cell in deadends)
@@ -41,8 +40,6 @@ namespace DunGen.Engine.Implementations
                     currentCell = adjacentCell;
                 }
             }
-            return map;
-
         }
 
 

@@ -20,16 +20,22 @@ namespace DunGen.Engine.Models
             }
         }
 
-        private readonly Cell[][] mMap;
+        private Cell[][] mMap;
         public Map(int width, int height)
         {
             Height = height;
             Width = width;
-            mMap = new Cell[height][];
-            for (int i = 0; i < height; i++)
+            Init();
+        }
+
+        internal void Init()
+        {
+            
+            mMap = new Cell[Height][];
+            for (int i = 0; i < Height; i++)
             {
-                mMap[i] = new Cell[width];
-                for (int j = 0; j < width; j++)
+                mMap[i] = new Cell[Width];
+                for (int j = 0; j < Width; j++)
                 {
                     mMap[i][j] = new Cell() {Row = i, Column = j};
                 }
@@ -59,12 +65,12 @@ namespace DunGen.Engine.Models
             return mMap[row][column];
         }
 
-        public IEnumerable<Cell> GetRectangleOfCells(Rectangle rect)
+        public IEnumerable<Cell> GetRoomCells(Room room)
         {
             var cells = new List<Cell>();
-            for (var i = rect.Top; i < Math.Min(rect.Bottom, Height); i++)
+            for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
             {
-                for (var j = rect.Left; j < Math.Min(rect.Right, Width); j++)
+                for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
                 {
                     cells.Add(GetCell(i,j));
                 }    
@@ -72,20 +78,20 @@ namespace DunGen.Engine.Models
             return cells;
         }
 
-        public IEnumerable<Cell> GetCellsAdjacentToRectangle(Rectangle rect)
+        public IEnumerable<Cell> GetCellsAdjacentToRoom(Room room)
         {
             var cells = new List<Cell>();
-            for (var j = rect.Left; j < Math.Min(rect.Right, Width); j++)
+            for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
             {
-                if (rect.Top >= 1) cells.Add(GetAdjacentCell(GetCell(rect.Top, j), Direction.North));
-                if (rect.Top < Height - 1) cells.Add(GetAdjacentCell(GetCell(rect.Top, j), Direction.South));
+                if (room.Row >= 1) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.North));
+                if (room.Row < Height - 1) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.South));
             }
 
-            for (var i = rect.Top; i < Math.Min(rect.Bottom, Height); i++)
+            for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
             {
 
-                if (rect.Left >= 1) cells.Add(GetAdjacentCell(GetCell(i, rect.Left), Direction.West));
-                if (rect.Right < Width - 1) cells.Add(GetAdjacentCell(GetCell(i, rect.Right), Direction.East));
+                if (room.Column >= 1) cells.Add(GetAdjacentCell(GetCell(i, room.Column), Direction.West));
+                if (room.Right < Width - 1) cells.Add(GetAdjacentCell(GetCell(i, room.Right), Direction.East));
 
             }
             return cells;
@@ -93,23 +99,23 @@ namespace DunGen.Engine.Models
 
         public bool IsCellLocationInRoom(int row, int column)
         {
-            return Rooms.Any(room => room.Measurements.Top <= row && room.Measurements.Bottom >= row &&
-                                     room.Measurements.Left <= column && room.Measurements.Right >= column);
+            return Rooms.Any(room => room.Row <= row && room.Bottom >= row &&
+                                     room.Column <= column && room.Right >= column);
         }
 
-        public void AddRoomAtRectangle(Rectangle rectangle)
+        public void AddRoom(Room room)
         {
-            Rooms.Add(new Room(){Measurements = rectangle});
-            for (var x = rectangle.Left; x < Math.Min(rectangle.Right, Width); x++)
+            Rooms.Add(room);
+            for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
             {
-                for (var y = rectangle.Top; y < Math.Min(rectangle.Bottom, Height); y++)
+                for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
                 {
-                    var currentCell = GetCell(x, y);
+                    var currentCell = GetCell(i, j);
                     currentCell.Terrain = TerrainType.Floor;
-                    currentCell.Sides[Direction.North] = y == rectangle.Top ? SideType.Wall : SideType.Open;
-                    currentCell.Sides[Direction.West] = x == rectangle.Left ? SideType.Wall : SideType.Open;
-                    currentCell.Sides[Direction.East] = x == Math.Min(rectangle.Right - 1, Width - 1) ? SideType.Wall : SideType.Open;
-                    currentCell.Sides[Direction.South] = y == Math.Min(rectangle.Bottom - 1, Height - 1) ? SideType.Wall : SideType.Open;
+                    currentCell.Sides[Direction.North] = i == room.Row ? SideType.Wall : SideType.Open;
+                    currentCell.Sides[Direction.West] = j == room.Column ? SideType.Wall : SideType.Open;
+                    currentCell.Sides[Direction.East] = j == Math.Min(room.Right - 1, Width - 1) ? SideType.Wall : SideType.Open;
+                    currentCell.Sides[Direction.South] = i == Math.Min(room.Bottom - 1, Height - 1) ? SideType.Wall : SideType.Open;
                 }
             }
         }

@@ -50,9 +50,11 @@
   <ItemGroup>
     <Compile Include="DeadendsRemoverTests.cs" />
     <Compile Include="DunGeneratorTests.cs" />
+    <Compile Include="MapDoublerTests.cs" />
     <Compile Include="MazeGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomizerTests.cs" />
+    <Compile Include="RoomGeneratorTests.cs" />
     <Compile Include="SparsenessReducerTests.cs" />
   </ItemGroup>
   <ItemGroup>

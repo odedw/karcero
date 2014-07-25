@@ -10,9 +10,8 @@ namespace DunGen.Engine.Implementations
     public class MazeGenerator : IMapProcessor
     {
         public event MapChangedDelegate MapChanged;
-        public string ActionString { get { return "Generating maze"; } }
 
-        public Map ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             //Start with a rectangular grid, x units wide and y units tall. Mark each cell in the grid unvisited
             var visitedCells = new HashSet<Cell>();
@@ -58,8 +57,6 @@ namespace DunGen.Engine.Implementations
 
                 //Repeat until all cells in the grid have been visited.
             }
-            return map;
-
         }
 
         private Direction? GetRandomValidDirection(Map map, Cell cell, ICollection<Cell> visitedCells, double randomness, Direction? previousDirection, IRandomizer randomizer)

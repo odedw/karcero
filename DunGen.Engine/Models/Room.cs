@@ -9,9 +9,12 @@ namespace DunGen.Engine.Models
 {
     public class Room
     {
-        /// <summary>
-        /// Location and size of the room
-        /// </summary>
-        public Rectangle Measurements { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
+        public Size Size { get; set; }
+        public int Top { get { return Row; }}
+        public int Bottom { get { return Row + Size.Height; }}
+        public int Left { get { return Column; }}
+        public int Right { get { return Column + Size.Width; }}
     }
 }
