@@ -14,8 +14,8 @@ namespace DunGen.Engine.Implementations
 
         public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
-            var sparseness = ComputeSparseness(configuration.Sparseness, configuration.Width, configuration.Height);
-            for (int i = 0; i < sparseness; i++)
+            var cellsToRemove = (int) (map.Width*map.Height*(1 - configuration.Sparseness));
+            while (cellsToRemove != 0)
             {
                 //Look at every cell in the maze grid. If the given cell contains a corridor that exits the cell in only one direction 
                 //"erase" that cell by removing the corridor
@@ -31,6 +31,8 @@ namespace DunGen.Engine.Implementations
                     oppositeCell.Sides[openDirection.Opposite()] = SideType.Wall;
                     changedCells.Add(deadEndCell);
                     changedCells.Add(oppositeCell);
+                    cellsToRemove--;
+                    if (cellsToRemove == 0) break;
                 }
 
                 if (MapChanged != null)
@@ -40,19 +42,6 @@ namespace DunGen.Engine.Implementations
 
                 //Repeat step #1 sparseness times
             }
-        }
-
-        private int ComputeSparseness(int sparseness, int width, int height)
-        {
-            var lw = (int)((width + height) * 0.5);
-            switch (sparseness)
-            {
-                case 0: return lw;
-                case 1: return (int)(lw * 0.75);
-                case 2: return  (int)(lw * 0.5);
-                case 3: return  (int)(lw * 0.25);
-            }
-            return 0;
         }
     }
 }

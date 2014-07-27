@@ -13,9 +13,9 @@
 
         /// <summary>
         /// Controls how sparse the map is. 
-        /// Higher value == less sparse.
+        /// Value is between 0 and 1, higher value means more sparse.
         /// </summary>
-        public int Sparseness { get; set; }
+        public double Sparseness { get; set; }
 
         /// <summary>
         /// Controls how many dead ends are left
