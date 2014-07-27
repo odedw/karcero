@@ -46,7 +46,7 @@ namespace DunGen.Engine.Implementations
                     //For each cell of the room that is adjacent to a corridor, add 1 to the current score. 
                     currentScore +=
                         cellsAdjacentToRoom.Where(c => c.Terrain == TerrainType.Floor)
-                        .Sum(c => map.IsCellLocationInRoom(c.Row, c.Column) ? 2 : 1);
+                        .Sum(c => map.IsCellLocationInRoom(c.Row, c.Column) ? 0 : 1);
 
                     //For each cell of the room that overlaps a corridor, add 3 to the current score.
                     currentScore += cells.Count(c => !map.IsCellLocationInRoom(c.Row, c.Column) && c.Terrain == TerrainType.Floor) * 3;
@@ -54,12 +54,14 @@ namespace DunGen.Engine.Implementations
                     //For each cell of the room that overlaps a room, add 100 to the current score.
                     currentScore += cells.Count(c => map.IsCellLocationInRoom(c.Row, c.Column)) * 100;
 
-                    if (cellsAdjacentToRoom.All(c => c.Terrain == TerrainType.Rock)) currentScore += 50;
+                    if (!VerifyHasPlaceForDoor(map, room)) continue;
+                    //if (cellsAdjacentToRoom.All(c => c.Terrain == TerrainType.Rock)) currentScore += 50;
                     if (currentScore < bestScore)
                     {
                         bestScore = currentScore;
                         bestCell = cell;
                     }
+                    if (currentScore == 0) break; //found it, no need to continue
                 }
 
                 //Place the room at the best position (where the best score was found). 
@@ -78,7 +80,24 @@ namespace DunGen.Engine.Implementations
             }
         }
 
-        
+        private bool VerifyHasPlaceForDoor(Map map, Room room)
+        {
+            var cellsAdjacentToRoom = map.GetCellsAdjacentToRoom(room);
+            foreach (var cell in cellsAdjacentToRoom)
+            {
+                if (cell.Terrain == TerrainType.Floor) continue;
+                
+                Cell oneCellBeyond = null;
+                if (cell.Row < room.Row) oneCellBeyond = map.GetAdjacentCell(cell, Direction.North);
+                if (cell.Row >= room.Bottom) oneCellBeyond = map.GetAdjacentCell(cell, Direction.South);
+                if (cell.Column < room.Column) oneCellBeyond = map.GetAdjacentCell(cell, Direction.West);
+                if (cell.Column >= room.Right) oneCellBeyond = map.GetAdjacentCell(cell, Direction.East);
+
+                if (oneCellBeyond != null && oneCellBeyond.Terrain == TerrainType.Floor) return true;
+            }
+            return false;
+        }
+
 
         public event MapChangedDelegate MapChanged;
     }
