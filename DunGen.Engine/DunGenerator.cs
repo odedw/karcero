@@ -20,7 +20,8 @@ namespace DunGen.Engine
                 new SparsenessReducer(),
                 new DeadendsRemover(),
                 new MapDoubler(),
-                new RoomGenerator()
+                new RoomGenerator(),
+                new DoorGenerator()
             };
             foreach (var mapProcessor in mMapProcessors)
             {
@@ -44,7 +45,9 @@ namespace DunGen.Engine
             TriggerMapChanged(null, new MapChangedDelegateArgs(){Map = map,CellsChanged = map.AllCells});
             foreach (var mapProcessor in mMapProcessors)
             {
+                DateTime start = DateTime.Now;
                mapProcessor.ProcessMap(map, config, randomizer);
+                Console.WriteLine("{0} took {1} ms", mapProcessor.GetType().Name, DateTime.Now.Subtract(start).TotalMilliseconds);
             }
             return map;
         }

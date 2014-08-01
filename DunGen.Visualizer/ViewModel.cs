@@ -18,9 +18,9 @@ namespace DunGen.Visualizer
         {
             Height = 16,
             Width = 16,
-            Randomness = 0.4,
+            ChanceToRemoveDeadends = 0.5,
             Sparseness = 0.5,
-            ChanceToRemoveDeadends = 0.6,
+            Randomness = 0.6,
             MinRoomHeight = 3,
             MaxRoomHeight = 6,
             MinRoomWidth = 3,
@@ -41,6 +41,21 @@ namespace DunGen.Visualizer
                 RaisePropertyChanged("Cells");
             }
         }
+
+        private Map mMap;
+
+        public Map Map
+        {
+            get { return mMap; }
+            set
+            {
+                if (mMap == value) return;
+                mMap = value;
+                RaisePropertyChanged("Map");
+            }
+        }
+
+        
 
         public bool IsRunning { get; set; }
         private int mWidth;
@@ -109,6 +124,7 @@ namespace DunGen.Visualizer
             DelayForVisualEffect(sender);
             Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
             {
+                if (Map == null || Map != args.Map) Map = args.Map;
                 if (Width != args.Map.Width)
                 {
                     Width = args.Map.Width;
@@ -139,18 +155,20 @@ namespace DunGen.Visualizer
 
         private void DelayForVisualEffect(IMapProcessor sender)
         {
-            //if (sender == null) return;
+            if (sender == null) return;
 
-            //if (sender.GetType() == typeof(SparsenessReducer))
-            //    Thread.Sleep(100);
-            //else if (sender.GetType() == typeof(DeadendsRemover))
-            //    Thread.Sleep(100);
-            //else if (sender.GetType() == typeof (RoomGenerator))
-            //    Thread.Sleep(500);
-            //else if (sender.GetType() == typeof (MapDoubler))
-            //    Thread.Sleep(0);
-            //else
-            //    Thread.Sleep(10);
+            if (sender.GetType() == typeof(SparsenessReducer))
+                Thread.Sleep(100);
+            else if (sender.GetType() == typeof(DeadendsRemover))
+                Thread.Sleep(100);
+            else if (sender.GetType() == typeof (RoomGenerator))
+                Thread.Sleep(10);
+            else if (sender.GetType() == typeof (MapDoubler))
+                Thread.Sleep(0);
+            else if (sender.GetType() == typeof (DoorGenerator))
+                Thread.Sleep(100);
+            else
+                Thread.Sleep(10);
 
         }
 

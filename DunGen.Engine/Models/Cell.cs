@@ -54,7 +54,8 @@ namespace DunGen.Engine.Models
     public enum TerrainType
     {
         Rock,
-        Floor
+        Floor,
+        Door
     }
 
     public enum Direction

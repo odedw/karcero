@@ -44,18 +44,18 @@ namespace DunGen.Engine.Models
             Rooms = new List<Room>();
         }
 
-        public Cell GetAdjacentCell(Cell cell, Direction direction)
+        public Cell GetAdjacentCell(Cell cell, Direction direction, int distance = 1)
         {
             switch (direction)
             {
                 case Direction.South:
-                    return cell.Row + 1 >= Height ? null : GetCell(cell.Row + 1, cell.Column);
+                    return cell.Row + distance >= Height ? null : GetCell(cell.Row + distance, cell.Column);
                 case Direction.East:
-                    return cell.Column + 1 >= Width ? null : GetCell(cell.Row, cell.Column + 1);
+                    return cell.Column + distance >= Width ? null : GetCell(cell.Row, cell.Column + distance);
                 case Direction.North:
-                    return cell.Row - 1 < 0 ? null : GetCell(cell.Row - 1, cell.Column);
+                    return cell.Row - distance < 0 ? null : GetCell(cell.Row - distance, cell.Column);
                 case Direction.West:
-                    return cell.Column - 1 < 0 ? null : GetCell(cell.Row, cell.Column-1);
+                    return cell.Column - distance < 0 ? null : GetCell(cell.Row, cell.Column-distance);
             }
             return null;
         }
@@ -78,20 +78,20 @@ namespace DunGen.Engine.Models
             return cells;
         }
 
-        public IEnumerable<Cell> GetCellsAdjacentToRoom(Room room)
+        public IEnumerable<Cell> GetCellsAdjacentToRoom(Room room, int distance = 1)
         {
             var cells = new List<Cell>();
             for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
             {
-                if (room.Row >= 1) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.North));
-                if (room.Bottom <= Height - 1) cells.Add(GetAdjacentCell(GetCell(room.Bottom-1, j), Direction.South));
+                if (room.Row >= distance) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.North, distance));
+                if (room.Bottom <= Height - distance) cells.Add(GetAdjacentCell(GetCell(room.Bottom - 1, j), Direction.South, distance));
             }
 
             for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
             {
 
-                if (room.Column >= 1) cells.Add(GetAdjacentCell(GetCell(i, room.Column), Direction.West));
-                if (room.Right <= Width - 1) cells.Add(GetAdjacentCell(GetCell(i, room.Right-1), Direction.East));
+                if (room.Column >= distance) cells.Add(GetAdjacentCell(GetCell(i, room.Column), Direction.West, distance));
+                if (room.Right <= Width - distance) cells.Add(GetAdjacentCell(GetCell(i, room.Right - 1), Direction.East, distance));
 
             }
             return cells;
@@ -99,8 +99,7 @@ namespace DunGen.Engine.Models
 
         public bool IsCellLocationInRoom(int row, int column)
         {
-            return Rooms.Any(room => room.Row <= row && room.Bottom > row &&
-                                     room.Column <= column && room.Right > column);
+            return Rooms.Any(room => room.IsCellInRoom(GetCell(row, column)));
         }
 
         public void AddRoom(Room room)
@@ -118,6 +117,13 @@ namespace DunGen.Engine.Models
                     currentCell.Sides[Direction.South] = i == Math.Min(room.Bottom - 1, Height - 1) ? SideType.Wall : SideType.Open;
                 }
             }
+        }
+
+        public IEnumerable<Cell> GetAllAdjacentCells(Cell cell)
+        {
+            return Enum.GetValues(typeof (Direction)).OfType<Direction>()
+                .Where(direction => GetAdjacentCell(cell, direction) != null)
+                .Select(direction => GetAdjacentCell(cell, direction));
         }
     }
 }

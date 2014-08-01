@@ -17,7 +17,7 @@ namespace DunGen.Visualizer
             object parameter, CultureInfo culture)
         {
             var tile = (TerrainType) value;
-            return new SolidColorBrush(tile == TerrainType.Floor ? Colors.Lavender : Colors.Black);
+            return new SolidColorBrush(tile == TerrainType.Rock ? Colors.Black : Colors.Lavender);
         }
 
         public object ConvertBack(object value, Type targetType,
@@ -73,6 +73,28 @@ namespace DunGen.Visualizer
 
         public object ConvertBack(object value, Type targetType,
             object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    public class CellToDoorConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var cell = (Cell) values[0];
+            if (cell.Terrain != TerrainType.Door) return Visibility.Hidden;
+            var map = (Map) values[1];
+            if (map == null) return Visibility.Hidden;
+            var doorCanvas = parameter.ToString();
+                if (map.GetAdjacentCell(cell, Direction.West) != null &&
+                    map.GetAdjacentCell(cell, Direction.West).Terrain != TerrainType.Rock)
+                    return doorCanvas == "Horizontal" ? Visibility.Visible : Visibility.Hidden;
+                
+                return doorCanvas == "Vertical" ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             return null;
         }

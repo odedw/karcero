@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeadendsRemoverTests.cs" />
+    <Compile Include="DoorGeneratorTests.cs" />
     <Compile Include="DunGeneratorTests.cs" />
     <Compile Include="MapDoublerTests.cs" />
     <Compile Include="MazeGeneratorTests.cs" />

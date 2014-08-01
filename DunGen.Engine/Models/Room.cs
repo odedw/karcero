@@ -16,5 +16,12 @@ namespace DunGen.Engine.Models
         public int Bottom { get { return Row + Size.Height; }}
         public int Left { get { return Column; }}
         public int Right { get { return Column + Size.Width; }}
+
+        public bool IsCellInRoom(Cell cell)
+        {
+            return cell != null && 
+                   Row <= cell.Row && Bottom > cell.Row &&
+                   Column <= cell.Column && Right > cell.Column;
+        }
     }
 }

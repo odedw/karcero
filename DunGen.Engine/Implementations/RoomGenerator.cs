@@ -117,27 +117,10 @@ namespace DunGen.Engine.Implementations
             }
         }
 
-        private bool VerifyHasPlaceForDoor(Map map, Room room)
-        {
-            var cellsAdjacentToRoom = map.GetCellsAdjacentToRoom(room);
-            foreach (var cell in cellsAdjacentToRoom)
-            {
-                if (cell.Terrain == TerrainType.Floor) continue;
-                
-                Cell oneCellBeyond = null;
-                if (cell.Row < room.Row) oneCellBeyond = map.GetAdjacentCell(cell, Direction.North);
-                if (cell.Row >= room.Bottom) oneCellBeyond = map.GetAdjacentCell(cell, Direction.South);
-                if (cell.Column < room.Column) oneCellBeyond = map.GetAdjacentCell(cell, Direction.West);
-                if (cell.Column >= room.Right) oneCellBeyond = map.GetAdjacentCell(cell, Direction.East);
-
-                if (oneCellBeyond != null && oneCellBeyond.Terrain == TerrainType.Floor) return true;
-            }
-            return false;
-        }
-
         private void FixMapIntegrity(Map map)
         {
-            foreach (var cell in map.Rooms.SelectMany(map.GetRoomCells).Union(map.Rooms.SelectMany(map.GetCellsAdjacentToRoom)))
+            var cells = map.Rooms.SelectMany(map.GetRoomCells).Union(map.Rooms.SelectMany(room => map.GetCellsAdjacentToRoom(room))).ToArray();
+            foreach (var cell in cells)
             {
                 foreach (var kvp in cell.Sides.ToList())
                 {
@@ -147,8 +130,9 @@ namespace DunGen.Engine.Implementations
                         : SideType.Open;
                 }
 
-                if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { Map = map, CellsChanged = new[] { cell } });
             }
+            if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { Map = map, CellsChanged = cells });
+
         }
 
         private bool IsCellIsolatedOnSides(Cell cell, IEnumerable<Direction> directions, Map map)

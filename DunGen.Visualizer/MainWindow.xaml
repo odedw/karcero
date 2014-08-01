@@ -5,7 +5,7 @@
         xmlns:models="clr-namespace:DunGen.Engine.Models;assembly=DunGen.Engine"
         Icon="Resources\cursorSword_silver.png"
         Title="DunGen Visualizer" Height="699" Width="676"  Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
-        SizeChanged="MainWindow_OnSizeChanged">
+        SizeChanged="MainWindow_OnSizeChanged" x:Name="Window">
     <Window.DataContext>
         <local:ViewModel />
     </Window.DataContext>
@@ -38,10 +38,50 @@
                               Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=South}"/>-->
 
                         <Border Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" BorderBrush="Black"
-                            BorderThickness="{Binding Sides, Converter={StaticResource SidesToBorderThickness}}"/>
+                            BorderThickness="{Binding Sides, Converter={StaticResource SidesToBorderThickness}}" >
+                            <Grid>
+                                <Canvas>
+                                <Canvas.Visibility>
+                                        <MultiBinding Converter="{StaticResource CellToDoorConverter}" ConverterParameter="Vertical">
+                                            <Binding Path="" />
+                                            <Binding ElementName="Window" Path="DataContext.Map" />
+                                        </MultiBinding>
+                                    </Canvas.Visibility>
+                                <Line
+                                    X1="00" Y1="9"
+                                    X2="20" Y2="9"
+                                    Stroke="Black"
+                                    StrokeThickness="1" />
+                                <Rectangle Stroke="Black"
+                                           StrokeThickness="1" 
+                                           Width="10" Height="8" 
+                                           Canvas.Top="5" Canvas.Left="4"
+                                    />
+                            </Canvas>
+                            <Canvas>
+                                    <Canvas.Visibility>
+                                        <MultiBinding Converter="{StaticResource CellToDoorConverter}"  ConverterParameter="Horizontal">
+                                            <Binding Path="" />
+                                            <Binding ElementName="Window" Path="DataContext.Map" />
+                                        </MultiBinding>
+                                    </Canvas.Visibility>
+                                    <Line
+                                    X1="9" Y1="0"
+                                    X2="9" Y2="20"
+                                    Stroke="Black"
+                                    StrokeThickness="1" />
+                                <Rectangle Stroke="Black"
+                                           StrokeThickness="1" 
+                                           Width="8" Height="10" 
+                                           Canvas.Top="4" Canvas.Left="5"
+                                    />
+                            </Canvas>
+                            </Grid>
+                        </Border>
                         <!--<TextBlock Text="{Binding Location.X}" Foreground="White"></TextBlock>
                         <TextBlock Text="," Foreground="White"></TextBlock>
                         <TextBlock Text="{Binding Location.Y}" Foreground="White"></TextBlock>-->
+                        
                     </DockPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

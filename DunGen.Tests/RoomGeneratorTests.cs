@@ -20,7 +20,7 @@ namespace DunGen.Tests
         private readonly DungeonConfiguration mConfiguration =
             new DungeonConfiguration()
             {
-                Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 1, Randomness = 1,
+                Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 0, Randomness = 1,
                 MinRoomHeight = 3, MaxRoomHeight = 6, MinRoomWidth = 3, MaxRoomWidth = 6, RoomCount = 10
             };
 
@@ -84,7 +84,7 @@ namespace DunGen.Tests
         {
             var map = GenerateMap();
 
-            foreach (var cell in map.Rooms.SelectMany(map.GetCellsAdjacentToRoom))
+            foreach (var cell in map.Rooms.SelectMany(room => map.GetCellsAdjacentToRoom(room)))
             {
                 Assert.IsFalse(map.IsCellLocationInRoom(cell.Row, cell.Column));
             }

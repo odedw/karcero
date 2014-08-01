@@ -14,7 +14,7 @@ namespace DunGen.Engine.Implementations
 
         public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
-            var cellsToRemove = (int) (map.Width*map.Height*(1 - configuration.Sparseness));
+            var cellsToRemove = (int) (map.Width*map.Height*configuration.Sparseness);
             while (cellsToRemove != 0)
             {
                 //Look at every cell in the maze grid. If the given cell contains a corridor that exits the cell in only one direction 
