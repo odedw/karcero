@@ -43,7 +43,7 @@ namespace DunGen.Engine.Implementations
 
         public Size GetRandomRoomSize(int maxWidth, int minWidth, int maxHeight, int minHeight)
         {
-            return new Size(mRandom.Next(maxWidth - minWidth) + minWidth, mRandom.Next(maxHeight - minHeight) + minHeight);
+            return new Size(mRandom.Next(maxWidth - minWidth) + minWidth + 1, mRandom.Next(maxHeight - minHeight) + minHeight + 1);
         }
     }
 }

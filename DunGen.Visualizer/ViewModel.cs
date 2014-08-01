@@ -139,18 +139,18 @@ namespace DunGen.Visualizer
 
         private void DelayForVisualEffect(IMapProcessor sender)
         {
-            if (sender == null) return;
+            //if (sender == null) return;
 
-            if (sender.GetType() == typeof(SparsenessReducer))
-                Thread.Sleep(100);
-            else if (sender.GetType() == typeof(DeadendsRemover))
-                Thread.Sleep(100);
-            else if (sender.GetType() == typeof (RoomGenerator))
-                Thread.Sleep(500);
-            else if (sender.GetType() == typeof (MapDoubler))
-                Thread.Sleep(0);
-            else
-                Thread.Sleep(10);
+            //if (sender.GetType() == typeof(SparsenessReducer))
+            //    Thread.Sleep(100);
+            //else if (sender.GetType() == typeof(DeadendsRemover))
+            //    Thread.Sleep(100);
+            //else if (sender.GetType() == typeof (RoomGenerator))
+            //    Thread.Sleep(500);
+            //else if (sender.GetType() == typeof (MapDoubler))
+            //    Thread.Sleep(0);
+            //else
+            //    Thread.Sleep(10);
 
         }
 

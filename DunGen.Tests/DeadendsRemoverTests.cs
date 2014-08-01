@@ -18,7 +18,7 @@ namespace DunGen.Tests
         private int mSeed;
         private readonly Randomizer mRandomizer = new Randomizer();
         private readonly DungeonConfiguration mConfiguration = 
-            new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 2, Randomness = 1};
+            new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH, ChanceToRemoveDeadends = 1, Sparseness = 0.2, Randomness = 1};
 
         [SetUp]
         public void SetUp()

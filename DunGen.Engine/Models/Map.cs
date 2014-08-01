@@ -62,7 +62,7 @@ namespace DunGen.Engine.Models
 
         public Cell GetCell(int row, int column)
         {
-            return mMap[row][column];
+            return row >= 0 && column >= 0 && row < Height && column < Width ? mMap[row][column] : null;
         }
 
         public IEnumerable<Cell> GetRoomCells(Room room)
@@ -99,8 +99,8 @@ namespace DunGen.Engine.Models
 
         public bool IsCellLocationInRoom(int row, int column)
         {
-            return Rooms.Any(room => room.Row <= row && room.Bottom >= row &&
-                                     room.Column <= column && room.Right >= column);
+            return Rooms.Any(room => room.Row <= row && room.Bottom > row &&
+                                     room.Column <= column && room.Right > column);
         }
 
         public void AddRoom(Room room)

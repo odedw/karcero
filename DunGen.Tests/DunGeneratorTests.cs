@@ -21,7 +21,7 @@ namespace DunGen.Tests
             {
                 Width = 50,
                 Height = 50,
-                Sparseness = 30,
+                Sparseness = 0.3,
                 Randomness = 1,
                 ChanceToRemoveDeadends = 1
             });

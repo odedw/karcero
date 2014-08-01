@@ -44,7 +44,7 @@ namespace DunGen.Tests
             map.GetCell(1, 0).Sides[Direction.East] = map.GetCell(1, 1).Sides[Direction.West] = SideType.Open;
 
             var sparsenessReducer = new SparsenessReducer();
-            sparsenessReducer.ProcessMap(map, new DungeonConfiguration(){Sparseness = 2, Height = 2, Width = 2}, mRandomizer);
+            sparsenessReducer.ProcessMap(map, new DungeonConfiguration(){Sparseness = 0.5, Height = 2, Width = 2}, mRandomizer);
 
             //Assert tile types
             Assert.AreEqual(TerrainType.Rock, map.GetCell(0,0).Terrain);
@@ -67,7 +67,7 @@ namespace DunGen.Tests
             var mazeGenerator = new MazeGenerator();
             mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
             var sparseness = new SparsenessReducer();
-            sparseness.ProcessMap(map, new DungeonConfiguration() { Sparseness = 10 }, mRandomizer);
+            sparseness.ProcessMap(map, new DungeonConfiguration() { Sparseness = 0.6 }, mRandomizer);
 
             for (int j = 0; j < SOME_HEIGHT; j++)
             {
