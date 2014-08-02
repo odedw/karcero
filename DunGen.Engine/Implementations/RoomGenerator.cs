@@ -42,9 +42,6 @@ namespace DunGen.Engine.Implementations
                     room.Row = cell.Row;
                     room.Column = cell.Column;
 
-                    //Set the "current" score to 0
-                    int currentScore = 0;
-
                     if (room.Right >= map.Width || room.Bottom >= map.Height) continue;
 
                     var cells = map.GetRoomCells(room).ToList();
@@ -99,21 +96,10 @@ namespace DunGen.Engine.Implementations
 
                     if (foundNonIsolatedCell) continue;
 
-                    if (currentScore >= bestScore) continue;
-
-                    bestScore = currentScore;
-                    bestCell = cell;
-                }
-
-                //Place the room at the best position (where the best score was found). 
-                if (bestCell != null)
-                {
-                    room.Row = bestCell.Row;
-                    room.Column = bestCell.Column;
-
                     map.AddRoom(room);
-                    if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() {Map = map, CellsChanged = map.GetRoomCells(room)});
-                }
+                    if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { Map = map, CellsChanged = map.GetRoomCells(room) });
+                    break;
+                }             
             }
         }
 

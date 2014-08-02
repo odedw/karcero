@@ -47,7 +47,7 @@ namespace DunGen.Engine
             {
                 DateTime start = DateTime.Now;
                mapProcessor.ProcessMap(map, config, randomizer);
-                Console.WriteLine("{0} took {1} ms", mapProcessor.GetType().Name, DateTime.Now.Subtract(start).TotalMilliseconds);
+                //Console.WriteLine("{0} took {1} ms", mapProcessor.GetType().Name, DateTime.Now.Subtract(start).TotalMilliseconds);
             }
             return map;
         }
