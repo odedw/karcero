@@ -20,7 +20,7 @@ namespace DunGen.Visualizer
             Width = 16,
             ChanceToRemoveDeadends = 0.5,
             Sparseness = 0.5,
-            Randomness = 0.6,
+            Randomness = 0.5,
             MinRoomHeight = 3,
             MaxRoomHeight = 6,
             MinRoomWidth = 3,
@@ -155,20 +155,20 @@ namespace DunGen.Visualizer
 
         private void DelayForVisualEffect(IMapProcessor sender)
         {
-            if (sender == null) return;
+            //if (sender == null) return;
 
-            if (sender.GetType() == typeof(SparsenessReducer))
-                Thread.Sleep(100);
-            else if (sender.GetType() == typeof(DeadendsRemover))
-                Thread.Sleep(100);
-            else if (sender.GetType() == typeof (RoomGenerator))
-                Thread.Sleep(10);
-            else if (sender.GetType() == typeof (MapDoubler))
-                Thread.Sleep(0);
-            else if (sender.GetType() == typeof (DoorGenerator))
-                Thread.Sleep(100);
-            else
-                Thread.Sleep(10);
+            //if (sender.GetType() == typeof(SparsenessReducer))
+            //    Thread.Sleep(100);
+            //else if (sender.GetType() == typeof(DeadendsRemover))
+            //    Thread.Sleep(100);
+            //else if (sender.GetType() == typeof (RoomGenerator))
+            //    Thread.Sleep(10);
+            //else if (sender.GetType() == typeof (MapDoubler))
+            //    Thread.Sleep(0);
+            //else if (sender.GetType() == typeof (DoorGenerator))
+            //    Thread.Sleep(100);
+            //else
+            //    Thread.Sleep(10);
 
         }
 

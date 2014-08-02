@@ -26,62 +26,20 @@
                 <DataTemplate>
 
                     <DockPanel LastChildFill="False" Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" 
-                                Background="{Binding Terrain, Converter={StaticResource TileTypeToBackgroundColorConverter}}"
                                ToolTip="{Binding Description}">
-                        <!--<Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Right" 
-                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=East}"/>
-                        <Grid Background="Black" Width="1" Height="{StaticResource TileSize}" DockPanel.Dock="Left"
-                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=West}"/>
-                        <Grid Background="Black" Width="{StaticResource TileSize}" Height="1" DockPanel.Dock="Top"
-                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=North}"/>
-                        <Grid Background="Black" Width="{StaticResource TileSize}" Height="1" DockPanel.Dock="Bottom"
-                              Visibility="{Binding Sides, Converter={StaticResource SideTypeToVisibility}, ConverterParameter=South}"/>-->
+                        <Rectangle Height="{StaticResource TileSize}" Width="{StaticResource TileSize}">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="{StaticResource GridSprite}" ViewboxUnits="Absolute" >
+                                    <ImageBrush.Viewbox>
+                                        <MultiBinding Converter="{StaticResource CellToSpriteRect}" >
+                                            <Binding Path="" />
+                                            <Binding ElementName="Window" Path="DataContext.Map" />
+                                        </MultiBinding>
+                                    </ImageBrush.Viewbox>
+                                    </ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
 
-                        <Border Height="{StaticResource TileSize}" Width="{StaticResource TileSize}" BorderBrush="Black"
-                            BorderThickness="{Binding Sides, Converter={StaticResource SidesToBorderThickness}}" >
-                            <Grid>
-                                <Canvas>
-                                <Canvas.Visibility>
-                                        <MultiBinding Converter="{StaticResource CellToDoorConverter}" ConverterParameter="Vertical">
-                                            <Binding Path="" />
-                                            <Binding ElementName="Window" Path="DataContext.Map" />
-                                        </MultiBinding>
-                                    </Canvas.Visibility>
-                                <Line
-                                    X1="00" Y1="9"
-                                    X2="20" Y2="9"
-                                    Stroke="Black"
-                                    StrokeThickness="1" />
-                                <Rectangle Stroke="Black"
-                                           StrokeThickness="1" 
-                                           Width="10" Height="8" 
-                                           Canvas.Top="5" Canvas.Left="4"
-                                    />
-                            </Canvas>
-                            <Canvas>
-                                    <Canvas.Visibility>
-                                        <MultiBinding Converter="{StaticResource CellToDoorConverter}"  ConverterParameter="Horizontal">
-                                            <Binding Path="" />
-                                            <Binding ElementName="Window" Path="DataContext.Map" />
-                                        </MultiBinding>
-                                    </Canvas.Visibility>
-                                    <Line
-                                    X1="9" Y1="0"
-                                    X2="9" Y2="20"
-                                    Stroke="Black"
-                                    StrokeThickness="1" />
-                                <Rectangle Stroke="Black"
-                                           StrokeThickness="1" 
-                                           Width="8" Height="10" 
-                                           Canvas.Top="4" Canvas.Left="5"
-                                    />
-                            </Canvas>
-                            </Grid>
-                        </Border>
-                        <!--<TextBlock Text="{Binding Location.X}" Foreground="White"></TextBlock>
-                        <TextBlock Text="," Foreground="White"></TextBlock>
-                        <TextBlock Text="{Binding Location.Y}" Foreground="White"></TextBlock>-->
-                        
                     </DockPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

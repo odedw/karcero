@@ -10,6 +10,8 @@
         <l:SidesToBorderThickness x:Key="SidesToBorderThickness" />
         <l:SideTypeToVisibility x:Key="SideTypeToVisibility" />
         <l:CellToDoorConverter x:Key="CellToDoorConverter" />
-        <system:Double x:Key="TileSize">20</system:Double>
+        <l:CellToSpriteRect x:Key="CellToSpriteRect" />
+        <system:Double x:Key="TileSize">16</system:Double>
+        <BitmapImage x:Key="GridSprite" UriSource="./Resources/GridSprite.png" />
     </Application.Resources>
 </Application>
