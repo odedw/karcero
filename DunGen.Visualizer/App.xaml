@@ -13,5 +13,6 @@
         <l:CellToSpriteRect x:Key="CellToSpriteRect" />
         <system:Double x:Key="TileSize">16</system:Double>
         <BitmapImage x:Key="GridSprite" UriSource="./Resources/GridSprite.png" />
+        <BitmapImage x:Key="DawnlikeSprite" UriSource="./Resources/DawnlikeSprite.png" />
     </Application.Resources>
 </Application>

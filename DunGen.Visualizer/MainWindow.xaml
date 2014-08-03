@@ -13,8 +13,10 @@
         <KeyBinding Key="Space" Command="{Binding GenerateCommand}" />
         <KeyBinding Key="R" Command="{Binding RefreshCommand}" />
     </Window.InputBindings>
-    <Grid MouseDown="UIElement_OnMouseDown" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
+    <Grid MouseDown="UIElement_OnMouseDown" HorizontalAlignment="Center" VerticalAlignment="Center">       
+        <ScrollViewer Name="scrollViewer" Grid.Column="1" 
+              VerticalScrollBarVisibility="Hidden" 
+              HorizontalScrollBarVisibility="Hidden">
         <ItemsControl ItemsSource="{Binding Cells}" x:Name="ItemsControl"  >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -43,7 +45,12 @@
                     </DockPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <!--</ScrollViewer>-->
+                <ItemsControl.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="scaleTransform"/>
+                    </TransformGroup>
+                </ItemsControl.LayoutTransform>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Window>
