@@ -108,8 +108,12 @@ namespace DunGen.Visualizer
         private const short EAST = 2;
         private const short SOUTH = 4;
         private const short WEST = 8;
+        private const short NORTH_EAST = 16;
+        private const short SOUTH_EAST = 32;
+        private const short NORTH_WEST = 64;
+        private const short SOUTH_WEST = 128;
         private readonly Dictionary<short, Point> mFloorLocationByWalls = new Dictionary<short, Point>();
-        private readonly Dictionary<short, Point> mWallLocationByAdjacentWallCells = new Dictionary<short, Point>();
+        private readonly Dictionary<short, Point> mWallLocationByAdjacentWallsCells = new Dictionary<short, Point>();
         private const int TILE_SIZE = 16;
 
         public CellToSpriteRect()
@@ -131,22 +135,22 @@ namespace DunGen.Visualizer
             mFloorLocationByWalls[NORTH | SOUTH] = new Point(TILE_SIZE * 5, TILE_SIZE);
             mFloorLocationByWalls[NORTH | EAST | SOUTH] = new Point(TILE_SIZE * 6, TILE_SIZE);
 
-            mWallLocationByAdjacentWallCells[EAST | SOUTH] = new Point(0, TILE_SIZE*3);
-            mWallLocationByAdjacentWallCells[NORTH | EAST | SOUTH] = new Point(0, TILE_SIZE*4);
-            mWallLocationByAdjacentWallCells[NORTH | EAST] = new Point(0, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallCells[EAST | WEST | SOUTH] = new Point(TILE_SIZE, TILE_SIZE*3);
-            mWallLocationByAdjacentWallCells[0] = new Point(TILE_SIZE, TILE_SIZE*4);
-            mWallLocationByAdjacentWallCells[WEST | NORTH | EAST] = new Point(TILE_SIZE, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallCells[WEST | SOUTH] = new Point(TILE_SIZE * 2, TILE_SIZE*3);
-            mWallLocationByAdjacentWallCells[NORTH | WEST | SOUTH] = new Point(TILE_SIZE * 2, TILE_SIZE*4);
-            mWallLocationByAdjacentWallCells[NORTH | WEST] = new Point(TILE_SIZE * 2, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallCells[SOUTH] = new Point(TILE_SIZE * 3, TILE_SIZE*3);
-            mWallLocationByAdjacentWallCells[NORTH | SOUTH] = new Point(TILE_SIZE * 3, TILE_SIZE*4);
-            mWallLocationByAdjacentWallCells[NORTH] = new Point(TILE_SIZE * 3, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallCells[NORTH | WEST | SOUTH | EAST] = new Point(TILE_SIZE * 4, TILE_SIZE*3);
-            mWallLocationByAdjacentWallCells[EAST] = new Point(TILE_SIZE * 4, TILE_SIZE*4);
-            mWallLocationByAdjacentWallCells[WEST | EAST] = new Point(TILE_SIZE * 5, TILE_SIZE*4);
-            mWallLocationByAdjacentWallCells[WEST] = new Point(TILE_SIZE * 6, TILE_SIZE*4);
+
+            mWallLocationByAdjacentWallsCells[EAST | SOUTH] = new Point(0, TILE_SIZE * 3);
+            mWallLocationByAdjacentWallsCells[NORTH | SOUTH] = new Point(0, TILE_SIZE * 4);
+            mWallLocationByAdjacentWallsCells[SOUTH] = new Point(0, TILE_SIZE * 4);
+            mWallLocationByAdjacentWallsCells[NORTH] = new Point(0, TILE_SIZE * 4);
+            mWallLocationByAdjacentWallsCells[NORTH | EAST] = new Point(0, TILE_SIZE * 5);
+            mWallLocationByAdjacentWallsCells[WEST | EAST] = new Point(TILE_SIZE, TILE_SIZE * 3);
+            mWallLocationByAdjacentWallsCells[EAST] = new Point(TILE_SIZE, TILE_SIZE * 3);
+            mWallLocationByAdjacentWallsCells[WEST] = new Point(TILE_SIZE, TILE_SIZE * 3);
+            mWallLocationByAdjacentWallsCells[WEST | SOUTH] = new Point(TILE_SIZE*2, TILE_SIZE * 3);
+            mWallLocationByAdjacentWallsCells[WEST | NORTH] = new Point(TILE_SIZE*2, TILE_SIZE * 5);
+            mWallLocationByAdjacentWallsCells[EAST | NORTH | SOUTH] = new Point(TILE_SIZE*3, TILE_SIZE * 4);
+            mWallLocationByAdjacentWallsCells[WEST | EAST | SOUTH] = new Point(TILE_SIZE*4, TILE_SIZE * 3);
+            mWallLocationByAdjacentWallsCells[NORTH | EAST | SOUTH | WEST] = new Point(TILE_SIZE*4, TILE_SIZE * 4);
+            mWallLocationByAdjacentWallsCells[EAST | NORTH | WEST] = new Point(TILE_SIZE*4, TILE_SIZE * 5);
+            mWallLocationByAdjacentWallsCells[SOUTH | NORTH | WEST] = new Point(TILE_SIZE*5, TILE_SIZE * 4);
 
         }
 
@@ -180,14 +184,25 @@ namespace DunGen.Visualizer
 
         private Point ConstructWallLocationAccordingToAdjacentWalls(Cell cell, Map map)
         {
+            if (map.GetAllAdjacentCells(cell, true).All(c => c.Terrain == TerrainType.Rock))
+                return new Point(TILE_SIZE*6, TILE_SIZE*5);
+
             short wallsFlag = 0;
-            if (map.GetAdjacentCell(cell, Direction.North) == null || map.GetAdjacentCell(cell, Direction.North).Terrain == TerrainType.Rock) wallsFlag |= NORTH;
-            if (map.GetAdjacentCell(cell, Direction.South) == null || map.GetAdjacentCell(cell, Direction.South).Terrain == TerrainType.Rock) wallsFlag |= SOUTH;
-            if (map.GetAdjacentCell(cell, Direction.West) == null || map.GetAdjacentCell(cell, Direction.West).Terrain == TerrainType.Rock) wallsFlag |= WEST;
-            if (map.GetAdjacentCell(cell, Direction.East) == null || map.GetAdjacentCell(cell, Direction.East).Terrain == TerrainType.Rock) wallsFlag |= EAST;
-            return mWallLocationByAdjacentWallCells[wallsFlag];
+            if (ShouldConsiderRockCell(cell, Direction.North, map)) wallsFlag |= NORTH;
+            if (ShouldConsiderRockCell(cell, Direction.South, map)) wallsFlag |= SOUTH;
+            if (ShouldConsiderRockCell(cell, Direction.West, map)) wallsFlag |= WEST;
+            if (ShouldConsiderRockCell(cell, Direction.East, map)) wallsFlag |= EAST;
+
+            if (mWallLocationByAdjacentWallsCells.ContainsKey(wallsFlag)) return mWallLocationByAdjacentWallsCells[wallsFlag];
+            return new Point(TILE_SIZE*6, TILE_SIZE*5);
         }
 
+        private bool ShouldConsiderRockCell(Cell cell, Direction direction, Map map)
+        {
+            var adjacentCell = map.GetAdjacentCell(cell, direction);
+            return (adjacentCell != null && adjacentCell.Terrain == TerrainType.Rock &&
+                    map.GetAllAdjacentCells(adjacentCell, true).Any(c => c.Terrain != TerrainType.Rock));
+        }
         private Point ConstructLocationAccordingToDoorOrientation(Dictionary<Direction, SideType> sides)
         {
             if (sides[Direction.East] == SideType.Open) return new Point(TILE_SIZE * 6,0);

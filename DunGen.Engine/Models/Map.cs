@@ -119,11 +119,20 @@ namespace DunGen.Engine.Models
             }
         }
 
-        public IEnumerable<Cell> GetAllAdjacentCells(Cell cell)
+        public IEnumerable<Cell> GetAllAdjacentCells(Cell cell, bool includeDiagonalCells = false)
         {
-            return Enum.GetValues(typeof (Direction)).OfType<Direction>()
+            var cells = Enum.GetValues(typeof (Direction)).OfType<Direction>()
                 .Where(direction => GetAdjacentCell(cell, direction) != null)
-                .Select(direction => GetAdjacentCell(cell, direction));
+                .Select(direction => GetAdjacentCell(cell, direction)).ToList();
+
+            if (includeDiagonalCells)
+            {
+                if (GetCell(cell.Row - 1, cell.Column - 1) != null) cells.Add(GetCell(cell.Row - 1, cell.Column - 1));
+                if (GetCell(cell.Row + 1, cell.Column - 1) != null) cells.Add(GetCell(cell.Row + 1, cell.Column - 1));
+                if (GetCell(cell.Row - 1, cell.Column + 1) != null) cells.Add(GetCell(cell.Row - 1, cell.Column + 1));
+                if (GetCell(cell.Row + 1, cell.Column + 1) != null) cells.Add(GetCell(cell.Row + 1, cell.Column + 1));
+            }
+            return cells;
         }
     }
 }
