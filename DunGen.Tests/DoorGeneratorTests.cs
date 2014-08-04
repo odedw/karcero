@@ -92,8 +92,8 @@ namespace DunGen.Tests
                 Assert.IsTrue(cell.Sides.All(pair => pair.Value == cell.Sides[pair.Key.Opposite()]));
                 foreach (var direction in Enum.GetValues(typeof(Direction)).OfType<Direction>())
                 {
-                    var adjacentCell = map.GetAdjacentCell(cell, direction);
-                    if (adjacentCell != null)
+                    Cell adjacentCell;
+                    if (map.TryGetAdjacentCell(cell, direction, out adjacentCell))
                     {
                         Assert.IsNotNull(map.GetAdjacentCell(cell, direction.Opposite()));
                         Assert.AreEqual(adjacentCell.Terrain, map.GetAdjacentCell(cell, direction.Opposite()).Terrain);

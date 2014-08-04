@@ -78,7 +78,8 @@ namespace DunGen.Engine.Implementations
 
         private bool IsDirectionValid(Map map, Cell cell, Direction direction, Cell previousCell)
         {
-            return map.GetAdjacentCell(cell, direction) != null && map.GetAdjacentCell(cell, direction) != previousCell;
+            Cell adjacent;
+            return map.TryGetAdjacentCell(cell, direction, out adjacent) && adjacent != previousCell;
         }       
     }
 }

@@ -66,11 +66,12 @@ namespace DunGen.Engine.Implementations
                     bool foundNonIsolatedCell = false;
                     for (var j = room.Column; j < room.Right; j++)
                     {
-                        var northCell = map.GetAdjacentCell(map.GetCell(room.Row, j), Direction.North);
-                        var southCell = map.GetAdjacentCell(map.GetCell(room.Bottom - 1, j), Direction.South);
-                        if ((northCell != null && northCell.Terrain == TerrainType.Floor && 
+                        Cell northCell, southCell;
+                        if ((map.TryGetAdjacentCell(map.GetCell(room.Row, j), Direction.North, out northCell) && 
+                            northCell.Terrain == TerrainType.Floor && 
                             !IsCellIsolatedOnSides(northCell, new[] {Direction.East, Direction.West}, map)) ||
-                            (southCell != null && southCell.Terrain == TerrainType.Floor &&
+                            (map.TryGetAdjacentCell(map.GetCell(room.Bottom - 1, j), Direction.South, out southCell) 
+                            && southCell.Terrain == TerrainType.Floor &&
                             !IsCellIsolatedOnSides(southCell, new[] { Direction.East, Direction.West }, map)))
                         {
                             foundNonIsolatedCell = true;
@@ -82,11 +83,12 @@ namespace DunGen.Engine.Implementations
 
                     for (var r = room.Row; r < room.Bottom; r++)
                     {
-                        var eastCell = map.GetAdjacentCell(map.GetCell(r, room.Right - 1), Direction.East);
-                        var westCell = map.GetAdjacentCell(map.GetCell(r, room.Column), Direction.West);
-                        if ((eastCell != null && eastCell.Terrain == TerrainType.Floor &&
+                        Cell eastCell, westCell;
+                        if ((map.TryGetAdjacentCell(map.GetCell(r, room.Right - 1), Direction.East, out eastCell) && 
+                            eastCell.Terrain == TerrainType.Floor &&
                             !IsCellIsolatedOnSides(eastCell, new[] {Direction.North, Direction.South}, map)) ||
-                            (westCell != null && westCell.Terrain == TerrainType.Floor &&
+                            (map.TryGetAdjacentCell(map.GetCell(r, room.Column), Direction.West, out westCell)
+                            && westCell.Terrain == TerrainType.Floor &&
                             !IsCellIsolatedOnSides(westCell, new[] { Direction.North, Direction.South }, map)))
                         {
                             foundNonIsolatedCell = true;
@@ -110,8 +112,8 @@ namespace DunGen.Engine.Implementations
             {
                 foreach (var kvp in cell.Sides.ToList())
                 {
-                    var adjacent = map.GetAdjacentCell(cell, kvp.Key);
-                    cell.Sides[kvp.Key] = adjacent == null || adjacent.Terrain == TerrainType.Rock
+                    Cell adjacent;
+                    cell.Sides[kvp.Key] = !map.TryGetAdjacentCell(cell, kvp.Key, out adjacent) || adjacent.Terrain == TerrainType.Rock
                         ? SideType.Wall
                         : SideType.Open;
                 }
@@ -123,8 +125,9 @@ namespace DunGen.Engine.Implementations
 
         private bool IsCellIsolatedOnSides(Cell cell, IEnumerable<Direction> directions, Map map)
         {
-            return directions.All(direction => map.GetAdjacentCell(cell, direction) == null 
-                || map.GetAdjacentCell(cell, direction).Terrain == TerrainType.Rock);
+            Cell adjacent;
+            return directions.All(direction => map.TryGetAdjacentCell(cell, direction, out adjacent)
+                || adjacent.Terrain == TerrainType.Rock);
         }
 
         public event MapChangedDelegate MapChanged;

@@ -60,6 +60,12 @@ namespace DunGen.Engine.Models
             return null;
         }
 
+        public bool TryGetAdjacentCell(Cell cell, Direction direction, out Cell adjacentCell)
+        {
+            adjacentCell = GetAdjacentCell(cell, direction);
+            return adjacentCell != null;
+        }
+
         public Cell GetCell(int row, int column)
         {
             return row >= 0 && column >= 0 && row < Height && column < Width ? mMap[row][column] : null;
