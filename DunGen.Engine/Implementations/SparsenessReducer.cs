@@ -10,8 +10,6 @@ namespace DunGen.Engine.Implementations
 {
     public class SparsenessReducer : IMapProcessor
     {
-        public event MapChangedDelegate MapChanged;
-
         public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var cellsToRemove = (int) (map.Width*map.Height*configuration.Sparseness);
@@ -34,12 +32,6 @@ namespace DunGen.Engine.Implementations
                     cellsToRemove--;
                     if (cellsToRemove == 0) break;
                 }
-
-                if (MapChanged != null)
-                {
-                    MapChanged(this, new MapChangedDelegateArgs(){CellsChanged = changedCells, Map = map});
-                }
-
                 //Repeat step #1 sparseness times
             }
         }

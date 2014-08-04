@@ -16,7 +16,6 @@ namespace DunGen.Engine.Implementations
             map.Width = configuration.Width*2 + 1;
             map.Height = configuration.Height*2 + 1;
             map.Init();
-            if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs(){Map = map, CellsChanged = map.AllCells});
 
             foreach (var oldCell in oldCells.Where(cell => cell.Terrain == TerrainType.Floor))
             {
@@ -31,12 +30,7 @@ namespace DunGen.Engine.Implementations
                     adjacentCell.Sides[kvp.Key.Opposite()] = SideType.Open;
                     cellsChanged.Add(adjacentCell);
                 }
-
-
-                if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { Map = map, CellsChanged = cellsChanged });
             }
         }
-
-        public event MapChangedDelegate MapChanged;
     }
 }

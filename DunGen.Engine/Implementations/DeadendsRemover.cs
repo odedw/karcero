@@ -11,8 +11,6 @@ namespace DunGen.Engine.Implementations
 {
     public class DeadendsRemover : IMapProcessor
     {
-        public event MapChangedDelegate MapChanged;
-
         public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1).ToList();
@@ -32,10 +30,6 @@ namespace DunGen.Engine.Implementations
                     connected = adjacentCell.Terrain == TerrainType.Floor;
                     adjacentCell.Terrain = TerrainType.Floor;
                     currentCell.Sides[direction.Value] = adjacentCell.Sides[direction.Value.Opposite()] = SideType.Open;
-                    if (MapChanged != null)
-                    {
-                        MapChanged(this, new MapChangedDelegateArgs(){Map = map, CellsChanged = new List<Cell>(){currentCell, adjacentCell}});
-                    }
                     previousCell = currentCell;
                     currentCell = adjacentCell;
                 }

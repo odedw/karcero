@@ -57,6 +57,7 @@
     <Compile Include="Implementations\SparsenessReducer.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\DungeonConfiguration.cs" />
+    <Compile Include="Contracts\ICell.cs" />
     <Compile Include="Models\Map.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,8 +9,6 @@ namespace DunGen.Engine.Implementations
 {
     public class MazeGenerator : IMapProcessor
     {
-        public event MapChangedDelegate MapChanged;
-
         public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             //Start with a rectangular grid, x units wide and y units tall. Mark each cell in the grid unvisited
@@ -50,11 +48,6 @@ namespace DunGen.Engine.Implementations
                 if (currentCell.Terrain == TerrainType.Floor && !changed) continue;
 
                 currentCell.Terrain = TerrainType.Floor;
-                if (MapChanged != null)
-                {
-                    MapChanged(this, new MapChangedDelegateArgs(){Map = map, CellsChanged = new Cell[]{currentCell, oldCell}});
-                }
-
                 //Repeat until all cells in the grid have been visited.
             }
         }

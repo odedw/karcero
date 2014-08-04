@@ -6,15 +6,5 @@ namespace DunGen.Engine.Contracts
     public interface IMapProcessor
     {
         void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer);
-
-        event MapChangedDelegate MapChanged;
-    }
-
-    public delegate void MapChangedDelegate(IMapProcessor sender, MapChangedDelegateArgs args);
-
-    public class MapChangedDelegateArgs
-    {
-        public Map Map { get; set; }
-        public IEnumerable<Cell> CellsChanged { get; set; }
     }
 }

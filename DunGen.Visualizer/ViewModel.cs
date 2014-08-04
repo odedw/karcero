@@ -76,7 +76,6 @@ namespace DunGen.Visualizer
 
         public ViewModel()
         {
-            //mGenerator.MapChanged += MapChangedHandler;
             Width = mConfiguration.Width;
 
             GenerateCommand = new RelayCommand(StartGeneration);

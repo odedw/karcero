@@ -35,8 +35,6 @@ namespace DunGen.Engine.Implementations
                                 nextCell.Sides[targetDirection.Opposite()] = targetCell.Sides[targetDirection] = SideType.Open;
                                 nextCell.Terrain = TerrainType.Floor;
 
-                                if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { CellsChanged = new[] { targetCell, nextCell }, Map = map });
-
                                 targetCell = nextCell;
                             } while (!room.IsCellInRoom(targetCell));
 
@@ -54,11 +52,8 @@ namespace DunGen.Engine.Implementations
                     if (cell.Sides.Any(pair => pair.Value != cell.Sides[pair.Key.Opposite()])) continue;
 
                     cell.Terrain = TerrainType.Door;
-                    if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs(){CellsChanged = new [] {cell}, Map = map});
                 }
             }
         }
-
-        public event MapChangedDelegate MapChanged;
     }
 }

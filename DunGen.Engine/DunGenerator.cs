@@ -11,7 +11,6 @@ namespace DunGen.Engine
     {
         private readonly IEnumerable<IMapProcessor> mMapProcessors;
 
-        public event MapChangedDelegate MapChanged;
         public DunGenerator()
         {
             mMapProcessors = new List<IMapProcessor>()
@@ -23,16 +22,6 @@ namespace DunGen.Engine
                 new RoomGenerator(),
                 new DoorGenerator()
             };
-            foreach (var mapProcessor in mMapProcessors)
-            {
-                mapProcessor.MapChanged += TriggerMapChanged;
-            }
-        }
-
-        private void TriggerMapChanged(IMapProcessor sender, MapChangedDelegateArgs args)
-        {
-            if (MapChanged != null)
-                MapChanged(sender, args);
         }
 
         public Map Generate(DungeonConfiguration config, int? seed = null)
@@ -42,7 +31,6 @@ namespace DunGen.Engine
             Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
             var map = new Map(config.Width, config.Height);
-            TriggerMapChanged(null, new MapChangedDelegateArgs(){Map = map,CellsChanged = map.AllCells});
             foreach (var mapProcessor in mMapProcessors)
             {
                 DateTime start = DateTime.Now;

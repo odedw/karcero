@@ -23,10 +23,6 @@ namespace DunGen.Engine.Implementations
         {
             for (var i = 0; i < configuration.RoomCount; i++)
             {
-                //Set the "best" score to infinity (or some arbitrarily huge number)
-                var bestScore = int.MaxValue;
-                Cell bestCell = null;
-
                 //Generate a room such that Wmin <= Rw <= Wmax and Hmin <= Rh <= Hmax. 
                 var size = randomizer.GetRandomRoomSize(configuration.MaxRoomWidth, configuration.MinRoomWidth,
                     configuration.MaxRoomHeight, configuration.MinRoomHeight);
@@ -99,7 +95,6 @@ namespace DunGen.Engine.Implementations
                     if (foundNonIsolatedCell) continue;
 
                     map.AddRoom(room);
-                    if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { Map = map, CellsChanged = map.GetRoomCells(room) });
                     break;
                 }             
             }
@@ -119,8 +114,6 @@ namespace DunGen.Engine.Implementations
                 }
 
             }
-            if (MapChanged != null) MapChanged(this, new MapChangedDelegateArgs() { Map = map, CellsChanged = cells });
-
         }
 
         private bool IsCellIsolatedOnSides(Cell cell, IEnumerable<Direction> directions, Map map)
@@ -130,6 +123,5 @@ namespace DunGen.Engine.Implementations
                 || adjacent.Terrain == TerrainType.Rock);
         }
 
-        public event MapChangedDelegate MapChanged;
     }
 }
