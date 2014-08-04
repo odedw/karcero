@@ -89,8 +89,8 @@ namespace DunGen.Visualizer
             var map = (Map)values[1];
             if (map == null) return Visibility.Hidden;
             var doorCanvas = parameter.ToString();
-            if (map.GetAdjacentCell(cell, Direction.West) != null &&
-                map.GetAdjacentCell(cell, Direction.West).Terrain != TerrainType.Rock)
+            Cell adjacent;
+            if (map.TryGetAdjacentCell(cell, Direction.West, out adjacent) && adjacent.Terrain != TerrainType.Rock)
                 return doorCanvas == "Horizontal" ? Visibility.Visible : Visibility.Hidden;
 
             return doorCanvas == "Vertical" ? Visibility.Visible : Visibility.Hidden;
@@ -199,8 +199,8 @@ namespace DunGen.Visualizer
 
         private bool ShouldConsiderRockCell(Cell cell, Direction direction, Map map)
         {
-            var adjacentCell = map.GetAdjacentCell(cell, direction);
-            return (adjacentCell != null && adjacentCell.Terrain == TerrainType.Rock &&
+            Cell adjacentCell;
+            return (map.TryGetAdjacentCell(cell, direction, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock &&
                     map.GetAllAdjacentCells(adjacentCell, true).Any(c => c.Terrain != TerrainType.Rock));
         }
         private Point ConstructLocationAccordingToDoorOrientation(Dictionary<Direction, SideType> sides)
