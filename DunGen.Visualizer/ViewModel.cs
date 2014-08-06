@@ -104,7 +104,7 @@ namespace DunGen.Visualizer
             mWorkerThread = new Thread(() =>
             {
                 //-173632285
-                var map = mGenerator.Generate(mConfiguration, 672869454);
+                var map = mGenerator.Generate(mConfiguration);
                 Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
                 {
                     Map = map;

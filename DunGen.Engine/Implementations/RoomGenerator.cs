@@ -119,7 +119,7 @@ namespace DunGen.Engine.Implementations
         private bool IsCellIsolatedOnSides(T cell, IEnumerable<Direction> directions, Map<T> map)
         {
             T adjacent;
-            return directions.All(direction => map.TryGetAdjacentCell(cell, direction, out adjacent)
+            return directions.All(direction => !map.TryGetAdjacentCell(cell, direction, out adjacent)
                 || adjacent.Terrain == TerrainType.Rock);
         }
 
