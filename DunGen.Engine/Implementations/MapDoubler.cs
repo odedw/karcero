@@ -8,9 +8,9 @@ using DunGen.Engine.Models;
 
 namespace DunGen.Engine.Implementations
 {
-    public class MapDoubler : IMapProcessor
+    public class MapDoubler<T> : IMapProcessor<T> where T : class, ICell, new()
     {
-        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var oldCells = map.AllCells.Select(cell => cell.Clone()).ToList();
             map.Width = configuration.Width*2 + 1;
@@ -22,7 +22,7 @@ namespace DunGen.Engine.Implementations
                 var newCell = map.GetCell(oldCell.Row*2 + 1, oldCell.Column*2 + 1);
                 newCell.Terrain = TerrainType.Floor;
                 newCell.Sides = oldCell.Sides;
-                var cellsChanged = new HashSet<Cell>(){newCell};
+                var cellsChanged = new HashSet<T>(){newCell};
                 foreach (var kvp in newCell.Sides.Where(pair => pair.Value == SideType.Open))
                 {
                     var adjacentCell = map.GetAdjacentCell(newCell, kvp.Key);

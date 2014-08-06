@@ -1,4 +1,5 @@
-﻿using DunGen.Engine.Models;
+﻿using System.Collections.Generic;
+using DunGen.Engine.Models;
 
 namespace DunGen.Engine.Contracts
 {
@@ -8,5 +9,10 @@ namespace DunGen.Engine.Contracts
         int Column { get; set; }
         TerrainType Terrain { get; set; }
 
+
+
+        Dictionary<Direction, SideType> Sides { get; set; }
+
+        ICell Clone();
     }
 }

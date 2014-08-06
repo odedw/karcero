@@ -16,24 +16,24 @@ namespace DunGen.Engine.Implementations
             mRandom = new Random(seed);
         }
 
-        public Cell GetRandomCell(Map map)
+        public T GetRandomCell<T>(Map<T> map) where T : class, ICell, new()
         {
             if (map.Height == 0 || map.Width == 0) return null;
             return map.GetCell(mRandom.Next(map.Height), mRandom.Next(map.Width));
         }
 
-        public T GetRandomEnumValue<T>(IEnumerable<T> excluded = null)
+        public TItem GetRandomEnumValue<TItem>(IEnumerable<TItem> excluded = null)
         {
-            excluded = excluded ?? new List<T>();
-            var values = Enum.GetValues(typeof(T)).OfType<T>().Except(excluded).ToList();
+            excluded = excluded ?? new List<TItem>();
+            var values = Enum.GetValues(typeof(TItem)).OfType<TItem>().Except(excluded).ToList();
             return values[mRandom.Next(values.Count)];
         }
 
-        public T GetRandomItem<T>(IEnumerable<T> collection, IEnumerable<T> excluded = null) 
+        public TItem GetRandomItem<TItem>(IEnumerable<TItem> collection, IEnumerable<TItem> excluded = null) 
         {
-            excluded = excluded ?? new List<T>();
+            excluded = excluded ?? new List<TItem>();
             var cleanCollection = collection.Except(excluded).ToList();
-            return !cleanCollection.Any() ? default(T) : cleanCollection[(mRandom.Next(cleanCollection.Count))];
+            return !cleanCollection.Any() ? default(TItem) : cleanCollection[(mRandom.Next(cleanCollection.Count))];
         }
 
         public double GetRandomDouble()

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DunGen.Engine.Implementations;
 using DunGen.Engine.Models;
 using NUnit.Framework;
@@ -34,7 +31,7 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_ValidInput_OnlyDeadEndCellsRemoved()
         {
-            var map = new Map(2, 2);
+            var map = new Map<Cell>(2, 2);
             foreach (var cell in map.AllCells)
             {
                 cell.Terrain = TerrainType.Floor;
@@ -43,7 +40,7 @@ namespace DunGen.Tests
             map.GetCell(1, 0).Sides[Direction.North] = map.GetCell(1, 1).Sides[Direction.North] = SideType.Open;
             map.GetCell(1, 0).Sides[Direction.East] = map.GetCell(1, 1).Sides[Direction.West] = SideType.Open;
 
-            var sparsenessReducer = new SparsenessReducer();
+            var sparsenessReducer = new SparsenessReducer<Cell>();
             sparsenessReducer.ProcessMap(map, new DungeonConfiguration(){Sparseness = 0.5, Height = 2, Width = 2}, mRandomizer);
 
             //Assert tile types
@@ -62,11 +59,11 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_ValidInput_SideTypesInAdjacentCellsMatch()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator();
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
-            var sparseness = new SparsenessReducer();
+            var sparseness = new SparsenessReducer<Cell>();
             sparseness.ProcessMap(map, new DungeonConfiguration() { Sparseness = 0.6 }, mRandomizer);
 
             for (int j = 0; j < SOME_HEIGHT; j++)

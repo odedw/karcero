@@ -17,11 +17,10 @@ namespace DunGen.Engine.Models
         public int Left { get { return Column; }}
         public int Right { get { return Column + Size.Width; }}
 
-        public bool IsCellInRoom(Cell cell)
+        public bool IsLocationInRoom(int row, int column)
         {
-            return cell != null && 
-                   Row <= cell.Row && Bottom > cell.Row &&
-                   Column <= cell.Column && Right > cell.Column;
+            return Row <= row && Bottom > row &&
+                   Column <= column && Right > column;
         }
     }
 }

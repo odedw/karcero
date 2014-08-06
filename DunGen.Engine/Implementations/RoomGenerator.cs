@@ -10,16 +10,16 @@ using DunGen.Engine.Models;
 
 namespace DunGen.Engine.Implementations
 {
-    public class RoomGenerator : IMapProcessor
+    public class RoomGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
     {
-        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             GenerateRooms(map, configuration, randomizer);
 
             FixMapIntegrity(map);
         }
 
-        private void GenerateRooms(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        private void GenerateRooms(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             for (var i = 0; i < configuration.RoomCount; i++)
             {
@@ -28,7 +28,7 @@ namespace DunGen.Engine.Implementations
                     configuration.MaxRoomHeight, configuration.MinRoomHeight);
 
                 var room = new Room() {Size = size};
-                var visitedCells = new List<Cell>();
+                var visitedCells = new List<T>();
 
                 //For each cell C in the dungeon, do the following:
                 while (visitedCells.Count < map.AllCells.Count())
@@ -43,10 +43,10 @@ namespace DunGen.Engine.Implementations
                     var cells = map.GetRoomCells(room).ToList();
 
                     //overlapping another room
-                    if (cells.Any(c => map.IsCellLocationInRoom(c.Row, c.Column))) continue;
+                    if (cells.Any(c => map.IsLocationInRoom(c.Row, c.Column))) continue;
 
                     //adjacent to another room
-                    if (map.GetCellsAdjacentToRoom(room).Any(c => map.IsCellLocationInRoom(c.Row, c.Column))) continue;
+                    if (map.GetCellsAdjacentToRoom(room).Any(c => map.IsLocationInRoom(c.Row, c.Column))) continue;
 
                     //corners are rock
                     if (map.GetCell(room.Row - 1, room.Column - 1) != null &&
@@ -62,7 +62,7 @@ namespace DunGen.Engine.Implementations
                     bool foundNonIsolatedCell = false;
                     for (var j = room.Column; j < room.Right; j++)
                     {
-                        Cell northCell, southCell;
+                        T northCell, southCell;
                         if ((map.TryGetAdjacentCell(map.GetCell(room.Row, j), Direction.North, out northCell) && 
                             northCell.Terrain == TerrainType.Floor && 
                             !IsCellIsolatedOnSides(northCell, new[] {Direction.East, Direction.West}, map)) ||
@@ -79,7 +79,7 @@ namespace DunGen.Engine.Implementations
 
                     for (var r = room.Row; r < room.Bottom; r++)
                     {
-                        Cell eastCell, westCell;
+                        T eastCell, westCell;
                         if ((map.TryGetAdjacentCell(map.GetCell(r, room.Right - 1), Direction.East, out eastCell) && 
                             eastCell.Terrain == TerrainType.Floor &&
                             !IsCellIsolatedOnSides(eastCell, new[] {Direction.North, Direction.South}, map)) ||
@@ -100,14 +100,14 @@ namespace DunGen.Engine.Implementations
             }
         }
 
-        private void FixMapIntegrity(Map map)
+        private void FixMapIntegrity(Map<T> map)
         {
             var cells = map.Rooms.SelectMany(map.GetRoomCells).Union(map.Rooms.SelectMany(room => map.GetCellsAdjacentToRoom(room))).ToArray();
             foreach (var cell in cells)
             {
                 foreach (var kvp in cell.Sides.ToList())
                 {
-                    Cell adjacent;
+                    T adjacent;
                     cell.Sides[kvp.Key] = !map.TryGetAdjacentCell(cell, kvp.Key, out adjacent) || adjacent.Terrain == TerrainType.Rock
                         ? SideType.Wall
                         : SideType.Open;
@@ -116,9 +116,9 @@ namespace DunGen.Engine.Implementations
             }
         }
 
-        private bool IsCellIsolatedOnSides(Cell cell, IEnumerable<Direction> directions, Map map)
+        private bool IsCellIsolatedOnSides(T cell, IEnumerable<Direction> directions, Map<T> map)
         {
-            Cell adjacent;
+            T adjacent;
             return directions.All(direction => map.TryGetAdjacentCell(cell, direction, out adjacent)
                 || adjacent.Terrain == TerrainType.Rock);
         }

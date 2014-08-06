@@ -16,7 +16,7 @@ namespace DunGen.Tests
         [Test]
         public void GetRandomCell_ValidInput_ReturnsCellFromMap()
         {
-            var map = new Map(5, 5);
+            var map = new Map<Cell>(5, 5);
 
             var randomizer = new Randomizer();
             var randomCell = randomizer.GetRandomCell(map);
@@ -27,7 +27,7 @@ namespace DunGen.Tests
         [Test]
         public void GetRandomCell_EmptyMap_ReturnsNull()
         {
-            var map = new Map(0, 0);
+            var map = new Map<Cell>(0, 0);
 
             var randomizer = new Randomizer();
             var randomCell = randomizer.GetRandomCell(map);

@@ -36,14 +36,14 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_RemoveAllDeadEnds_AllDeadEndsRemoved()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator();
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
-            var sparsenessReducer = new SparsenessReducer();
+            var sparsenessReducer = new SparsenessReducer<Cell>();
             sparsenessReducer.ProcessMap(map, mConfiguration, mRandomizer);
 
-            var remover = new DeadendsRemover();
+            var remover = new DeadendsRemover<Cell>();
             remover.ProcessMap(map, mConfiguration, mRandomizer);
 
             Assert.AreEqual(0, map.AllCells.Count(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1));

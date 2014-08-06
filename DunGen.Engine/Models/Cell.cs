@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using DunGen.Engine.Contracts;
 
 namespace DunGen.Engine.Models
 {
-    public class Cell
+    public class Cell : ICell
     {
         public int Row { get; set; }
 
@@ -35,7 +36,7 @@ namespace DunGen.Engine.Models
             }
         }
 
-        public Cell Clone()
+        public ICell Clone()
         {
             var clone = new Cell()
             {

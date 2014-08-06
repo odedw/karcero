@@ -9,9 +9,9 @@ using DunGen.Engine.Models;
 
 namespace DunGen.Engine.Implementations
 {
-    public class DeadendsRemover : IMapProcessor
+    public class DeadendsRemover<T> : IMapProcessor<T> where T : class, ICell, new()
     {
-        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1).ToList();
             foreach (var cell in deadends)
@@ -37,7 +37,7 @@ namespace DunGen.Engine.Implementations
         }
 
 
-        private Direction? GetRandomValidDirection(Map map, Cell currentCell, Cell previousCell, IRandomizer randomizer)
+        private Direction? GetRandomValidDirection(Map<T> map, T currentCell, T previousCell, IRandomizer randomizer)
         {
             var invalidDirections = new List<Direction>();
             var squareDirections = new List<Direction>();
@@ -70,9 +70,9 @@ namespace DunGen.Engine.Implementations
             return squareDirections.Any() ? randomizer.GetRandomItem(squareDirections) : (Direction?)null;
         }
 
-        private bool IsDirectionValid(Map map, Cell cell, Direction direction, Cell previousCell)
+        private bool IsDirectionValid(Map<T> map, T cell, Direction direction, T previousCell)
         {
-            Cell adjacent;
+            T adjacent;
             return map.TryGetAdjacentCell(cell, direction, out adjacent) && adjacent != previousCell;
         }       
     }

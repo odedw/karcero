@@ -36,11 +36,11 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_DoubleMap_MapIsDoubled()
         {
-            var map = new Map(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
-            var mazeGenerator = new MazeGenerator();
+            var map = new Map<Cell>(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
 
-            var doubler = new MapDoubler();
+            var doubler = new MapDoubler<Cell>();
             doubler.ProcessMap(map, mConfiguration, mRandomizer);
 
             Assert.AreEqual(SOME_EVEN_HEIGHT * 2 + 1, map.Height);
@@ -50,12 +50,12 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_DoubleMap_TerrainAndSidesSetProperly()
         {
-            var map = new Map(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
-            var mazeGenerator = new MazeGenerator();
+            var map = new Map<Cell>(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
             var oldCells = map.AllCells.Select(cell => cell.Clone()).ToList();
 
-            var doubler = new MapDoubler();
+            var doubler = new MapDoubler<Cell>();
             doubler.ProcessMap(map, mConfiguration, mRandomizer);
             
             foreach (var oldCell in oldCells.Where(cell => cell.Terrain == TerrainType.Floor))

@@ -18,9 +18,9 @@ namespace DunGen.Visualizer
         {
             Height = 16,
             Width = 16,
-            ChanceToRemoveDeadends = 0.5,
-            Sparseness = 0.7,
-            Randomness = 0.5,
+            ChanceToRemoveDeadends = 1,
+            Sparseness = 0,
+            Randomness = 1,
             MinRoomHeight = 3,
             MaxRoomHeight = 6,
             MinRoomWidth = 3,
@@ -42,9 +42,9 @@ namespace DunGen.Visualizer
             }
         }
 
-        private Map mMap;
+        private Map<Cell> mMap;
 
-        public Map Map
+        public Map<Cell> Map
         {
             get { return mMap; }
             set
@@ -72,7 +72,7 @@ namespace DunGen.Visualizer
 
         public ICommand GenerateCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
-        private readonly DunGenerator mGenerator = new DunGenerator();
+        private readonly DunGenerator<Cell> mGenerator = new DunGenerator<Cell>();
 
         public ViewModel()
         {
@@ -104,7 +104,7 @@ namespace DunGen.Visualizer
             mWorkerThread = new Thread(() =>
             {
                 //-173632285
-                var map = mGenerator.Generate(mConfiguration);
+                var map = mGenerator.Generate(mConfiguration, 672869454);
                 Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
                 {
                     Map = map;

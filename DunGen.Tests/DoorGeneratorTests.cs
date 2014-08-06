@@ -103,16 +103,16 @@ namespace DunGen.Tests
             }
         }
 
-        private Map GenerateMap()
+        private Map<Cell> GenerateMap()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            new MazeGenerator().ProcessMap(map, mConfiguration, mRandomizer);
-            new SparsenessReducer().ProcessMap(map, mConfiguration, mRandomizer);
-            new DeadendsRemover().ProcessMap(map, mConfiguration, mRandomizer);
-            new MapDoubler().ProcessMap(map, mConfiguration, mRandomizer);
-            new RoomGenerator().ProcessMap(map, mConfiguration, mRandomizer);
-            new DoorGenerator().ProcessMap(map, mConfiguration, mRandomizer);
+            new MazeGenerator<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new SparsenessReducer<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new DeadendsRemover<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new MapDoubler<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new RoomGenerator<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new DoorGenerator<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
 
             return map;
         }

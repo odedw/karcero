@@ -8,16 +8,16 @@ using DunGen.Engine.Models;
 
 namespace DunGen.Engine.Implementations
 {
-    public class DoorGenerator : IMapProcessor
+    public class DoorGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
     {
-        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             foreach (var room in map.Rooms)
             {
                 //need to tunnel to a nearby area
                 if (map.GetCellsAdjacentToRoom(room).All(cell => cell.Terrain == TerrainType.Rock))
                 {
-                    List<Cell> adjacentCells = null;
+                    List<T> adjacentCells = null;
                     var distance = 2;
                     do
                     {
@@ -36,7 +36,7 @@ namespace DunGen.Engine.Implementations
                                 nextCell.Terrain = TerrainType.Floor;
 
                                 targetCell = nextCell;
-                            } while (!room.IsCellInRoom(targetCell));
+                            } while (!room.IsLocationInRoom(targetCell.Row, targetCell.Column));
 
                             break;
                         }

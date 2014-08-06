@@ -7,13 +7,13 @@ using DunGen.Engine.Models;
 
 namespace DunGen.Engine.Implementations
 {
-    public class MazeGenerator : IMapProcessor
+    public class MazeGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
     {
-        public void ProcessMap(Map map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             //Start with a rectangular grid, x units wide and y units tall. Mark each cell in the grid unvisited
-            var visitedCells = new HashSet<Cell>();
-            var deadEndCells = new HashSet<Cell>();
+            var visitedCells = new HashSet<T>();
+            var deadEndCells = new HashSet<T>();
             Direction? previousDirection = null;
 
             //Pick a random cell in the grid and mark it visited. This is the current cell. 
@@ -52,7 +52,7 @@ namespace DunGen.Engine.Implementations
             }
         }
 
-        private Direction? GetRandomValidDirection(Map map, Cell cell, ICollection<Cell> visitedCells, double randomness, Direction? previousDirection, IRandomizer randomizer)
+        private Direction? GetRandomValidDirection(Map<T> map, T cell, ICollection<T> visitedCells, double randomness, Direction? previousDirection, IRandomizer randomizer)
         {
             //Randomness determines how often the direction of a corridor changes
             if (previousDirection.HasValue &&
@@ -74,11 +74,11 @@ namespace DunGen.Engine.Implementations
             return null;
         }
 
-        private bool IsDirectionValid(Map map, Cell cell, Direction direction, ICollection<Cell> visitedCells)
+        private bool IsDirectionValid(Map<T> map, T cell, Direction direction, ICollection<T> visitedCells)
         {
-            Cell adjacentCell;
+            T adjacentCell;
             return map.TryGetAdjacentCell(cell, direction, out adjacentCell) && !visitedCells.Contains(adjacentCell);
 
-        }   
+        }
     }
 }

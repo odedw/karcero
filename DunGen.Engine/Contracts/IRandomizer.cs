@@ -7,9 +7,9 @@ namespace DunGen.Engine.Contracts
     public interface IRandomizer
     {
         void SetSeed(int seed);
-        Cell GetRandomCell(Map map);
-        T GetRandomEnumValue<T>(IEnumerable<T> excluded = null);
-        T GetRandomItem<T>(IEnumerable<T> collection, IEnumerable<T> excluded = null);
+        T GetRandomCell<T>(Map<T> map) where T : class, ICell, new();
+        TItem GetRandomEnumValue<TItem>(IEnumerable<TItem> excluded = null);
+        TItem GetRandomItem<TItem>(IEnumerable<TItem> collection, IEnumerable<TItem> excluded = null);
         double GetRandomDouble();
         Size GetRandomRoomSize(int minWidth, int maxWidth, int minHeight, int maxHeight);
 

@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using DunGen.Engine.Contracts;
+
 namespace DunGen.Engine.Models
 {
-    public class Map
+    public class Map<T> where T : class, ICell, new()
     {
         public int Height { get; set; }
         public int Width { get; set; }
 
         public List<Room> Rooms { get; set; }
 
-        public IEnumerable<Cell> AllCells
+        public IEnumerable<T> AllCells
         {
             get
             {
@@ -20,7 +22,7 @@ namespace DunGen.Engine.Models
             }
         }
 
-        private Cell[][] mMap;
+        private T[][] mMap;
         public Map(int width, int height)
         {
             Height = height;
@@ -31,20 +33,20 @@ namespace DunGen.Engine.Models
         internal void Init()
         {
             
-            mMap = new Cell[Height][];
+            mMap = new T[Height][];
             for (int i = 0; i < Height; i++)
             {
-                mMap[i] = new Cell[Width];
+                mMap[i] = new T[Width];
                 for (int j = 0; j < Width; j++)
                 {
-                    mMap[i][j] = new Cell() {Row = i, Column = j};
+                    mMap[i][j] = new T() {Row = i, Column = j};
                 }
             }
 
             Rooms = new List<Room>();
         }
 
-        public Cell GetAdjacentCell(Cell cell, Direction direction, int distance = 1)
+        public T GetAdjacentCell(T cell, Direction direction, int distance = 1)
         {
             switch (direction)
             {
@@ -60,20 +62,20 @@ namespace DunGen.Engine.Models
             return null;
         }
 
-        public bool TryGetAdjacentCell(Cell cell, Direction direction, out Cell adjacentCell)
+        public bool TryGetAdjacentCell(T cell, Direction direction, out T adjacentCell)
         {
             adjacentCell = GetAdjacentCell(cell, direction);
             return adjacentCell != null;
         }
 
-        public Cell GetCell(int row, int column)
+        public T GetCell(int row, int column)
         {
             return row >= 0 && column >= 0 && row < Height && column < Width ? mMap[row][column] : null;
         }
 
-        public IEnumerable<Cell> GetRoomCells(Room room)
+        public IEnumerable<T> GetRoomCells(Room room)
         {
-            var cells = new List<Cell>();
+            var cells = new List<T>();
             for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
             {
                 for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
@@ -84,9 +86,9 @@ namespace DunGen.Engine.Models
             return cells;
         }
 
-        public IEnumerable<Cell> GetCellsAdjacentToRoom(Room room, int distance = 1)
+        public IEnumerable<T> GetCellsAdjacentToRoom(Room room, int distance = 1)
         {
-            var cells = new List<Cell>();
+            var cells = new List<T>();
             for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
             {
                 if (room.Row >= distance) cells.Add(GetAdjacentCell(GetCell(room.Row, j), Direction.North, distance));
@@ -103,9 +105,9 @@ namespace DunGen.Engine.Models
             return cells;
         } 
 
-        public bool IsCellLocationInRoom(int row, int column)
+        public bool IsLocationInRoom(int row, int column)
         {
-            return Rooms.Any(room => room.IsCellInRoom(GetCell(row, column)));
+            return Rooms.Any(room => room.IsLocationInRoom(row, column));
         }
 
         public void AddRoom(Room room)
@@ -117,15 +119,11 @@ namespace DunGen.Engine.Models
                 {
                     var currentCell = GetCell(i, j);
                     currentCell.Terrain = TerrainType.Floor;
-                    currentCell.Sides[Direction.North] = i == room.Row ? SideType.Wall : SideType.Open;
-                    currentCell.Sides[Direction.West] = j == room.Column ? SideType.Wall : SideType.Open;
-                    currentCell.Sides[Direction.East] = j == Math.Min(room.Right - 1, Width - 1) ? SideType.Wall : SideType.Open;
-                    currentCell.Sides[Direction.South] = i == Math.Min(room.Bottom - 1, Height - 1) ? SideType.Wall : SideType.Open;
                 }
             }
         }
 
-        public IEnumerable<Cell> GetAllAdjacentCells(Cell cell, bool includeDiagonalCells = false)
+        public IEnumerable<T> GetAllAdjacentCells(T cell, bool includeDiagonalCells = false)
         {
             var cells = Enum.GetValues(typeof (Direction)).OfType<Direction>()
                 .Where(direction => GetAdjacentCell(cell, direction) != null)

@@ -86,7 +86,7 @@ namespace DunGen.Visualizer
         {
             var cell = (Cell)values[0];
             if (cell.Terrain != TerrainType.Door) return Visibility.Hidden;
-            var map = (Map)values[1];
+            var map = (Map<Cell>)values[1];
             if (map == null) return Visibility.Hidden;
             var doorCanvas = parameter.ToString();
             Cell adjacent;
@@ -157,7 +157,7 @@ namespace DunGen.Visualizer
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var cell = values[0] as Cell;
-            var map = values[1] as Map;
+            var map = values[1] as Map<Cell>;
             var x = (double)(TILE_SIZE * 6);
             var y = (double)(TILE_SIZE * 5);
             if (cell != null && map != null)
@@ -182,7 +182,7 @@ namespace DunGen.Visualizer
             return new Rect(x, y, TILE_SIZE, TILE_SIZE);
         }
 
-        private Point ConstructWallLocationAccordingToAdjacentWalls(Cell cell, Map map)
+        private Point ConstructWallLocationAccordingToAdjacentWalls(Cell cell, Map<Cell> map)
         {
             if (map.GetAllAdjacentCells(cell, true).All(c => c.Terrain == TerrainType.Rock))
                 return new Point(TILE_SIZE*6, TILE_SIZE*5);
@@ -197,7 +197,7 @@ namespace DunGen.Visualizer
             return new Point(TILE_SIZE*6, TILE_SIZE*5);
         }
 
-        private bool ShouldConsiderRockCell(Cell cell, Direction direction, Map map)
+        private bool ShouldConsiderRockCell(Cell cell, Direction direction, Map<Cell> map)
         {
             Cell adjacentCell;
             return (map.TryGetAdjacentCell(cell, direction, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock &&

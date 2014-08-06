@@ -34,9 +34,9 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_ValidInput_AllCellsHasFloorTileType()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator();
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
 
             foreach (var cell in map.AllCells)
@@ -48,9 +48,9 @@ namespace DunGen.Tests
         [Test]
         public void ProcessMap_ValidInput_AllCellsAreReachable()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator();
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
 
             var visitedCells = new HashSet<Cell>();
@@ -76,9 +76,9 @@ namespace DunGen.Tests
          [Test]
         public void ProcessMap_ValidInput_SideTypesInAdjacentCellsMatch()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            var mazeGenerator = new MazeGenerator();
+            var mazeGenerator = new MazeGenerator<Cell>();
             mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, new Randomizer());
 
             for (int j = 0; j < SOME_HEIGHT; j++)

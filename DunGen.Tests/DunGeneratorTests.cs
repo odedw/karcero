@@ -17,7 +17,7 @@ namespace DunGen.Tests
         {
             var iterations = 10;
             var start = DateTime.Now;
-            var generator = new DunGenerator();
+            var generator = new DunGenerator<Cell>();
             for (int i = 0; i < iterations; i++)
             {
 

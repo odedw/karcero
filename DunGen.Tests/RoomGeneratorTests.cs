@@ -86,7 +86,7 @@ namespace DunGen.Tests
 
             foreach (var cell in map.Rooms.SelectMany(room => map.GetCellsAdjacentToRoom(room)))
             {
-                Assert.IsFalse(map.IsCellLocationInRoom(cell.Row, cell.Column));
+                Assert.IsFalse(map.IsLocationInRoom(cell.Row, cell.Column));
             }
 
         }
@@ -165,7 +165,7 @@ namespace DunGen.Tests
 
         }
 
-        private void AssertCellIsIsolatedOnSides(Cell cell, IEnumerable<Direction> directions, Map map)
+        private void AssertCellIsIsolatedOnSides(Cell cell, IEnumerable<Direction> directions, Map<Cell> map)
         {
             foreach (var direction in directions)
             {
@@ -173,15 +173,15 @@ namespace DunGen.Tests
             }
         }
 
-        private Map GenerateMap()
+        private Map<Cell> GenerateMap()
         {
-            var map = new Map(SOME_WIDTH, SOME_HEIGHT);
+            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
 
-            new MazeGenerator().ProcessMap(map, mConfiguration, mRandomizer);
-            new SparsenessReducer().ProcessMap(map, mConfiguration, mRandomizer);
-            new MapDoubler().ProcessMap(map, mConfiguration, mRandomizer);
+            new MazeGenerator<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new SparsenessReducer<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
+            new MapDoubler<Cell>().ProcessMap(map, mConfiguration, mRandomizer);
 
-            var roomGenerator = new RoomGenerator();
+            var roomGenerator = new RoomGenerator<Cell>();
             roomGenerator.ProcessMap(map, mConfiguration, mRandomizer);
             return map;
         }
