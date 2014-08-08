@@ -94,9 +94,18 @@ namespace Karcero.Engine.Implementations
 
                     if (foundNonIsolatedCell) continue;
 
-                    map.AddRoom(room);
+                    AddRoom(map, room);
                     break;
                 }             
+            }
+        }
+
+        public void AddRoom(Map<T> map, Room room)
+        {
+            map.AddRoom(room);
+            foreach (var cell in map.GetRoomCells(room))
+            {
+                cell.Terrain = TerrainType.Floor;
             }
         }
 

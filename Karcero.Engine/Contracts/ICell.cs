@@ -3,13 +3,9 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Contracts
 {
-    public interface ICell
+    public interface ICell : IBaseCell
     {
-        int Row { get; set; }
-        int Column { get; set; }
         TerrainType Terrain { get; set; }
-
-
 
         Dictionary<Direction, SideType> Sides { get; set; }
 

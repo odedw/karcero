@@ -7,7 +7,7 @@ using Karcero.Engine.Contracts;
 
 namespace Karcero.Engine.Models
 {
-    public class Map<T> where T : class, ICell, new()
+    public class Map<T> where T : class, IBaseCell, new()
     {
         public int Height { get; set; }
         public int Width { get; set; }
@@ -113,14 +113,6 @@ namespace Karcero.Engine.Models
         public void AddRoom(Room room)
         {
             Rooms.Add(room);
-            for (var j = room.Column; j < Math.Min(room.Right, Width); j++)
-            {
-                for (var i = room.Row; i < Math.Min(room.Bottom, Height); i++)
-                {
-                    var currentCell = GetCell(i, j);
-                    currentCell.Terrain = TerrainType.Floor;
-                }
-            }
         }
 
         public IEnumerable<T> GetAllAdjacentCells(T cell, bool includeDiagonalCells = false)
