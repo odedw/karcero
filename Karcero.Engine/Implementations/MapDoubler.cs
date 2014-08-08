@@ -8,29 +8,27 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
 {
-    public class MapDoubler<T> : IMapProcessor<T> where T : class, ICell, new()
+    internal class MapDoubler<TPost, TPre> : IMapConverter<TPost, TPre>
+        where TPre : class, IBinaryCell, new()
+        where TPost : class,  ICell, new()
     {
-        public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
+        public Map<TPost> ConvertMap(Map<TPre> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
-            var oldCells = map.AllCells.Select(cell => cell.Clone()).ToList();
-            map.Width = configuration.Width*2 + 1;
-            map.Height = configuration.Height*2 + 1;
-            map.Init();
+            var oldCells = map.AllCells.ToList();
+            var newMap = new Map<TPost>(configuration.Width * 2 + 1, configuration.Height * 2 + 1);
 
-            foreach (var oldCell in oldCells.Where(cell => cell.Terrain == TerrainType.Floor))
+            foreach (var oldCell in oldCells.Where(cell => cell.IsOpen))
             {
-                var newCell = map.GetCell(oldCell.Row*2 + 1, oldCell.Column*2 + 1);
+                var newCell = newMap.GetCell(oldCell.Row * 2 + 1, oldCell.Column * 2 + 1);
                 newCell.Terrain = TerrainType.Floor;
-                newCell.Sides = oldCell.Sides;
-                var cellsChanged = new HashSet<T>(){newCell};
-                foreach (var kvp in newCell.Sides.Where(pair => pair.Value == SideType.Open))
+                foreach (var kvp in oldCell.Sides.Where(pair => pair.Value))
                 {
-                    var adjacentCell = map.GetAdjacentCell(newCell, kvp.Key);
+                    var adjacentCell = newMap.GetAdjacentCell(newCell, kvp.Key);
                     adjacentCell.Terrain = TerrainType.Floor;
                     adjacentCell.Sides[kvp.Key.Opposite()] = SideType.Open;
-                    cellsChanged.Add(adjacentCell);
                 }
             }
+            return newMap;
         }
     }
 }

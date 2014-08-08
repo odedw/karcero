@@ -34,36 +34,30 @@ namespace Karcero.Tests
         [Test]
         public void ProcessMap_ValidInput_AllCellsHasFloorTileType()
         {
-            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
-
-            var mazeGenerator = new MazeGenerator<Cell>();
-            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
+            var map = GenerateMap();
 
             foreach (var cell in map.AllCells)
             {
-                Assert.AreEqual(TerrainType.Floor, cell.Terrain);
+                Assert.IsTrue(cell.IsOpen);
             }
         }
-  
+
         [Test]
         public void ProcessMap_ValidInput_AllCellsAreReachable()
         {
-            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
+            var map = GenerateMap();
 
-            var mazeGenerator = new MazeGenerator<Cell>();
-            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, mRandomizer);
-
-            var visitedCells = new HashSet<Cell>();
-            var discoveredCells = new HashSet<Cell>(){map.GetCell(0,0)};
+            var visitedCells = new HashSet<BinaryCell>();
+            var discoveredCells = new HashSet<BinaryCell>() { map.GetCell(0, 0) };
             while (discoveredCells.Any())
             {
                 foreach (var discoveredCell in discoveredCells)
                 {
                     visitedCells.Add(discoveredCell);
                 }
-                var newDiscoveredCells = new HashSet<Cell>();
+                var newDiscoveredCells = new HashSet<BinaryCell>();
                 foreach (var newDiscoveredCell in discoveredCells.SelectMany(cell => cell.Sides
-                    .Where(pair => pair.Value == SideType.Open && !visitedCells.Contains(map.GetAdjacentCell(cell, pair.Key)))
+                    .Where(pair => pair.Value && !visitedCells.Contains(map.GetAdjacentCell(cell, pair.Key)))
                     .Select(pair => map.GetAdjacentCell(cell, pair.Key))))
                 {
                     newDiscoveredCells.Add(newDiscoveredCell);
@@ -73,13 +67,10 @@ namespace Karcero.Tests
             Assert.AreEqual(map.AllCells.Count(), visitedCells.Count);
         }
 
-         [Test]
+        [Test]
         public void ProcessMap_ValidInput_SideTypesInAdjacentCellsMatch()
         {
-            var map = new Map<Cell>(SOME_WIDTH, SOME_HEIGHT);
-
-            var mazeGenerator = new MazeGenerator<Cell>();
-            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH }, new Randomizer());
+            var map = GenerateMap();
 
             for (int j = 0; j < SOME_HEIGHT; j++)
             {
@@ -93,6 +84,16 @@ namespace Karcero.Tests
                     }
                 }
             }
+        }
+
+        private static Map<BinaryCell> GenerateMap()
+        {
+            var map = new Map<BinaryCell>(SOME_WIDTH, SOME_HEIGHT);
+
+            var mazeGenerator = new MazeGenerator<BinaryCell>();
+            mazeGenerator.ProcessMap(map, new DungeonConfiguration() { Height = SOME_HEIGHT, Width = SOME_WIDTH },
+                new Randomizer());
+            return map;
         }
     }
 }

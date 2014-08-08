@@ -45,6 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IBaseCell.cs" />
+    <Compile Include="Contracts\IBinaryCell.cs" />
+    <Compile Include="Contracts\IMapConverter.cs" />
+    <Compile Include="Contracts\IMapPreProcessor.cs" />
     <Compile Include="Contracts\IMapProcessor.cs" />
     <Compile Include="Contracts\IRandomizer.cs" />
     <Compile Include="DungeonGenerator.cs" />
@@ -55,6 +59,7 @@
     <Compile Include="Implementations\Randomizer.cs" />
     <Compile Include="Implementations\RoomGenerator.cs" />
     <Compile Include="Implementations\SparsenessReducer.cs" />
+    <Compile Include="Models\BinaryCell.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\DungeonConfiguration.cs" />

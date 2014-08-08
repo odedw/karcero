@@ -9,16 +9,23 @@ namespace Karcero.Engine
 {
     public class DungeonGenerator<T> where T : class, ICell, new()
     {
-        private readonly IEnumerable<IMapProcessor<T>> mMapProcessors;
+        private readonly IEnumerable<IMapPreProcessor<BinaryCell>> mPreProcessors;
+        private readonly IEnumerable<IMapProcessor<T>> mPostProcessors;
+        private readonly IMapConverter<T, BinaryCell> mMapConverter;
 
         public DungeonGenerator()
         {
-            mMapProcessors = new List<IMapProcessor<T>>()
+            mPreProcessors = new List<IMapPreProcessor<BinaryCell>>()
             {
-                new MazeGenerator<T>(),
-                new SparsenessReducer<T>(),
-                new DeadendsRemover<T>(),
-                new MapDoubler<T>(),
+                new MazeGenerator<BinaryCell>(),
+                //new SparsenessReducer<IBinaryCell>(),
+                //new DeadendsRemover<IBinaryCell>()
+              };
+
+            mMapConverter = new MapDoubler<T, BinaryCell>();
+
+            mPostProcessors = new List<IMapProcessor<T>>()
+            {
                 new RoomGenerator<T>(),
                 new DoorGenerator<T>()
             };
@@ -30,14 +37,23 @@ namespace Karcero.Engine
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();
             Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
-            var map = new Map<T>(config.Width, config.Height);
-            foreach (var mapProcessor in mMapProcessors)
+            
+            var map = new Map<BinaryCell>(config.Width, config.Height);
+            foreach (var preProcessor in mPreProcessors)
             {
                 DateTime start = DateTime.Now;
-               mapProcessor.ProcessMap(map, config, randomizer);
+               preProcessor.ProcessMap(map, config, randomizer);
                 //Console.WriteLine("{0} took {1} ms", mapProcessor.GetType().Name, DateTime.Now.Subtract(start).TotalMilliseconds);
             }
-            return map;
+
+            var postMap = mMapConverter.ConvertMap(map, config, randomizer);
+
+            //foreach (var postProcessor in mPostProcessors)
+            //{
+            //    postProcessor.ProcessMap(postMap, config, randomizer);
+            //}
+
+            return postMap;
         }
     }
 }

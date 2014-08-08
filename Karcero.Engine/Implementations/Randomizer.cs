@@ -16,7 +16,7 @@ namespace Karcero.Engine.Implementations
             mRandom = new Random(seed);
         }
 
-        public T GetRandomCell<T>(Map<T> map) where T : class, ICell, new()
+        public T GetRandomCell<T>(Map<T> map) where T : class, IBaseCell, new()
         {
             if (map.Height == 0 || map.Width == 0) return null;
             return map.GetCell(mRandom.Next(map.Height), mRandom.Next(map.Width));

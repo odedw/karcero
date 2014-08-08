@@ -36,47 +36,45 @@ namespace Karcero.Tests
         [Test]
         public void ProcessMap_DoubleMap_MapIsDoubled()
         {
-            var map = new Map<Cell>(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
-            var mazeGenerator = new MazeGenerator<Cell>();
-            mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
+            var map = GenerateMap();
 
-            var doubler = new MapDoubler<Cell>();
-            doubler.ProcessMap(map, mConfiguration, mRandomizer);
+            var doubler = new MapDoubler<Cell,BinaryCell>();
+            var newMap = doubler.ConvertMap(map, mConfiguration, mRandomizer);
 
-            Assert.AreEqual(SOME_EVEN_HEIGHT * 2 + 1, map.Height);
-            Assert.AreEqual(SOME_EVEN_WIDTH * 2 + 1, map.Width);
+            Assert.AreEqual(SOME_EVEN_HEIGHT * 2 + 1, newMap.Height);
+            Assert.AreEqual(SOME_EVEN_WIDTH * 2 + 1, newMap.Width);
         }
-        
+      
         [Test]
         public void ProcessMap_DoubleMap_TerrainAndSidesSetProperly()
         {
-            var map = new Map<Cell>(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
-            var mazeGenerator = new MazeGenerator<Cell>();
-            mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
-            var oldCells = map.AllCells.Select(cell => cell.Clone()).ToList();
+            var map = GenerateMap();
+            var oldCells = map.AllCells.ToList();
 
-            var doubler = new MapDoubler<Cell>();
-            doubler.ProcessMap(map, mConfiguration, mRandomizer);
-            
-            foreach (var oldCell in oldCells.Where(cell => cell.Terrain == TerrainType.Floor))
+            var doubler = new MapDoubler<Cell, BinaryCell>();
+            var newMap = doubler.ConvertMap(map, mConfiguration, mRandomizer);
+          
+            foreach (var oldCell in oldCells.Where(cell => cell.IsOpen))
             {
                 //assert the cell in the new location
-                var newCell = map.GetCell(oldCell.Row*2 + 1, oldCell.Column*2 + 1);
+                var newCell = newMap.GetCell(oldCell.Row * 2 + 1, oldCell.Column * 2 + 1);
                 Assert.AreEqual(TerrainType.Floor, newCell.Terrain);
 
-                //assert the sides are kept
+                //Where the side is open there should be floor, where the side is closed there should be rock
                 foreach (var kvp in oldCell.Sides)
                 {
-                    Assert.AreEqual(kvp.Value, newCell.Sides[kvp.Key]);
-                }
-
-                //assert the sides where there's passage are set as floor
-                foreach (var passageDirection in oldCell.Sides.Where(pair => pair.Value == SideType.Open).Select(pair => pair.Key))
-                {
-                    Assert.AreEqual(TerrainType.Floor, map.GetAdjacentCell(newCell, passageDirection).Terrain);
+                    Assert.AreEqual(kvp.Value ? TerrainType.Floor : TerrainType.Rock, newMap.GetAdjacentCell(newCell, kvp.Key).Terrain);
                 }
             }
-            
+          
+        }
+
+        private Map<BinaryCell> GenerateMap()
+        {
+            var map = new Map<BinaryCell>(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
+            var mazeGenerator = new MazeGenerator<BinaryCell>();
+            mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
+            return map;
         }
     }
 }

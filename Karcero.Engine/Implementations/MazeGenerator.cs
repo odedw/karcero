@@ -7,7 +7,7 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
 {
-    public class MazeGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
+    internal class MazeGenerator<T> : IMapPreProcessor<T> where T : class, IBinaryCell, new()
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
@@ -18,7 +18,7 @@ namespace Karcero.Engine.Implementations
 
             //Pick a random cell in the grid and mark it visited. This is the current cell. 
             var currentCell = randomizer.GetRandomCell(map);
-            currentCell.Terrain = TerrainType.Floor;
+            currentCell.IsOpen = true;
             while (visitedCells.Count < map.Width*map.Height)
             {
                 var oldCell = currentCell;
@@ -34,9 +34,9 @@ namespace Karcero.Engine.Implementations
                 {
                     //Let's call the cell in the chosen direction C. Create a corridor between the 
                     //current cell and C, and then make C the current cell. Mark C visited.
-                    changed = currentCell.Sides[direction.Value] != SideType.Open;
+                    changed = !currentCell.Sides[direction.Value];
                     currentCell = map.GetAdjacentCell(currentCell, direction.Value);
-                    currentCell.Sides[direction.Value.Opposite()] = oldCell.Sides[direction.Value] = SideType.Open;
+                    currentCell.Sides[direction.Value.Opposite()] = oldCell.Sides[direction.Value] = true;
                     previousDirection = direction;
                 }
                 else
@@ -45,9 +45,9 @@ namespace Karcero.Engine.Implementations
                     deadEndCells.Add(currentCell);
                     currentCell = randomizer.GetRandomItem(visitedCells, deadEndCells);
                 }
-                if (currentCell.Terrain == TerrainType.Floor && !changed) continue;
+                if (currentCell.IsOpen && !changed) continue;
 
-                currentCell.Terrain = TerrainType.Floor;
+                currentCell.IsOpen = true;
                 //Repeat until all cells in the grid have been visited.
             }
         }

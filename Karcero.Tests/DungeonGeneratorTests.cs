@@ -15,10 +15,10 @@ namespace Karcero.Tests
         [Test]
         public void SpeedTest()
         {
-            var iterations = 10;
+            const int ITERATIONS = 10;
             var start = DateTime.Now;
             var generator = new DungeonGenerator<Cell>();
-            for (int i = 0; i < iterations; i++)
+            for (var i = 0; i < ITERATIONS; i++)
             {
 
                 generator.Generate(new DungeonConfiguration()
@@ -36,7 +36,7 @@ namespace Karcero.Tests
                  });
             }
 
-            var totalSecs = DateTime.Now.Subtract(start).TotalSeconds / iterations;
+            var totalSecs = DateTime.Now.Subtract(start).TotalSeconds / ITERATIONS;
             Console.WriteLine("Average time = {0} seconds", totalSecs);
         }
     }

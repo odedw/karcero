@@ -7,7 +7,7 @@ namespace Karcero.Engine.Contracts
     public interface IRandomizer
     {
         void SetSeed(int seed);
-        T GetRandomCell<T>(Map<T> map) where T : class, ICell, new();
+        T GetRandomCell<T>(Map<T> map) where T : class, IBaseCell, new();
         TItem GetRandomEnumValue<TItem>(IEnumerable<TItem> excluded = null);
         TItem GetRandomItem<TItem>(IEnumerable<TItem> collection, IEnumerable<TItem> excluded = null);
         double GetRandomDouble();
