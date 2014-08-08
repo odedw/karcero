@@ -9,17 +9,17 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
 {
-    public class DeadendsRemover<T> : IMapProcessor<T> where T : class, ICell, new()
+    internal class DeadendsRemover<T> : IMapPreProcessor<T> where T : class, IBinaryCell, new()
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
-            var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type == SideType.Open) == 1).ToList();
+            var deadends = map.AllCells.Where(cell => cell.Sides.Values.Count(type => type) == 1).ToList();
             foreach (var cell in deadends)
             {
                 if (randomizer.GetRandomDouble() > configuration.ChanceToRemoveDeadends) continue;
 
                 var currentCell = cell;
-                var previousCell = map.GetAdjacentCell(cell, cell.Sides.First(pair => pair.Value == SideType.Open).Key);
+                var previousCell = map.GetAdjacentCell(cell, cell.Sides.First(pair => pair.Value).Key);
                 var connected = false;
                 while (!connected)
                 {
@@ -27,9 +27,9 @@ namespace Karcero.Engine.Implementations
                     if (!direction.HasValue) break;
 
                     var adjacentCell = map.GetAdjacentCell(currentCell, direction.Value);
-                    connected = adjacentCell.Terrain == TerrainType.Floor;
-                    adjacentCell.Terrain = TerrainType.Floor;
-                    currentCell.Sides[direction.Value] = adjacentCell.Sides[direction.Value.Opposite()] = SideType.Open;
+                    connected = adjacentCell.IsOpen;
+                    adjacentCell.IsOpen = true;
+                    currentCell.Sides[direction.Value] = adjacentCell.Sides[direction.Value.Opposite()] = true;
                     previousCell = currentCell;
                     currentCell = adjacentCell;
                 }
@@ -49,11 +49,11 @@ namespace Karcero.Engine.Implementations
                     var nextCell = map.GetAdjacentCell(currentCell, direction);
 
                     //Try to avoid creating squares, but do it if there's no other way
-                    if (nextCell.Terrain == TerrainType.Floor &&
-                        ((nextCell.Sides[direction.Rotate()] == SideType.Open &&
-                          currentCell.Sides[direction.Rotate()] == SideType.Open) ||
-                         (nextCell.Sides[direction.Rotate(false)] == SideType.Open &&
-                          currentCell.Sides[direction.Rotate(false)] == SideType.Open)))
+                    if (nextCell.IsOpen &&
+                        ((nextCell.Sides[direction.Rotate()] &&
+                          currentCell.Sides[direction.Rotate()]) ||
+                         (nextCell.Sides[direction.Rotate(false)] &&
+                          currentCell.Sides[direction.Rotate(false)])))
                     {
                         squareDirections.Add(direction);
                     }

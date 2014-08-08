@@ -18,8 +18,8 @@ namespace Karcero.Engine
             mPreProcessors = new List<IMapPreProcessor<BinaryCell>>()
             {
                 new MazeGenerator<BinaryCell>(),
-                //new SparsenessReducer<IBinaryCell>(),
-                //new DeadendsRemover<IBinaryCell>()
+                new SparsenessReducer<BinaryCell>(),
+                new DeadendsRemover<BinaryCell>()
               };
 
             mMapConverter = new MapDoubler<T, BinaryCell>();

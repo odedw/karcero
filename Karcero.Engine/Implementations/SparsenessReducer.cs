@@ -8,7 +8,7 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
 {
-    public class SparsenessReducer<T> : IMapProcessor<T> where T : class, ICell, new()
+    internal class SparsenessReducer<T> : IMapPreProcessor<T> where T : class, IBinaryCell, new()
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
@@ -19,14 +19,14 @@ namespace Karcero.Engine.Implementations
                 //"erase" that cell by removing the corridor
                 var changedCells = new HashSet<T>();
                 
-                var deadEndCells = map.AllCells.Where(cell => cell.Sides.Values.Count(side => side == SideType.Open) == 1).ToList();
+                var deadEndCells = map.AllCells.Where(cell => cell.Sides.Values.Count(side => side) == 1).ToList();
                 foreach (var deadEndCell in deadEndCells)
                 {
-                    deadEndCell.Terrain = TerrainType.Rock;
-                    var openDirection = deadEndCell.Sides.First(pair => pair.Value == SideType.Open).Key;
-                    deadEndCell.Sides[openDirection] = SideType.Wall;
+                    deadEndCell.IsOpen = false;
+                    var openDirection = deadEndCell.Sides.First(pair => pair.Value).Key;
+                    deadEndCell.Sides[openDirection] = false;
                     var oppositeCell = map.GetAdjacentCell(deadEndCell, openDirection);
-                    oppositeCell.Sides[openDirection.Opposite()] = SideType.Wall;
+                    oppositeCell.Sides[openDirection.Opposite()] = false;
                     changedCells.Add(deadEndCell);
                     changedCells.Add(oppositeCell);
                     cellsToRemove--;
