@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Karcero.Engine.Contracts;
+using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
@@ -41,7 +42,7 @@ namespace Karcero.Engine.Implementations
         {
             var invalidDirections = new List<Direction>();
             var squareDirections = new List<Direction>();
-            while (invalidDirections.Count + squareDirections.Count < Enum.GetValues(typeof(Direction)).Length)
+            while (invalidDirections.Count + squareDirections.Count < GetAll.ValuesOf<Direction>().Count())
             {
                 var direction = randomizer.GetRandomEnumValue(invalidDirections.Union(squareDirections));
                 if (IsDirectionValid(map, currentCell, direction, previousCell))

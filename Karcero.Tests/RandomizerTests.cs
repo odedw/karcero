@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
 using Karcero.Engine.Implementations;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace Karcero.Tests
         public void GetRandomEnumValue_InputWithExcludeList_ReturnsValueNotInExcludeList()
         {
             var randomizer = new Randomizer();
-            var value = randomizer.GetRandomEnumValue<SomeEnum>(new List<SomeEnum>(Enum.GetValues(typeof(SomeEnum)).OfType<SomeEnum>().Skip(1)));
+            var value = randomizer.GetRandomEnumValue<SomeEnum>(new List<SomeEnum>(GetAll.ValuesOf<SomeEnum>().Skip(1)));
 
             Assert.AreEqual(SomeEnum.Value1, value);
         }

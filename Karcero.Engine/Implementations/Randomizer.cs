@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Karcero.Engine.Contracts;
+using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
@@ -25,7 +26,7 @@ namespace Karcero.Engine.Implementations
         public TItem GetRandomEnumValue<TItem>(IEnumerable<TItem> excluded = null)
         {
             excluded = excluded ?? new List<TItem>();
-            var values = Enum.GetValues(typeof(TItem)).OfType<TItem>().Except(excluded).ToList();
+            var values = GetAll.ValuesOf<TItem>().Except(excluded).ToList();
             return values[mRandom.Next(values.Count)];
         }
 

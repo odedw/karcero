@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Karcero.Engine.Contracts;
+using Karcero.Engine.Helpers;
 
 namespace Karcero.Engine.Models
 {
@@ -17,7 +18,7 @@ namespace Karcero.Engine.Models
         public BinaryCell()
         {
             Sides = new Dictionary<Direction, bool>();
-            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            foreach (Direction direction in GetAll.ValuesOf<Direction>())
             {
                 Sides[direction] = false;
             }

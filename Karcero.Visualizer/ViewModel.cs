@@ -104,7 +104,7 @@ namespace Karcero.Visualizer
             mWorkerThread = new Thread(() =>
             {
                 //-173632285
-                var map = mGenerator.Generate(mConfiguration);
+                var map = mGenerator.Generate(mConfiguration, -1010711734);
                 Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
                 {
                     Map = map;

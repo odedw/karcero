@@ -25,7 +25,6 @@ namespace Karcero.Engine.Implementations
                 {
                     var adjacentCell = newMap.GetAdjacentCell(newCell, kvp.Key);
                     adjacentCell.Terrain = TerrainType.Floor;
-                    adjacentCell.Sides[kvp.Key.Opposite()] = SideType.Open;
                 }
             }
             return newMap;

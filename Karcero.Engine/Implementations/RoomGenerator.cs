@@ -10,13 +10,11 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
 {
-    public class RoomGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
+    internal class RoomGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             GenerateRooms(map, configuration, randomizer);
-
-            FixMapIntegrity(map);
         }
 
         private void GenerateRooms(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
@@ -106,22 +104,6 @@ namespace Karcero.Engine.Implementations
             foreach (var cell in map.GetRoomCells(room))
             {
                 cell.Terrain = TerrainType.Floor;
-            }
-        }
-
-        private void FixMapIntegrity(Map<T> map)
-        {
-            var cells = map.Rooms.SelectMany(map.GetRoomCells).Union(map.Rooms.SelectMany(room => map.GetCellsAdjacentToRoom(room))).ToArray();
-            foreach (var cell in cells)
-            {
-                foreach (var kvp in cell.Sides.ToList())
-                {
-                    T adjacent;
-                    cell.Sides[kvp.Key] = !map.TryGetAdjacentCell(cell, kvp.Key, out adjacent) || adjacent.Terrain == TerrainType.Rock
-                        ? SideType.Wall
-                        : SideType.Open;
-                }
-
             }
         }
 

@@ -48,10 +48,10 @@ namespace Karcero.Engine
 
             var postMap = mMapConverter.ConvertMap(map, config, randomizer);
 
-            //foreach (var postProcessor in mPostProcessors)
-            //{
-            //    postProcessor.ProcessMap(postMap, config, randomizer);
-            //}
+            foreach (var postProcessor in mPostProcessors)
+            {
+                postProcessor.ProcessMap(postMap, config, randomizer);
+            }
 
             return postMap;
         }

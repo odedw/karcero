@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Karcero.Engine.Contracts;
+using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
@@ -64,7 +66,7 @@ namespace Karcero.Engine.Implementations
             }
 
             var invalidDirections = new List<Direction>();
-            while (invalidDirections.Count < Enum.GetValues(typeof (Direction)).Length)
+            while (invalidDirections.Count < GetAll.ValuesOf<Direction>().Count())
             {
                 var direction = randomizer.GetRandomEnumValue(invalidDirections);
                 if (IsDirectionValid(map, cell, direction, visitedCells))

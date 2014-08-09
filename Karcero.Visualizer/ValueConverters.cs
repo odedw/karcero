@@ -112,45 +112,45 @@ namespace Karcero.Visualizer
         private const short SOUTH_EAST = 32;
         private const short NORTH_WEST = 64;
         private const short SOUTH_WEST = 128;
-        private readonly Dictionary<short, Point> mFloorLocationByWalls = new Dictionary<short, Point>();
-        private readonly Dictionary<short, Point> mWallLocationByAdjacentWallsCells = new Dictionary<short, Point>();
+        private readonly Dictionary<short, Point> mFloorLocationByAdjacentRockCells = new Dictionary<short, Point>();
+        private readonly Dictionary<short, Point> mWallLocationByAdjacentRockCells = new Dictionary<short, Point>();
         private const int TILE_SIZE = 16;
 
         public CellToSpriteRect()
         {
-            mFloorLocationByWalls[NORTH | WEST] = new Point(0, 0);
-            mFloorLocationByWalls[WEST] = new Point(0, TILE_SIZE);
-            mFloorLocationByWalls[SOUTH | WEST] = new Point(0, TILE_SIZE * 2);
-            mFloorLocationByWalls[NORTH] = new Point(TILE_SIZE,0);
-            mFloorLocationByWalls[0] = new Point(TILE_SIZE, TILE_SIZE);
-            mFloorLocationByWalls[SOUTH] = new Point(TILE_SIZE, TILE_SIZE*2);
-            mFloorLocationByWalls[NORTH | EAST] = new Point(TILE_SIZE*2,0);
-            mFloorLocationByWalls[EAST] = new Point(TILE_SIZE * 2, TILE_SIZE);
-            mFloorLocationByWalls[SOUTH | EAST] = new Point(TILE_SIZE * 2, TILE_SIZE*2);
-            mFloorLocationByWalls[NORTH | WEST | EAST] = new Point(TILE_SIZE*3,0);
-            mFloorLocationByWalls[EAST | WEST] = new Point(TILE_SIZE * 3, TILE_SIZE);
-            mFloorLocationByWalls[SOUTH | WEST | EAST] = new Point(TILE_SIZE * 3, TILE_SIZE*2);
-            mFloorLocationByWalls[NORTH | WEST | SOUTH | EAST] = new Point(TILE_SIZE*5,0);
-            mFloorLocationByWalls[NORTH | WEST | SOUTH] = new Point(TILE_SIZE * 4, TILE_SIZE);
-            mFloorLocationByWalls[NORTH | SOUTH] = new Point(TILE_SIZE * 5, TILE_SIZE);
-            mFloorLocationByWalls[NORTH | EAST | SOUTH] = new Point(TILE_SIZE * 6, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[NORTH | WEST] = new Point(0, 0);
+            mFloorLocationByAdjacentRockCells[WEST] = new Point(0, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[SOUTH | WEST] = new Point(0, TILE_SIZE * 2);
+            mFloorLocationByAdjacentRockCells[NORTH] = new Point(TILE_SIZE,0);
+            mFloorLocationByAdjacentRockCells[0] = new Point(TILE_SIZE, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[SOUTH] = new Point(TILE_SIZE, TILE_SIZE*2);
+            mFloorLocationByAdjacentRockCells[NORTH | EAST] = new Point(TILE_SIZE*2,0);
+            mFloorLocationByAdjacentRockCells[EAST] = new Point(TILE_SIZE * 2, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[SOUTH | EAST] = new Point(TILE_SIZE * 2, TILE_SIZE*2);
+            mFloorLocationByAdjacentRockCells[NORTH | WEST | EAST] = new Point(TILE_SIZE*3,0);
+            mFloorLocationByAdjacentRockCells[EAST | WEST] = new Point(TILE_SIZE * 3, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[SOUTH | WEST | EAST] = new Point(TILE_SIZE * 3, TILE_SIZE*2);
+            mFloorLocationByAdjacentRockCells[NORTH | WEST | SOUTH | EAST] = new Point(TILE_SIZE*5,0);
+            mFloorLocationByAdjacentRockCells[NORTH | WEST | SOUTH] = new Point(TILE_SIZE * 4, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[NORTH | SOUTH] = new Point(TILE_SIZE * 5, TILE_SIZE);
+            mFloorLocationByAdjacentRockCells[NORTH | EAST | SOUTH] = new Point(TILE_SIZE * 6, TILE_SIZE);
 
 
-            mWallLocationByAdjacentWallsCells[EAST | SOUTH] = new Point(0, TILE_SIZE * 3);
-            mWallLocationByAdjacentWallsCells[NORTH | SOUTH] = new Point(0, TILE_SIZE * 4);
-            mWallLocationByAdjacentWallsCells[SOUTH] = new Point(0, TILE_SIZE * 4);
-            mWallLocationByAdjacentWallsCells[NORTH] = new Point(0, TILE_SIZE * 4);
-            mWallLocationByAdjacentWallsCells[NORTH | EAST] = new Point(0, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallsCells[WEST | EAST] = new Point(TILE_SIZE, TILE_SIZE * 3);
-            mWallLocationByAdjacentWallsCells[EAST] = new Point(TILE_SIZE, TILE_SIZE * 3);
-            mWallLocationByAdjacentWallsCells[WEST] = new Point(TILE_SIZE, TILE_SIZE * 3);
-            mWallLocationByAdjacentWallsCells[WEST | SOUTH] = new Point(TILE_SIZE*2, TILE_SIZE * 3);
-            mWallLocationByAdjacentWallsCells[WEST | NORTH] = new Point(TILE_SIZE*2, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallsCells[EAST | NORTH | SOUTH] = new Point(TILE_SIZE*3, TILE_SIZE * 4);
-            mWallLocationByAdjacentWallsCells[WEST | EAST | SOUTH] = new Point(TILE_SIZE*4, TILE_SIZE * 3);
-            mWallLocationByAdjacentWallsCells[NORTH | EAST | SOUTH | WEST] = new Point(TILE_SIZE*4, TILE_SIZE * 4);
-            mWallLocationByAdjacentWallsCells[EAST | NORTH | WEST] = new Point(TILE_SIZE*4, TILE_SIZE * 5);
-            mWallLocationByAdjacentWallsCells[SOUTH | NORTH | WEST] = new Point(TILE_SIZE*5, TILE_SIZE * 4);
+            mWallLocationByAdjacentRockCells[EAST | SOUTH] = new Point(0, TILE_SIZE * 3);
+            mWallLocationByAdjacentRockCells[NORTH | SOUTH] = new Point(0, TILE_SIZE * 4);
+            mWallLocationByAdjacentRockCells[SOUTH] = new Point(0, TILE_SIZE * 4);
+            mWallLocationByAdjacentRockCells[NORTH] = new Point(0, TILE_SIZE * 4);
+            mWallLocationByAdjacentRockCells[NORTH | EAST] = new Point(0, TILE_SIZE * 5);
+            mWallLocationByAdjacentRockCells[WEST | EAST] = new Point(TILE_SIZE, TILE_SIZE * 3);
+            mWallLocationByAdjacentRockCells[EAST] = new Point(TILE_SIZE, TILE_SIZE * 3);
+            mWallLocationByAdjacentRockCells[WEST] = new Point(TILE_SIZE, TILE_SIZE * 3);
+            mWallLocationByAdjacentRockCells[WEST | SOUTH] = new Point(TILE_SIZE*2, TILE_SIZE * 3);
+            mWallLocationByAdjacentRockCells[WEST | NORTH] = new Point(TILE_SIZE*2, TILE_SIZE * 5);
+            mWallLocationByAdjacentRockCells[EAST | NORTH | SOUTH] = new Point(TILE_SIZE*3, TILE_SIZE * 4);
+            mWallLocationByAdjacentRockCells[WEST | EAST | SOUTH] = new Point(TILE_SIZE*4, TILE_SIZE * 3);
+            mWallLocationByAdjacentRockCells[NORTH | EAST | SOUTH | WEST] = new Point(TILE_SIZE*4, TILE_SIZE * 4);
+            mWallLocationByAdjacentRockCells[EAST | NORTH | WEST] = new Point(TILE_SIZE*4, TILE_SIZE * 5);
+            mWallLocationByAdjacentRockCells[SOUTH | NORTH | WEST] = new Point(TILE_SIZE*5, TILE_SIZE * 4);
 
         }
 
@@ -169,12 +169,12 @@ namespace Karcero.Visualizer
                         y = wallLocation.Y;
                         break;
                     case TerrainType.Floor:
-                        var location = ConstructFloorLocationAccordingToWalls(cell.Sides);
+                        var location = ConstructFloorLocationAccordingToWalls(cell, map);
                         x = location.X;
                         y = location.Y;
                         break;
                     case TerrainType.Door:
-                        var doorLocation = ConstructLocationAccordingToDoorOrientation(cell.Sides);
+                        var doorLocation = ConstructLocationAccordingToDoorOrientation(cell, map);
                         x = doorLocation.X;
                         y = doorLocation.Y;
                         break;
@@ -193,7 +193,7 @@ namespace Karcero.Visualizer
             if (ShouldConsiderRockCell(cell, Direction.West, map)) wallsFlag |= WEST;
             if (ShouldConsiderRockCell(cell, Direction.East, map)) wallsFlag |= EAST;
 
-            if (mWallLocationByAdjacentWallsCells.ContainsKey(wallsFlag)) return mWallLocationByAdjacentWallsCells[wallsFlag];
+            if (mWallLocationByAdjacentRockCells.ContainsKey(wallsFlag)) return mWallLocationByAdjacentRockCells[wallsFlag];
             return new Point(TILE_SIZE*6, TILE_SIZE*5);
         }
 
@@ -203,20 +203,23 @@ namespace Karcero.Visualizer
             return (map.TryGetAdjacentCell(cell, direction, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock &&
                     map.GetAllAdjacentCells(adjacentCell, true).Any(c => c.Terrain != TerrainType.Rock));
         }
-        private Point ConstructLocationAccordingToDoorOrientation(Dictionary<Direction, SideType> sides)
+        private Point ConstructLocationAccordingToDoorOrientation(Cell cell, Map<Cell> map )
         {
-            if (sides[Direction.East] == SideType.Open) return new Point(TILE_SIZE * 6,0);
+            Cell adjacentCell;
+            if (map.TryGetAdjacentCell(cell, Direction.East, out adjacentCell) && adjacentCell.Terrain == TerrainType.Floor) 
+                return new Point(TILE_SIZE * 6,0);
             return new Point(TILE_SIZE * 4,0);
         }
 
-        private Point ConstructFloorLocationAccordingToWalls(Dictionary<Direction, SideType> sides)
+        private Point ConstructFloorLocationAccordingToWalls(Cell cell, Map<Cell> map)
         {
             short wallsFlag = 0;
-            if (sides[Direction.North] == SideType.Wall) wallsFlag |= NORTH;
-            if (sides[Direction.West] == SideType.Wall) wallsFlag |= WEST;
-            if (sides[Direction.South] == SideType.Wall) wallsFlag |= SOUTH;
-            if (sides[Direction.East] == SideType.Wall) wallsFlag |= EAST;
-            return mFloorLocationByWalls[wallsFlag];
+            Cell adjacentCell = null;
+            if (map.TryGetAdjacentCell(cell, Direction.North, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock) wallsFlag |= NORTH;
+            if (map.TryGetAdjacentCell(cell, Direction.West, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock) wallsFlag |= WEST;
+            if (map.TryGetAdjacentCell(cell, Direction.South, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock) wallsFlag |= SOUTH;
+            if (map.TryGetAdjacentCell(cell, Direction.East, out adjacentCell) && adjacentCell.Terrain == TerrainType.Rock) wallsFlag |= EAST;
+            return mFloorLocationByAdjacentRockCells[wallsFlag];
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

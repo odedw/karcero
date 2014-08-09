@@ -8,7 +8,7 @@ using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Implementations
 {
-    public class DoorGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
+    internal class DoorGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
@@ -32,7 +32,6 @@ namespace Karcero.Engine.Implementations
                             do
                             {
                                 var nextCell = map.GetAdjacentCell(targetCell, targetDirection);
-                                nextCell.Sides[targetDirection.Opposite()] = targetCell.Sides[targetDirection] = SideType.Open;
                                 nextCell.Terrain = TerrainType.Floor;
 
                                 targetCell = nextCell;
@@ -46,10 +45,11 @@ namespace Karcero.Engine.Implementations
 
                 //place doors
                 foreach (var cell in map.GetCellsAdjacentToRoom(room)
-                    .Where(cell => cell.Terrain == TerrainType.Floor && map.GetAllAdjacentCells(cell).All(c => c.Terrain != TerrainType.Door)))
+                    .Where(cell => cell.Terrain == TerrainType.Floor && 
+                        map.GetAllAdjacentCells(cell).All(c => c.Terrain != TerrainType.Door)))
                 {
                     //don't place a door if it leads to nowhere
-                    if (cell.Sides.Any(pair => pair.Value != cell.Sides[pair.Key.Opposite()])) continue;
+                    if (map.GetAllAdjacentCells(cell).Count(c => c.Terrain == TerrainType.Floor) == 1) continue;
 
                     cell.Terrain = TerrainType.Door;
                 }

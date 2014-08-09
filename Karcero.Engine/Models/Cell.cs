@@ -13,15 +13,8 @@ namespace Karcero.Engine.Models
 
         public TerrainType Terrain { get; set; }
 
-        public Dictionary<Direction,SideType> Sides { get; set; }
-
         public Cell()
         {
-            Sides = new Dictionary<Direction, SideType>();
-            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
-            {
-                Sides[direction] = SideType.Wall;
-            }
         }
 
         public String Description
@@ -29,26 +22,8 @@ namespace Karcero.Engine.Models
             get
             {
                 return string.Format("Location: {0},{1}{2}", Row, Column, Environment.NewLine) +
-                       string.Format("Terrain: {0}{1}{1}", Terrain, Environment.NewLine) +
-                       string.Format("       {0}      {1}", Sides[Direction.North], Environment.NewLine) +
-                       string.Format("{0}       {1}{2}", Sides[Direction.West], Sides[Direction.East], Environment.NewLine) +
-                       string.Format("       {0}      {1}", Sides[Direction.South], Environment.NewLine);
+                       string.Format("Terrain: {0}{1}{1}", Terrain, Environment.NewLine);
             }
-        }
-
-        public ICell Clone()
-        {
-            var clone = new Cell()
-            {
-                Column = Column,
-                Row = Row,
-                Terrain = Terrain
-            };
-            foreach (var kvp in Sides)
-            {
-                clone.Sides[kvp.Key] = kvp.Value;
-            }
-            return clone;
         }
     }
 
@@ -65,6 +40,7 @@ namespace Karcero.Engine.Models
         East,
         South,
         West
+
     }
 
     public static class Extensions

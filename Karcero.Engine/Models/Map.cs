@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using Karcero.Engine.Contracts;
+using Karcero.Engine.Helpers;
 
 namespace Karcero.Engine.Models
 {
@@ -117,7 +118,7 @@ namespace Karcero.Engine.Models
 
         public IEnumerable<T> GetAllAdjacentCells(T cell, bool includeDiagonalCells = false)
         {
-            var cells = Enum.GetValues(typeof (Direction)).OfType<Direction>()
+            var cells = GetAll.ValuesOf<Direction>()
                 .Where(direction => GetAdjacentCell(cell, direction) != null)
                 .Select(direction => GetAdjacentCell(cell, direction)).ToList();
 
@@ -129,6 +130,12 @@ namespace Karcero.Engine.Models
                 if (GetCell(cell.Row + 1, cell.Column + 1) != null) cells.Add(GetCell(cell.Row + 1, cell.Column + 1));
             }
             return cells;
+        }
+
+        public Dictionary<Direction, T> GetAllAdjacentCellsByDirection(T cell)
+        {
+            return GetAll.ValuesOf<Direction>()
+                .ToDictionary(direction => direction, direction => GetAdjacentCell(cell, direction));
         }
     }
 }
