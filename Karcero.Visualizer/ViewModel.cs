@@ -101,10 +101,9 @@ namespace Karcero.Visualizer
             Cells.Clear();
 
             IsRunning = true;
-            mWorkerThread = new Thread(() =>
+            mGenerator.BeginGenerate(map =>
             {
-                var map = mGenerator.Generate(mConfiguration);
-                Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(delegate()
+                Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() =>
                 {
                     Map = map;
                     if (Cells.Count == 0)
@@ -119,9 +118,10 @@ namespace Karcero.Visualizer
                     }
                     Width = map.Width;
                 }));
-                IsRunning = false;
-            }) { IsBackground = true };
-            mWorkerThread.Start();
+                IsRunning = false;    
+            }, mConfiguration);
+            
+            
         }
 
         #region INotifyPropertyChanged Members

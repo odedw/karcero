@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:Karcero.Visualizer"
         xmlns:models="clr-namespace:Karcero.Engine.Models;assembly=Karcero.Engine"
         Icon="Resources\cursorSword_silver.png"
-        Title="Karcero Visualizer" Height="699" Width="676"  Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        Title="Karcero Visualizer" Height="735" Width="720"  Background="#505050" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
         SizeChanged="MainWindow_OnSizeChanged" x:Name="Window">
     <Window.DataContext>
         <local:ViewModel />
