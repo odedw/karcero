@@ -52,6 +52,7 @@
     <Compile Include="Contracts\IMapProcessor.cs" />
     <Compile Include="Contracts\IRandomizer.cs" />
     <Compile Include="DungeonGenerator.cs" />
+    <Compile Include="Helpers\DungeonConfigurationGenerator.cs" />
     <Compile Include="Helpers\GetAll.cs" />
     <Compile Include="Processors\DeadendsRemover.cs" />
     <Compile Include="Processors\DoorGenerator.cs" />

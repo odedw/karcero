@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Karcero.Engine.Contracts;
+using Karcero.Engine.Helpers;
 using Karcero.Engine.Implementations;
 using Karcero.Engine.Models;
 
@@ -37,7 +38,13 @@ namespace Karcero.Engine
         #endregion
 
         #region Methods
-        public Map<T> Generate(DungeonConfiguration config, int? seed = null)
+
+        public DungeonConfigurationGenerator<T> GenerateA()
+        {
+            return new DungeonConfigurationGenerator<T>(this);
+        } 
+
+        public virtual Map<T> Generate(DungeonConfiguration config, int? seed = null)
         {
             var randomizer = new Randomizer();
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();

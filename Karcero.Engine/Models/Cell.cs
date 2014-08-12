@@ -22,7 +22,7 @@ namespace Karcero.Engine.Models
             get
             {
                 return string.Format("Location: {0},{1}{2}", Row, Column, Environment.NewLine) +
-                       string.Format("Terrain: {0}{1}{1}", Terrain, Environment.NewLine);
+                       string.Format("Terrain: {0}", Terrain);
             }
         }
     }

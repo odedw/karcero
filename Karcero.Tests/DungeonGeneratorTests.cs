@@ -21,19 +21,14 @@ namespace Karcero.Tests
             for (var i = 0; i < ITERATIONS; i++)
             {
 
-                generator.Generate(new DungeonConfiguration()
-                 {
-                     Height = 16,
-                     Width = 16,
-                     Randomness = 0.4,
-                     Sparseness = 0.6,
-                     ChanceToRemoveDeadends = 0.6,
-                     MinRoomHeight = 3,
-                     MaxRoomHeight = 6,
-                     MinRoomWidth = 3,
-                     MaxRoomWidth = 6,
-                     RoomCount = 10
-                 });
+                generator.GenerateA()
+                    .MediumDungeon()
+                    .ABitRandom()
+                    .SomewhatSparse()
+                    .WithMediumChanceToRemoveDeadEnds()
+                    .WithMediumSizeRooms()
+                    .WithRoomCount(10)
+                    .Now();
             }
 
             var totalSecs = DateTime.Now.Subtract(start).TotalSeconds / ITERATIONS;

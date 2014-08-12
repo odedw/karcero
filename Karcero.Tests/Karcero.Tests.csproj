@@ -35,6 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.23.0\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\Karcero.Engine\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -50,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DeadendsRemoverTests.cs" />
     <Compile Include="DoorGeneratorTests.cs" />
+    <Compile Include="DungeonConfigurationGeneratorTests.cs" />
     <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="MapDoublerTests.cs" />
     <Compile Include="MazeGeneratorTests.cs" />

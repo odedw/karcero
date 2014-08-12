@@ -30,7 +30,6 @@ namespace Karcero.Visualizer
 
         public Dispatcher Dispatcher { get; set; }
         private BindingList<Cell> mCells = new BindingList<Cell>();
-        private Thread mWorkerThread;
         public BindingList<Cell> Cells
         {
             get { return mCells; }
@@ -94,34 +93,39 @@ namespace Karcero.Visualizer
         {
             Width = mConfiguration.Width;
 
-            if (IsRunning)
-            {
-                mWorkerThread.Abort();
-            }
             Cells.Clear();
 
             IsRunning = true;
-            mGenerator.BeginGenerate(map =>
-            {
-                Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() =>
+            mGenerator.GenerateA()
+                .MediumDungeon()
+                .ABitRandom()
+                .SomewhatSparse()
+                .WithMediumChanceToRemoveDeadEnds()
+                .WithMediumSizeRooms()
+                .WithLargeNumberOfRooms()
+                //.WithSeed(1557911104)
+                .AndTellMeWhenItsDone(map =>
                 {
-                    Map = map;
-                    if (Cells.Count == 0)
+
+                    Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() =>
                     {
-                        for (int i = 0; i < map.Height; i++)
+                        Map = map;
+                        if (Cells.Count == 0)
                         {
-                            for (var j = 0; j < map.Width; j++)
+                            for (int i = 0; i < map.Height; i++)
                             {
-                                Cells.Add(map.GetCell(i, j));
+                                for (var j = 0; j < map.Width; j++)
+                                {
+                                    Cells.Add(map.GetCell(i, j));
+                                }
                             }
                         }
-                    }
-                    Width = map.Width;
-                }));
-                IsRunning = false;    
-            }, mConfiguration);
-            
-            
+                        Width = map.Width;
+                    }));
+                    IsRunning = false;
+                });
+
+
         }
 
         #region INotifyPropertyChanged Members
