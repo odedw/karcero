@@ -136,6 +136,7 @@ namespace Karcero.Visualizer
             mFloorLocationByAdjacentRockCells[NORTH | EAST | SOUTH] = new Point(TILE_SIZE * 6, TILE_SIZE);
 
 
+            mWallLocationByAdjacentRockCells[0] = new Point(TILE_SIZE, TILE_SIZE * 4);
             mWallLocationByAdjacentRockCells[EAST | SOUTH] = new Point(0, TILE_SIZE * 3);
             mWallLocationByAdjacentRockCells[NORTH | SOUTH] = new Point(0, TILE_SIZE * 4);
             mWallLocationByAdjacentRockCells[SOUTH] = new Point(0, TILE_SIZE * 4);

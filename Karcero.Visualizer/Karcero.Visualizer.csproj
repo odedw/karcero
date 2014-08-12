@@ -107,6 +107,7 @@
     <Content Include="Resources\GridSprite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\OryxSprite.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Karcero.Engine\Karcero.Engine.csproj">

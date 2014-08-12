@@ -14,5 +14,6 @@
         <system:Double x:Key="TileSize">20</system:Double>
         <BitmapImage x:Key="GridSprite" UriSource="./Resources/GridSprite.png" />
         <BitmapImage x:Key="DawnlikeSprite" UriSource="./Resources/DawnlikeSprite.png" />
+        <BitmapImage x:Key="OryxSprite" UriSource="./Resources/OryxSprite.png" />
     </Application.Resources>
 </Application>
