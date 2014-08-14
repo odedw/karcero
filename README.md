@@ -8,7 +8,7 @@ The dungeon generation algorithm is based on Jamis Buck's [algorithm](http://www
 
 Here is an example of a generation call:
 ```csharp
-var generator = new DungeonGenerator();
+var generator = new DungeonGenerator<Cell>();
 generator.GenerateA()
          .MediumDungeon()
          .ABitRandom()
