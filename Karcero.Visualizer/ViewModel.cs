@@ -102,7 +102,6 @@ namespace Karcero.Visualizer
                 .WithMediumChanceToRemoveDeadEnds()
                 .WithMediumSizeRooms()
                 .WithLargeNumberOfRooms()
-                .WithSeed(1557911104)
                 .AndTellMeWhenItsDone(map =>
                 {
 

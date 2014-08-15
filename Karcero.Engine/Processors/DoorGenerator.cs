@@ -37,10 +37,11 @@ namespace Karcero.Engine.Processors
             do
             {
                 adjacentCells = map.GetCellsAdjacentToRoom(room, distance).ToList();
-                if (adjacentCells.Any(cell => cell.Terrain != TerrainType.Rock && 
-                    !isolatedRooms.Any(r => map.IsLocationInRoom(cell.Row, cell.Column))))
+                var validAdjacentCells = adjacentCells.Where(cell => cell.Terrain != TerrainType.Rock && 
+                    !isolatedRooms.Any(r => map.IsLocationInRoom(cell.Row, cell.Column))).ToList();
+                if (validAdjacentCells.Any())
                 {
-                    var targetCell = randomizer.GetRandomItem(adjacentCells.Where(cell => cell.Terrain != TerrainType.Rock));
+                    var targetCell = randomizer.GetRandomItem(validAdjacentCells);
                     var targetDirection = Direction.East;
                     if (targetCell.Row < room.Row) targetDirection = Direction.South;
                     else if (targetCell.Column >= room.Right) targetDirection = Direction.West;
