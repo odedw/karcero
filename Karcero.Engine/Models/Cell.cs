@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using Karcero.Engine.Contracts;
 
 namespace Karcero.Engine.Models
 {
     public class Cell : ICell
     {
+        #region Properties
         public int Row { get; set; }
 
         public int Column { get; set; }
 
         public TerrainType Terrain { get; set; }
-
-        public Cell()
-        {
-        }
+        #endregion
 
         public String Description
         {

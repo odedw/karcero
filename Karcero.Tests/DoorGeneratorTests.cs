@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Helpers;
-using Karcero.Engine.Implementations;
 using Karcero.Engine.Models;
+using Karcero.Engine.Processors;
 using NUnit.Framework;
-using Randomizer = Karcero.Engine.Implementations.Randomizer;
+using Randomizer = Karcero.Engine.Helpers.Randomizer;
 
 namespace Karcero.Tests
 {
@@ -18,7 +18,7 @@ namespace Karcero.Tests
         private const int SOME_WIDTH = 16;
         private const int SOME_HEIGHT = 16;
         private int mSeed;
-        private readonly Engine.Implementations.Randomizer mRandomizer = new Randomizer();
+        private readonly Randomizer mRandomizer = new Randomizer();
         private readonly DungeonConfiguration mConfiguration =
             new DungeonConfiguration()
             {

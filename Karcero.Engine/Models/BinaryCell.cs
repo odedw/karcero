@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Helpers;
 
@@ -10,11 +6,14 @@ namespace Karcero.Engine.Models
 {
     internal class BinaryCell : IBinaryCell
     {
+        #region Properties
         public int Row { get; set; }
         public int Column { get; set; }
         public bool IsOpen { get; set; }
         public Dictionary<Direction,bool> Sides { get; set; }
+        #endregion
 
+        #region Constructor
         public BinaryCell()
         {
             Sides = new Dictionary<Direction, bool>();
@@ -23,5 +22,6 @@ namespace Karcero.Engine.Models
                 Sides[direction] = false;
             }
         }
+        #endregion
     }
 }

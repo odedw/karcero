@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
 
-namespace Karcero.Engine.Implementations
+namespace Karcero.Engine.Processors
 {
     internal class MazeGenerator<T> : IMapPreProcessor<T> where T : class, IBinaryCell, new()
     {

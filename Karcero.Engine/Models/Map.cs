@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Helpers;
@@ -10,6 +8,7 @@ namespace Karcero.Engine.Models
 {
     public class Map<T> where T : class, IBaseCell, new()
     {
+        #region Properties
         public int Height { get; set; }
         public int Width { get; set; }
 
@@ -24,29 +23,28 @@ namespace Karcero.Engine.Models
         }
 
         private T[][] mMap;
+        #endregion
+
+        #region Constructor
         public Map(int width, int height)
         {
             Height = height;
             Width = width;
-            Init();
-        }
-
-        internal void Init()
-        {
-            
             mMap = new T[Height][];
             for (int i = 0; i < Height; i++)
             {
                 mMap[i] = new T[Width];
                 for (int j = 0; j < Width; j++)
                 {
-                    mMap[i][j] = new T() {Row = i, Column = j};
+                    mMap[i][j] = new T() { Row = i, Column = j };
                 }
             }
 
             Rooms = new List<Room>();
         }
+        #endregion
 
+        #region Methods
         public T GetAdjacentCell(T cell, Direction direction, int distance = 1)
         {
             switch (direction)
@@ -137,5 +135,6 @@ namespace Karcero.Engine.Models
             return GetAll.ValuesOf<Direction>()
                 .ToDictionary(direction => direction, direction => GetAdjacentCell(cell, direction));
         }
+        #endregion
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Models;
 
-namespace Karcero.Engine.Implementations
+namespace Karcero.Engine.Processors
 {
     internal class DoorGenerator<T> : IMapProcessor<T> where T : class, ICell, new()
     {

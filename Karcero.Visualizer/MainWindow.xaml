@@ -31,7 +31,7 @@
                                ToolTip="{Binding Description}">
                         <Rectangle Height="{StaticResource TileSize}" Width="{StaticResource TileSize}">
                             <Rectangle.Fill>
-                                <ImageBrush ImageSource="{StaticResource OryxSprite}" ViewboxUnits="Absolute" >
+                                <ImageBrush ImageSource="{StaticResource GridSprite}" ViewboxUnits="Absolute" >
                                     <ImageBrush.Viewbox>
                                         <MultiBinding Converter="{StaticResource CellToSpriteRect}" >
                                             <Binding Path="" />

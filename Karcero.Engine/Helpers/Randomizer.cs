@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Karcero.Engine.Contracts;
-using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
 
-namespace Karcero.Engine.Implementations
+namespace Karcero.Engine.Helpers
 {
     public class Randomizer : IRandomizer
     {
+        #region Properties
         private Random mRandom = new Random();
+        #endregion
 
+        #region Methods
         public void SetSeed(int seed)
         {
             mRandom = new Random(seed);
@@ -46,5 +48,7 @@ namespace Karcero.Engine.Implementations
         {
             return new Size(mRandom.Next(maxWidth - minWidth) + minWidth + 1, mRandom.Next(maxHeight - minHeight) + minHeight + 1);
         }
+
+        #endregion
     }
 }

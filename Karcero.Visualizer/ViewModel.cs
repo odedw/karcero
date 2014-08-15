@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Karcero.Engine;
 using Karcero.Engine.Contracts;
-using Karcero.Engine.Implementations;
 using Karcero.Engine.Models;
 using System.Linq;
 namespace Karcero.Visualizer

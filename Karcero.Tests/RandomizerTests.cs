@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
-using Karcero.Engine.Implementations;
 using NUnit.Framework;
-using Randomizer = Karcero.Engine.Implementations.Randomizer;
+using Randomizer = Karcero.Engine.Helpers.Randomizer;
 
 namespace Karcero.Tests
 {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Karcero.Engine.Implementations;
 using Karcero.Engine.Models;
+using Karcero.Engine.Processors;
 using NUnit.Framework;
-using Randomizer = Karcero.Engine.Implementations.Randomizer;
+using Randomizer = Karcero.Engine.Helpers.Randomizer;
 
 namespace Karcero.Tests
 {
