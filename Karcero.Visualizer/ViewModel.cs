@@ -100,7 +100,7 @@ namespace Karcero.Visualizer
                 .ABitRandom()
                 .SomewhatSparse()
                 .WithMediumChanceToRemoveDeadEnds()
-                .WithMediumSizeRooms()
+                .WithLargeSizeRooms()
                 .WithLargeNumberOfRooms()
                 .AndTellMeWhenItsDone(map =>
                 {

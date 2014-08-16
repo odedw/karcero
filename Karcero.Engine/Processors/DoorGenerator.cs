@@ -38,7 +38,7 @@ namespace Karcero.Engine.Processors
             {
                 adjacentCells = map.GetCellsAdjacentToRoom(room, distance).ToList();
                 var validAdjacentCells = adjacentCells.Where(cell => cell.Terrain != TerrainType.Rock && 
-                    !isolatedRooms.Any(r => map.IsLocationInRoom(cell.Row, cell.Column))).ToList();
+                    !isolatedRooms.Any(r => r.IsLocationInRoom(cell.Row, cell.Column))).ToList();
                 if (validAdjacentCells.Any())
                 {
                     var targetCell = randomizer.GetRandomItem(validAdjacentCells);
