@@ -20,12 +20,12 @@
 </head>
 <body>
 <!--<div id="header">-->
-    <!--<nav>-->
-        <!--<li class="fork"><a href="https://github.com/odedw/karcero">View On GitHub</a></li>-->
-        <!--<li class="downloads"><a href="https://github.com/odedw/karcero/zipball/master">ZIP</a></li>-->
-        <!--<li class="downloads"><a href="https://github.com/odedw/karcero/tarball/master">TAR</a></li>-->
-        <!--<li class="title">DOWNLOADS</li>-->
-    <!--</nav>-->
+<!--<nav>-->
+<!--<li class="fork"><a href="https://github.com/odedw/karcero">View On GitHub</a></li>-->
+<!--<li class="downloads"><a href="https://github.com/odedw/karcero/zipball/master">ZIP</a></li>-->
+<!--<li class="downloads"><a href="https://github.com/odedw/karcero/tarball/master">TAR</a></li>-->
+<!--<li class="title">DOWNLOADS</li>-->
+<!--</nav>-->
 <!--</div>&lt;!&ndash; end header &ndash;&gt;-->
 
 <div class="wrapper">
@@ -37,27 +37,52 @@
 
         </div>
         <p>
-            Karcero is a 2d map generator library written in C# and can be used anywhere. It has a fluent API which lets you write generation code quickly and a more detailed API to let you tweak the parameters to get a map to your liking.
-            It also supports constructing a 2d map out of your own cell classes by implementing the ICell interface and calling the generator class with your implementation.
-            
+        <div id="table-of-contents">
+            <div>On this page:</div>
+            <ul>
+                <li>
+                    <a href="#quick-start">Quick Start</a>
+                </li>
+                <li>
+                    <a href="#parameters">Controllable Parameters</a>
+                </li>
+                <li>
+                    <a href="#cell-class">Using a Custom Tile Class</a>
+                </li>
+                <li>
+                    <a href="#modifying-map">Modifying the Map</a>
+                </li>
+                <li>
+                    <a href="#installation">Installation</a>
+                </li>
+
+            <li>
+                <a href="#issues">Issues & Collaboration</a>
+            </li>
+            </ul>
+        </div>
+            <span id="intro">Karcero is a 2d map generator library written in C# and can be used anywhere. It has a fluent API which lets you write generation code quickly and a more detailed API to let you tweak the parameters to get a map to your liking.
+            It also supports constructing a 2d map out of your own cell classes by implementing the ab interface and calling the generator class with your implementation.
+                </span>
+
         </p>
-          <h3 id="quick-start">
+        <h3 id="quick-start">
             Quick Start
         </h3>
         <p>
             Here is an example for a generation call using the fluent API and receiving the result asynchronously:
             <pre><code>var generator = new DungeonGenerator&lt;Cell&gt;();
-generator.GenerateA()
-         .MediumDungeon()
-         .ABitRandom()
-         .SomewhatSparse()
-         .WithMediumChanceToRemoveDeadEnds()
-         .WithMediumSizeRooms()
-         .WithLargeNumberOfRooms()
-         .AndTellMeWhenItsDone(map =>
-         {
-            //Do stuff with map
-         });</code></pre>
+                generator.GenerateA()
+                .MediumDungeon()
+                .ABitRandom()
+                .SomewhatSparse()
+                .WithMediumChanceToRemoveDeadEnds()
+                .WithMediumSizeRooms()
+                .WithLargeNumberOfRooms()
+                .AndTellMeWhenItsDone(map =>
+                {
+                //Do stuff with map
+                });</code></pre>
         And an example for a map generated from that call:
         <img class="example-image" src="images/example1.png" title="Quick start example"/>
         </p>
@@ -73,14 +98,14 @@ generator.GenerateA()
         <p>
 
         </p>
-        <h3 id="Modifying the Map">
+        <h3 id="modifying-map">
             Modifying the Map
         </h3>
         <p>
 
         </p>
 
-        <h3 id="Installation">
+        <h3 id="installation">
             Installation
         </h3>
         <p>
@@ -94,34 +119,34 @@ generator.GenerateA()
         </p>
 
         <!--<h3>-->
-            <!--<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>-->
+        <!--<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>-->
 
         <!--<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>-->
 
-<!--<pre><code>$ cd your_repo_root/repo_name-->
-    <!--$ git fetch origin-->
-    <!--$ git checkout gh-pages-->
-<!--</code></pre>-->
+        <!--<pre><code>$ cd your_repo_root/repo_name-->
+        <!--$ git fetch origin-->
+        <!--$ git checkout gh-pages-->
+        <!--</code></pre>-->
 
         <!--<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>-->
 
         <!--<h3>-->
-            <!--<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>-->
+        <!--<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>-->
 
         <!--<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>-->
 
         <!--<h3>-->
-            <!--<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>-->
+        <!--<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>-->
 
         <!--<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>-->
 
         <!--<h3>-->
-            <!--<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>-->
+        <!--<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>-->
 
         <!--<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>-->
 
         <!--<h3>-->
-            <!--<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>-->
+        <!--<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>-->
 
         <!--<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>-->
     </section>

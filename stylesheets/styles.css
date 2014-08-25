@@ -587,9 +587,6 @@ a small {
   display: block;
 }
 
-ul {
-  list-style-image: url("../images/bullet.png");
-}
 
 strong {
   font-family: 'OpenSansBold', "Helvetica Neue", Helvetica, Arial, sans-serif !important;
