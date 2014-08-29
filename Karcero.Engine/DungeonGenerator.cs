@@ -13,7 +13,7 @@ namespace Karcero.Engine
     {
         #region Properties
         private readonly IEnumerable<IMapPreProcessor<BinaryCell>> mPreProcessors;
-        private readonly IEnumerable<IMapProcessor<T>> mPostProcessors;
+        private readonly List<IMapProcessor<T>> mPostProcessors;
         private readonly IMapConverter<T, BinaryCell> mMapConverter;
         #endregion
 
@@ -38,6 +38,11 @@ namespace Karcero.Engine
         #endregion
 
         #region Methods
+
+        public void AddMapProcessor(IMapProcessor<T> mapProcessor)
+        {
+            mPostProcessors.Add(mapProcessor);
+        }
 
         public DungeonConfigurationGenerator<T> GenerateA()
         {
