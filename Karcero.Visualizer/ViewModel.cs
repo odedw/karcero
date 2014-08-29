@@ -97,11 +97,11 @@ namespace Karcero.Visualizer
             IsRunning = true;
             mGenerator.GenerateA()
                 .MediumDungeon()
-                .ABitRandom()
-                .SomewhatSparse()
-                .WithMediumChanceToRemoveDeadEnds()
-                .WithLargeSizeRooms()
-                .WithLargeNumberOfRooms()
+         .ABitRandom()
+         .SomewhatSparse()
+         .WithMediumChanceToRemoveDeadEnds()
+         .WithMediumSizeRooms()
+         .WithLargeNumberOfRooms()
                 .AndTellMeWhenItsDone(map =>
                 {
 

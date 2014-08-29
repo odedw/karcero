@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Karcero.Engine.Models;
 
 namespace Karcero.Visualizer
@@ -22,7 +25,7 @@ namespace Karcero.Visualizer
         public MainWindow()
         {
             InitializeComponent();
-            var viewModel = (ViewModel) DataContext;
+            var viewModel = (ViewModel)DataContext;
             viewModel.Dispatcher = Dispatcher;
 
             scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;
@@ -31,10 +34,10 @@ namespace Karcero.Visualizer
             scrollViewer.PreviewMouseWheel += OnPreviewMouseWheel;
 
             scrollViewer.PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
-            scrollViewer.MouseMove += OnMouseMove; 
-           
+            scrollViewer.MouseMove += OnMouseMove;
+
         }
-       
+
 
         void OnMouseMove(object sender, MouseEventArgs e)
         {
@@ -92,7 +95,7 @@ namespace Karcero.Visualizer
             scrollViewer.Cursor = Cursors.Arrow;
             scrollViewer.ReleaseMouseCapture();
             mLastDragPoint = null;
-        }        
+        }
 
         void OnScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -152,8 +155,20 @@ namespace Karcero.Visualizer
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Console.WriteLine("Width = {0}, Height = {1}",ActualWidth, ActualHeight);
+            Console.WriteLine("Width = {0}, Height = {1}", ActualWidth, ActualHeight);
 
+        }
+
+        private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.S)
+            {
+                var screenshot = this.GetPngImage();
+                var fileStream = new FileStream(@"example.png", FileMode.Create, FileAccess.ReadWrite);
+                var binaryWriter = new BinaryWriter(fileStream);
+                binaryWriter.Write(screenshot);
+                binaryWriter.Close();
+            }
         }
     }
 }
