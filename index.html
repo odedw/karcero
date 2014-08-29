@@ -44,13 +44,13 @@
                     <a href="#quick-start">Quick Start</a>
                 </li>
                 <li>
-                    <a href="#parameters">Controllable Parameters</a>
-                </li>
-                <li>
                     <a href="#cell-class">Using a Custom Tile Class</a>
                 </li>
                 <li>
                     <a href="#modifying-map">Modifying the Map</a>
+                </li>
+                <li>
+                    <a href="#parameters">Controllable Parameters</a>
                 </li>
                 <li>
                     <a href="#installation">Installation</a>
@@ -86,16 +86,18 @@
         And an example for a map generated from that call:
         <img class="example-image" src="images/example1.png" title="Quick start example"/>
         </p>
-        <h3 id="parameters">
-            Controllable Parameters
-        </h3>
-        <p>
-
-        </p>
         <h3 id="cell-class">
             Using a Custom Tile Class
         </h3>
         <p>
+            The <span class="code">DungeonGenerator</span> class is a generic class that builds a map of any type that implements the interface <span class="code">ICell</span>. You can
+            use the basic <span class="code">Cell</span> implementation supplied with <i>Karcero</i>, inherit the <span class="code">Cell</span> class or implement the <span class="code">ICell</span>
+            interface yourself.<br>The <span class="code">ICell</span> interface contains three basic properties, all of which will be filled during the map creation process:
+            <ul>
+                <li>Row<span class="code">(Int)</span>: specifies the cell\s row in the map matrix.</li>
+                <li>Column<span class="code">(Int)</span>: specifies the cell's column in the map matrix.</li>
+                <li>Terrain<span class="code">(TerrainType)</span>: specifies the cell's terrain type.</li>
+            </ul>
 
         </p>
         <h3 id="modifying-map">
@@ -104,6 +106,14 @@
         <p>
 
         </p>
+        <h3 id="parameters">
+            Controllable Parameters
+        </h3>
+        <p>
+
+        </p>
+
+
 
         <h3 id="installation">
             Installation
