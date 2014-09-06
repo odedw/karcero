@@ -25,10 +25,10 @@ namespace Karcero.Engine.Helpers
 
         #region Dungeon Size
 
-        internal const int TINY_SIZE = 8;
-        internal const int SMALL_SIZE = 12;
-        internal const int MEDIUM_SIZE = 16;
-        internal const int LARGE_SIZE = 22;
+        internal const int TINY_SIZE = 17;
+        internal const int SMALL_SIZE = 25;
+        internal const int MEDIUM_SIZE = 33;
+        internal const int LARGE_SIZE = 45;
         public DungeonConfigurationGenerator<T> DungeonOfSize(int width, int height)
         {
             mConfiguration.Width = width;
