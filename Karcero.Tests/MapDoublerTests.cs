@@ -69,9 +69,9 @@ namespace Karcero.Tests
           
         }
 
-        private Map<BinaryCell> GenerateMap()
+        private Map<BinaryCell> GenerateMap(int width = SOME_EVEN_WIDTH, int height = SOME_EVEN_HEIGHT)
         {
-            var map = new Map<BinaryCell>(SOME_EVEN_WIDTH, SOME_EVEN_HEIGHT);
+            var map = new Map<BinaryCell>(width, height);
             var mazeGenerator = new MazeGenerator<BinaryCell>();
             mazeGenerator.ProcessMap(map, mConfiguration, mRandomizer);
             return map;

@@ -11,7 +11,7 @@ namespace Karcero.Engine.Processors
         public Map<TPost> ConvertMap(Map<TPre> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
             var oldCells = map.AllCells.ToList();
-            var newMap = new Map<TPost>(configuration.Width * 2 + 1, configuration.Height * 2 + 1);
+            var newMap = new Map<TPost>(map.Width * 2 + 1, map.Height * 2 + 1);
 
             foreach (var oldCell in oldCells.Where(cell => cell.IsOpen))
             {

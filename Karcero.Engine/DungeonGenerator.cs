@@ -55,7 +55,9 @@ namespace Karcero.Engine
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();
             Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
-            var map = new Map<BinaryCell>(config.Width, config.Height);
+            var halfHeight = config.Height/2;
+            var halfWidth = config.Width/2;
+            var map = new Map<BinaryCell>(halfWidth, halfHeight);
 
             //pre processing
             foreach (var preProcessor in mPreProcessors)
