@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Models;
@@ -9,12 +10,14 @@ namespace Karcero.Engine.Processors
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
+            var invalidSizes = new HashSet<Size>();
             for (var i = 0; i < configuration.RoomCount; i++)
             {
                 //Generate a room such that Wmin <= Rw <= Wmax and Hmin <= Rh <= Hmax. 
-                var room = CreateRoom(configuration, randomizer);
-
+                var room = CreateRoom(configuration, randomizer, invalidSizes);
+                if (room == null) break;
                 var visitedCells = new List<T>();
+                var roomPlaced = false;
 
                 while (visitedCells.Count < map.AllCells.Count())
                 {
@@ -39,10 +42,16 @@ namespace Karcero.Engine.Processors
                     if (!AreAllCornerCellsRocks(map, room)) continue; //NW corner
 
                     //all corridors leading into room can become doors (are isolated)
-                    if (!CanAllCorridorsLeadingToRoomBeDoors(map, room)) continue;          
+                    if (!CanAllCorridorsLeadingToRoomBeDoors(map, room)) continue;
 
                     PlaceRoom(map, room);
+                    roomPlaced = true;
                     break;
+                }
+
+                if (!roomPlaced)
+                {
+                    invalidSizes.Add(room.Size);
                 }
             }
         }
@@ -55,10 +64,10 @@ namespace Karcero.Engine.Processors
                 T northCell, southCell;
                 if ((map.TryGetAdjacentCell(map.GetCell(room.Row, j), Direction.North, out northCell) &&
                      northCell.Terrain == TerrainType.Floor &&
-                     !IsCellIsolatedOnSides(northCell, new[] {Direction.East, Direction.West}, map)) ||
+                     !IsCellIsolatedOnSides(northCell, new[] { Direction.East, Direction.West }, map)) ||
                     (map.TryGetAdjacentCell(map.GetCell(room.Bottom - 1, j), Direction.South, out southCell)
                      && southCell.Terrain == TerrainType.Floor &&
-                     !IsCellIsolatedOnSides(southCell, new[] {Direction.East, Direction.West}, map)))
+                     !IsCellIsolatedOnSides(southCell, new[] { Direction.East, Direction.West }, map)))
                 {
                     return false;
                 }
@@ -95,13 +104,29 @@ namespace Karcero.Engine.Processors
             return true;
         }
 
-        private static Room CreateRoom(DungeonConfiguration configuration, IRandomizer randomizer)
+        private static Room CreateRoom(DungeonConfiguration configuration, IRandomizer randomizer, HashSet<Size> invalidSizes)
         {
-            var size = randomizer.GetRandomRoomSize(configuration.MaxRoomWidth, configuration.MinRoomWidth,
-                configuration.MaxRoomHeight, configuration.MinRoomHeight);
+            Size size = Size.Empty;
+            if (invalidSizes.Count < GetNumberOfSizeCombinations(configuration))
+            {
+                do
+                {
+                    size = randomizer.GetRandomRoomSize(configuration.MaxRoomWidth, configuration.MinRoomWidth,
+                        configuration.MaxRoomHeight, configuration.MinRoomHeight);
+                } while (invalidSizes.Contains(size));
+            }
 
-            var room = new Room() {Size = size};
+            if (size == Size.Empty)
+                return null;
+
+            var room = new Room() { Size = size };
             return room;
+        }
+
+        private static int GetNumberOfSizeCombinations(DungeonConfiguration configuration)
+        {
+            return (1 + configuration.MaxRoomHeight - configuration.MinRoomHeight) *
+                   (1 + configuration.MaxRoomWidth - configuration.MinRoomWidth);
         }
 
         public void PlaceRoom(Map<T> map, Room room)

@@ -46,7 +46,7 @@ namespace Karcero.Engine.Helpers
 
         public Size GetRandomRoomSize(int maxWidth, int minWidth, int maxHeight, int minHeight)
         {
-            return new Size(mRandom.Next(maxWidth - minWidth) + minWidth + 1, mRandom.Next(maxHeight - minHeight) + minHeight + 1);
+            return new Size(mRandom.Next(1 + maxWidth - minWidth) + minWidth, mRandom.Next(1 + maxHeight - minHeight) + minHeight);
         }
 
         #endregion

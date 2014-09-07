@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,8 @@ namespace Karcero.Tests
                 {"Medium Dungeon", builder => builder.MediumDungeon()},
             };
 
-            using (var writer = new StreamWriter(@"Benchmark.csv"))
+            var filename = GetFilename();
+            using (var writer = new StreamWriter(filename))
             {
                 foreach (var dungeonKvp in dungeonSizeFuncs)
                 {
@@ -80,6 +82,15 @@ namespace Karcero.Tests
                 writer.WriteLine();
                 writer.WriteLine("Total running time - {0} minutes", totalminutes);
             }
+        }
+
+        private string GetFilename()
+        {
+            var index = 1;
+            while (File.Exists(string.Format(@"Benchmark_{0}_{1}.csv", DateTime.Now.ToString("MMddyyyy"), index)))
+                index++;
+            return string.Format(@"Benchmark_{0}_{1}.csv", DateTime.Now.ToString("MMddyyyy"), index);
+
         }
 
         private static Tuple<double,double> RunGeneration(Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> dungeonSizeFunc,
