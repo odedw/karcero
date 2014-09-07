@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BenchmarkTests.cs" />
     <Compile Include="DeadendsRemoverTests.cs" />
     <Compile Include="DoorGeneratorTests.cs" />
     <Compile Include="DungeonConfigurationGeneratorTests.cs" />
