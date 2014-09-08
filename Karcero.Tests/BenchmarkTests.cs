@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Karcero.Engine;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
@@ -39,12 +37,13 @@ namespace Karcero.Tests
             Console.WriteLine("Average time = {0} seconds", totalSecs);
         }
 
-        [Test]
-        public void BenchmarkTest()
+        [TestCase(typeof(BenchmarkResultsCsvWriter))]
+        [TestCase(typeof(BenchmarkResultsHtmlWriter))]
+        public void BenchmarkTest(Type writerImplementationType)
         {
             var start = DateTime.Now;
 
-            var roomCounts = new List<int>() { 10, 15, 20, 25, 30, 35, 40 };
+            var roomCounts = new List<int> { 10, 15, 20, 25, 30, 35, 40 };
             var roomSizeFuncs = new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
             {
 
@@ -54,46 +53,28 @@ namespace Karcero.Tests
             };
             var dungeonSizeFuncs = new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
             {
-                {"Huge Dungeon", builder => builder.HugeDungeon()},
-                {"Large Dungeon", builder => builder.LargeDungeon()},
-                {"Medium Dungeon", builder => builder.MediumDungeon()},
+                {"Huge", builder => builder.HugeDungeon()},
+                {"Large", builder => builder.LargeDungeon()},
+                {"Medium", builder => builder.MediumDungeon()},
             };
 
-            var filename = GetFilename();
-            using (var writer = new StreamWriter(filename))
+            var writer = Activator.CreateInstance(writerImplementationType) as IBenchmarkResultsWriter;
+            writer.Init();
+            foreach (var dungeonKvp in dungeonSizeFuncs)
             {
-                foreach (var dungeonKvp in dungeonSizeFuncs)
+                var resultsByRoomSize = new Dictionary<string, List<Tuple<double, double>>>();
+                foreach (var kvp in roomSizeFuncs)
                 {
-                    writer.WriteLine(dungeonKvp.Key);
-                    writer.WriteLine(@"Room Size \ Room Count,{0}", String.Join(",", roomCounts.Select(i => i.ToString())));
-                    foreach (var kvp in roomSizeFuncs)
-                    {
-                        writer.Write(kvp.Key);
-                        foreach (var roomCount in roomCounts)
-                        {
-                            var results = RunGeneration(dungeonKvp.Value, kvp.Value, roomCount);
-                            writer.Write(",{0} ({1})", results.Item1, results.Item2);
-                        }
-                        writer.WriteLine();
-                    }
-                    writer.WriteLine();
+                    var results = roomCounts.Select(i => RunGeneration(dungeonKvp.Value, kvp.Value, i)).ToList();
+                    resultsByRoomSize[kvp.Key] = results;
                 }
-                var totalminutes = DateTime.Now.Subtract(start).TotalMinutes;
-                writer.WriteLine();
-                writer.WriteLine("Total running time - {0} minutes", totalminutes);
+                writer.WriteResultsForDungeonSize(dungeonKvp.Key, roomCounts, resultsByRoomSize);
             }
+            writer.WriteTotalRunningTime(DateTime.Now.Subtract(start));
+            writer.Close();
         }
 
-        private string GetFilename()
-        {
-            var index = 1;
-            while (File.Exists(string.Format(@"Benchmark_{0}_{1}.csv", DateTime.Now.ToString("MMddyyyy"), index)))
-                index++;
-            return string.Format(@"Benchmark_{0}_{1}.csv", DateTime.Now.ToString("MMddyyyy"), index);
-
-        }
-
-        private static Tuple<double,double> RunGeneration(Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> dungeonSizeFunc,
+        private static Tuple<double, double> RunGeneration(Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> dungeonSizeFunc,
             Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> roomSizeFunc,
             int numberOfRooms)
         {
@@ -102,18 +83,116 @@ namespace Karcero.Tests
             var roomCount = 0;
             for (var i = 0; i < ITERATIONS; i++)
             {
-               var map = roomSizeFunc(dungeonSizeFunc(generator.GenerateA()))
-                    .SomewhatRandom()
-                    .SomewhatSparse()
-                    .WithMediumChanceToRemoveDeadEnds()
-                    .WithRoomCount(numberOfRooms)
-                    .Now();
+                var map = roomSizeFunc(dungeonSizeFunc(generator.GenerateA()))
+                     .SomewhatRandom()
+                     .SomewhatSparse()
+                     .WithMediumChanceToRemoveDeadEnds()
+                     .WithRoomCount(numberOfRooms)
+                     .Now();
                 roomCount += map.Rooms.Count;
             }
 
-            var totalSecs = DateTime.Now.Subtract(start).TotalSeconds / ITERATIONS;
-            var averageRoomCount = roomCount/ITERATIONS;
-            return new Tuple<double,double>(totalSecs, averageRoomCount);
+            var totalSecs = DateTime.Now.Subtract(start).TotalMilliseconds / ITERATIONS;
+            var averageRoomCount = roomCount / ITERATIONS;
+            return new Tuple<double, double>(totalSecs, averageRoomCount);
+        }
+
+        public interface IBenchmarkResultsWriter
+        {
+            void Init();
+            void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Tuple<double, double>>> results);
+            void WriteTotalRunningTime(TimeSpan span);
+            void Close();
+        }
+
+        public class BenchmarkResultsCsvWriter : IBenchmarkResultsWriter
+        {
+            private StreamWriter mWriter;
+
+            private static string GetFilename()
+            {
+                var index = 1;
+                while (File.Exists(string.Format(@"Benchmark_{0}_{1}.csv", DateTime.Now.ToString("MMddyyyy"), index)))
+                    index++;
+                return string.Format(@"Benchmark_{0}_{1}.csv", DateTime.Now.ToString("MMddyyyy"), index);
+            }
+
+            public void Init()
+            {
+                var filename = GetFilename();
+                mWriter = new StreamWriter(filename);
+            }
+
+            public void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Tuple<double, double>>> results)
+            {
+                mWriter.WriteLine(@"{0} Dungeon,{1}", dungeonSize, String.Join(",", roomCounts.Select(i => i.ToString(CultureInfo.InvariantCulture) + " Rooms")));
+                foreach (var kvp in results)
+                {
+                    mWriter.Write("{0} Rooms", kvp.Key);
+                    foreach (var result in kvp.Value)
+                    {
+                        mWriter.Write(",{0} ({1})", result.Item1, result.Item2);
+                    }
+                    mWriter.WriteLine();
+                }
+                mWriter.WriteLine();
+            }
+
+            public void WriteTotalRunningTime(TimeSpan span)
+            {
+                mWriter.WriteLine();
+                mWriter.WriteLine("Total running time - {0} minutes", span.TotalMinutes);
+            }
+
+            public void Close()
+            {
+                mWriter.Flush();
+                mWriter.Close();
+            }
+        }
+
+        public class BenchmarkResultsHtmlWriter : IBenchmarkResultsWriter
+        {
+            private StreamWriter mWriter;
+
+            public void Init()
+            {
+                mWriter = new StreamWriter("Benchamrk.html");
+            }
+
+            public void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Tuple<double, double>>> results)
+            {
+                mWriter.WriteLine("<table>");
+                mWriter.WriteLine("<tr>");
+                mWriter.WriteLine("<th>{0} Map</th>", dungeonSize);
+                foreach (var roomCount in roomCounts)
+                {
+                    mWriter.WriteLine("<th>{0} Rooms</th>", roomCount);
+                }
+                mWriter.WriteLine("</tr>");
+                foreach (var kvp in results)
+                {
+                    mWriter.WriteLine("<tr>");
+                    mWriter.WriteLine("<td>{0} Rooms</td>", kvp.Key);
+                    foreach (var result in kvp.Value)
+                    {
+                        bool generatedAllRooms = (int)result.Item2 == roomCounts[kvp.Value.IndexOf(result)];
+                        mWriter.WriteLine("<td>{0}</td>", (generatedAllRooms ? Math.Round(result.Item1).ToString() : "-"));
+                    }
+                    mWriter.WriteLine("</tr>");
+                }
+                mWriter.WriteLine("</table>");
+            }
+
+            public void WriteTotalRunningTime(TimeSpan span)
+            {
+            }
+
+            public void Close()
+            {
+                mWriter.Flush();
+                mWriter.Close();
+            }
         }
     }
 }
