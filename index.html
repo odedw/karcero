@@ -209,8 +209,8 @@
             Benchmark
         </h3>
         <p>
-            Some notes about the benchmark:
             <ul>
+                <li>Results are in milliseconds.</li>
                 <li>Each configuration in the following tables was used to generate 10 maps, and the average value is stated.</li>
                 <li>Not all configurations are possible. When there is no room to add the number of rooms requested the value is '-'.</li>
                 <li>The map sizes used are:
@@ -227,7 +227,142 @@
                         <li>Small - (2-3 x 2-3)</li>
                     </ul>
                 </li>
+                <li>The maps were generated with the following values:
+                    <ul>
+                        <li>Randomness - 0.6</li>
+                        <li>Sparseness - 0.6</li>
+                        <li>Chance to remove dead ends - 0.5</li>
+                    </ul>
+                </li>
+                <li>The benchmark was run on an i7-3770 CPU @ 3.40GHz (8CPUs) with 16GB ram.
             </ul>
+            <table>
+                <tr>
+                    <th>Huge Map</th>
+                    <th>10 Rooms</th>
+                    <th>15 Rooms</th>
+                    <th>20 Rooms</th>
+                    <th>25 Rooms</th>
+                    <th>30 Rooms</th>
+                    <th>35 Rooms</th>
+                    <th>40 Rooms</th>
+                </tr>
+                <tr>
+                    <td>Small Rooms</td>
+                    <td>155</td>
+                    <td>146</td>
+                    <td>163</td>
+                    <td>176</td>
+                    <td>191</td>
+                    <td>182</td>
+                    <td>207</td>
+                </tr>
+                <tr>
+                    <td>Medium Rooms</td>
+                    <td>159</td>
+                    <td>160</td>
+                    <td>162</td>
+                    <td>192</td>
+                    <td>221</td>
+                    <td>254</td>
+                    <td>273</td>
+                </tr>
+                <tr>
+                    <td>Large Rooms</td>
+                    <td>145</td>
+                    <td>188</td>
+                    <td>207</td>
+                    <td>268</td>
+                    <td>364</td>
+                    <td>550</td>
+                    <td>718</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                <th>Large Map</th>
+                <th>10 Rooms</th>
+                <th>15 Rooms</th>
+                <th>20 Rooms</th>
+                <th>25 Rooms</th>
+                <th>30 Rooms</th>
+                <th>35 Rooms</th>
+                <th>40 Rooms</th>
+                </tr>
+                <tr>
+                <td>Small Rooms</td>
+                <td>35</td>
+                <td>34</td>
+                <td>49</td>
+                <td>43</td>
+                <td>50</td>
+                <td>54</td>
+                <td>65</td>
+                </tr>
+                <tr>
+                <td>Medium Rooms</td>
+                <td>35</td>
+                <td>41</td>
+                <td>58</td>
+                <td>104</td>
+                <td>161</td>
+                <td>201</td>
+                <td>-</td>
+                </tr>
+                <tr>
+                <td>Large Rooms</td>
+                <td>48</td>
+                <td>91</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                <th>Medium Map</th>
+                <th>10 Rooms</th>
+                <th>15 Rooms</th>
+                <th>20 Rooms</th>
+                <th>25 Rooms</th>
+                <th>30 Rooms</th>
+                <th>35 Rooms</th>
+                <th>40 Rooms</th>
+                </tr>
+                <tr>
+                <td>Small Rooms</td>
+                <td>13</td>
+                <td>16</td>
+                <td>20</td>
+                <td>26</td>
+                <td>32</td>
+                <td>42</td>
+                <td>56</td>
+                </tr>
+                <tr>
+                <td>Medium Rooms</td>
+                <td>17</td>
+                <td>31</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                </tr>
+                <tr>
+                <td>Large Rooms</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                </tr>
+            </table>
+
         </p>
     </section>
 </div>
