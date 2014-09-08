@@ -10,11 +10,11 @@ namespace Karcero.Engine.Processors
     {
         public void ProcessMap(Map<T> map, DungeonConfiguration configuration, IRandomizer randomizer)
         {
-            var invalidSizes = new HashSet<Size>();
+            var validSizes = GetAllPossibleRoomSizes(configuration);
             for (var i = 0; i < configuration.RoomCount; i++)
             {
                 //Generate a room such that Wmin <= Rw <= Wmax and Hmin <= Rh <= Hmax. 
-                var room = CreateRoom(configuration, randomizer, invalidSizes);
+                var room = CreateRoom(randomizer, validSizes);
                 if (room == null) break;
                 var visitedCells = new List<T>();
                 var roomPlaced = false;
@@ -51,7 +51,7 @@ namespace Karcero.Engine.Processors
 
                 if (!roomPlaced)
                 {
-                    invalidSizes.Add(room.Size);
+                    validSizes.Remove(room.Size);
                 }
             }
         }
@@ -104,29 +104,26 @@ namespace Karcero.Engine.Processors
             return true;
         }
 
-        private static Room CreateRoom(DungeonConfiguration configuration, IRandomizer randomizer, HashSet<Size> invalidSizes)
+        private static Room CreateRoom(IRandomizer randomizer, HashSet<Size> validSizes)
         {
-            Size size = Size.Empty;
-            if (invalidSizes.Count < GetNumberOfSizeCombinations(configuration))
-            {
-                do
-                {
-                    size = randomizer.GetRandomRoomSize(configuration.MaxRoomWidth, configuration.MinRoomWidth,
-                        configuration.MaxRoomHeight, configuration.MinRoomHeight);
-                } while (invalidSizes.Contains(size));
-            }
-
-            if (size == Size.Empty)
-                return null;
-
+            if (validSizes.Count == 0) return null;
+        
+            var size = randomizer.GetRandomItem(validSizes);
             var room = new Room() { Size = size };
             return room;
         }
 
-        private static int GetNumberOfSizeCombinations(DungeonConfiguration configuration)
+        private static HashSet<Size> GetAllPossibleRoomSizes(DungeonConfiguration configuration)
         {
-            return (1 + configuration.MaxRoomHeight - configuration.MinRoomHeight) *
-                   (1 + configuration.MaxRoomWidth - configuration.MinRoomWidth);
+            var sizes = new HashSet<Size>();
+            for (int i = configuration.MinRoomHeight; i <= configuration.MaxRoomHeight; i++)
+            {
+                for (int j = configuration.MinRoomWidth; j <= configuration.MaxRoomWidth; j++)
+                {
+                    sizes.Add(new Size(j, i));
+                }
+            }
+            return sizes;
         }
 
         public void PlaceRoom(Map<T> map, Room room)
