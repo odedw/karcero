@@ -47,7 +47,7 @@ namespace Karcero.Engine
         public DungeonConfigurationGenerator<T> GenerateA()
         {
             return new DungeonConfigurationGenerator<T>(this);
-        } 
+        }
 
         public virtual Map<T> Generate(DungeonConfiguration config, int? seed = null)
         {
@@ -55,14 +55,14 @@ namespace Karcero.Engine
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();
             Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
-            var halfHeight = config.Height/2;
-            var halfWidth = config.Width/2;
+            var halfHeight = config.Height / 2;
+            var halfWidth = config.Width / 2;
             var map = new Map<BinaryCell>(halfWidth, halfHeight);
 
             //pre processing
             foreach (var preProcessor in mPreProcessors)
             {
-               preProcessor.ProcessMap(map, config, randomizer);
+                preProcessor.ProcessMap(map, config, randomizer);
             }
 
             //double map
@@ -84,6 +84,44 @@ namespace Karcero.Engine
                 var map = Generate(config, seed);
                 callback(map);
             });
+        }
+
+        internal Tuple<Map<T>, Dictionary<string, double>> GenerateAndMeasure(DungeonConfiguration config)
+        {
+
+            var randomizer = new Randomizer();
+            var seed = Guid.NewGuid().GetHashCode();
+            Console.WriteLine(seed);
+            randomizer.SetSeed(seed);
+            var halfHeight = config.Height / 2;
+            var halfWidth = config.Width / 2;
+            var map = new Map<BinaryCell>(halfWidth, halfHeight);
+            var results = new Dictionary<string, double>();
+            DateTime start = DateTime.Now;
+            var totalStart = DateTime.Now;
+
+            //pre processing
+            foreach (var preProcessor in mPreProcessors)
+            {
+                start = DateTime.Now;
+                preProcessor.ProcessMap(map, config, randomizer);
+                results[preProcessor.GetType().Name] = DateTime.Now.Subtract(start).TotalSeconds;
+            }
+
+            //double map
+            start = DateTime.Now;
+            var postMap = mMapConverter.ConvertMap(map, config, randomizer);
+            results[mMapConverter.GetType().Name] = DateTime.Now.Subtract(start).TotalSeconds;
+
+            //post processing
+            foreach (var postProcessor in mPostProcessors)
+            {
+                start = DateTime.Now;
+                postProcessor.ProcessMap(postMap, config, randomizer);
+                results[postProcessor.GetType().Name] = DateTime.Now.Subtract(start).TotalSeconds;
+            }
+            results["Total"] = DateTime.Now.Subtract(totalStart).TotalSeconds;
+            return new Tuple<Map<T>, Dictionary<string, double>>(postMap, results);
         }
         #endregion
     }

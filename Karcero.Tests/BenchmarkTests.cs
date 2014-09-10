@@ -6,35 +6,71 @@ using System.Linq;
 using Karcero.Engine;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
+using Karcero.Engine.Processors;
 using NUnit.Framework;
+using Randomizer = Karcero.Engine.Helpers.Randomizer;
 
 namespace Karcero.Tests
 {
     [TestFixture]
     public class BenchmarkTests
     {
-        const int ITERATIONS = 10;
+        const int ITERATIONS = 5;
 
         [Test]
         public void SpeedTest()
         {
-            var start = DateTime.Now;
             var generator = new DungeonGenerator<Cell>();
+            Dictionary<string, double> results = null;
+            var config = generator.GenerateA()
+                    .HugeDungeon()
+                    .VeryRandom()
+                    .SomewhatSparse()
+                    .WithMediumChanceToRemoveDeadEnds()
+                    .WithLargeSizeRooms()
+                    .WithRoomCount(250)
+                    .GetConfiguration();
             for (var i = 0; i < ITERATIONS; i++)
             {
 
-                generator.GenerateA()
-                    .MediumDungeon()
-                    .ABitRandom()
-                    .SomewhatSparse()
-                    .WithMediumChanceToRemoveDeadEnds()
-                    .WithMediumSizeRooms()
-                    .WithRoomCount(10)
-                    .Now();
+
+                var generationResult = generator.GenerateAndMeasure(config);
+
+                if (results == null)
+                {
+                    results = generationResult.Item2;
+                }
+                else
+                {
+                    foreach (var kvp in generationResult.Item2)
+                    {
+                        results[kvp.Key] += kvp.Value;
+                    }
+                }
             }
 
-            var totalSecs = DateTime.Now.Subtract(start).TotalSeconds / ITERATIONS;
-            Console.WriteLine("Average time = {0} seconds", totalSecs);
+            foreach (var kvp in results)
+            {
+                Console.WriteLine("{0}: {1} seconds", kvp.Key, (kvp.Value / ITERATIONS));
+            }
+        }
+
+        [Test]
+        public void SinglePreProcessorTest()
+        {
+            var config = new DungeonConfigurationGenerator<Cell>(null)
+                    .HugeDungeon()
+                    .VeryRandom()
+                    .GetConfiguration();
+            var mazeGenerator = new MazeGenerator<BinaryCell>();
+
+            for (var i = 0; i < ITERATIONS; i++)
+            {
+                Console.WriteLine("Iteration {0}", i);
+                var map = new Map<BinaryCell>(config.Width / 2, config.Height / 2);
+                mazeGenerator.ProcessMap(map, config, new Randomizer());
+            }
+            StaticTimer.WriteResults(ITERATIONS);
         }
 
         [TestCase(typeof(BenchmarkResultsCsvWriter))]
@@ -43,7 +79,7 @@ namespace Karcero.Tests
         {
             var start = DateTime.Now;
 
-            var roomCounts = new List<int> { 10, 15, 20, 25, 30, 35, 40 };
+            var roomCounts = new List<int> { 50, 100, 150, 200, 250 };
             var roomSizeFuncs = new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
             {
 
@@ -54,8 +90,8 @@ namespace Karcero.Tests
             var dungeonSizeFuncs = new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
             {
                 {"Huge", builder => builder.HugeDungeon()},
-                {"Large", builder => builder.LargeDungeon()},
-                {"Medium", builder => builder.MediumDungeon()},
+//                {"Large", builder => builder.LargeDungeon()},
+//                {"Medium", builder => builder.MediumDungeon()},
             };
 
             var writer = Activator.CreateInstance(writerImplementationType) as IBenchmarkResultsWriter;

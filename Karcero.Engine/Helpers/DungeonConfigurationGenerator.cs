@@ -18,7 +18,7 @@ namespace Karcero.Engine.Helpers
         public DungeonConfigurationGenerator(DungeonGenerator<T> dungeonGenerator)
         {
             mGenerator = dungeonGenerator;
-        } 
+        }
         #endregion
 
         #region Methods
@@ -29,7 +29,7 @@ namespace Karcero.Engine.Helpers
         internal const int SMALL_SIZE = 25;
         internal const int MEDIUM_SIZE = 33;
         internal const int LARGE_SIZE = 45;
-        internal const int HUGE_SIZE = 70;
+        internal const int HUGE_SIZE = 300;
         public DungeonConfigurationGenerator<T> DungeonOfSize(int width, int height)
         {
             mConfiguration.Width = width;
@@ -217,7 +217,7 @@ namespace Karcero.Engine.Helpers
         {
             mSeed = seed;
             return this;
-        } 
+        }
 
         public Map<T> Now()
         {
@@ -228,6 +228,12 @@ namespace Karcero.Engine.Helpers
         {
             mGenerator.BeginGenerate(callback, mConfiguration, mSeed);
         }
+
+        public DungeonConfiguration GetConfiguration()
+        {
+            return mConfiguration;
+        }
+
         #endregion
     }
 }

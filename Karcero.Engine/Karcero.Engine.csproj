@@ -54,6 +54,7 @@
     <Compile Include="DungeonGenerator.cs" />
     <Compile Include="Helpers\DungeonConfigurationGenerator.cs" />
     <Compile Include="Helpers\GetAll.cs" />
+    <Compile Include="Helpers\StaticTimer.cs" />
     <Compile Include="Processors\DeadendsRemover.cs" />
     <Compile Include="Processors\DoorGenerator.cs" />
     <Compile Include="Processors\MapDoubler.cs" />
