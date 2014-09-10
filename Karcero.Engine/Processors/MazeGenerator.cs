@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
@@ -12,18 +13,19 @@ namespace Karcero.Engine.Processors
         {
             //Start with a rectangular grid, x units wide and y units tall. Mark each cell in the grid unvisited
             var visitedCells = new HashSet<T>();
-            var deadEndCells = new HashSet<T>();
+            var visitedValidCells = new HashSet<T>();
+            //            var deadEndCells = new HashSet<T>();
             Direction? previousDirection = null;
 
             //Pick a random cell in the grid and mark it visited. This is the current cell. 
             var currentCell = randomizer.GetRandomCell(map);
             currentCell.IsOpen = true;
-            while (visitedCells.Count < map.Width*map.Height)
+            while (visitedCells.Count < map.Width * map.Height)
             {
                 var oldCell = currentCell;
                 var changed = false;
                 visitedCells.Add(currentCell);
-
+                visitedValidCells.Add(currentCell);
                 //From the current cell, pick a random direction (north, south, east, or west). 
                 //If (1) there is no cell adjacent to the current cell in that direction, or (2) if 
                 //the adjacent cell in that direction has been visited, then that direction 
@@ -41,8 +43,11 @@ namespace Karcero.Engine.Processors
                 else
                 {
                     //If all directions are invalid, pick a different random visited cell in the grid and start this step over again.
-                    deadEndCells.Add(currentCell);
-                    currentCell = randomizer.GetRandomItem(visitedCells, deadEndCells);
+                    //                    deadEndCells.Add(currentCell);
+                    visitedValidCells.Remove(currentCell);
+                    StaticTimer.StartMeasure("GetRandomItem");
+                    currentCell = randomizer.GetRandomItem(visitedValidCells);
+                    StaticTimer.EndMeasure("GetRandomItem");
                 }
                 if (currentCell.IsOpen && !changed) continue;
 
@@ -53,12 +58,14 @@ namespace Karcero.Engine.Processors
 
         private Direction? GetRandomValidDirection(Map<T> map, T cell, ICollection<T> visitedCells, double randomness, Direction? previousDirection, IRandomizer randomizer)
         {
+            StaticTimer.StartMeasure("GetRandomValidDirection");
             //Randomness determines how often the direction of a corridor changes
             if (previousDirection.HasValue &&
                 randomness < 1 &&
                 randomizer.GetRandomDouble() > randomness &&
                 IsDirectionValid(map, cell, previousDirection.Value, visitedCells))
             {
+                StaticTimer.EndMeasure("GetRandomValidDirection");
                 return previousDirection;
             }
 
@@ -67,10 +74,15 @@ namespace Karcero.Engine.Processors
             {
                 var direction = randomizer.GetRandomEnumValue(invalidDirections);
                 if (IsDirectionValid(map, cell, direction, visitedCells))
+                {
+                    StaticTimer.EndMeasure("GetRandomValidDirection");
                     return direction;
+                }
                 invalidDirections.Add(direction);
             }
+            StaticTimer.EndMeasure("GetRandomValidDirection");
             return null;
+
         }
 
         private bool IsDirectionValid(Map<T> map, T cell, Direction direction, ICollection<T> visitedCells)

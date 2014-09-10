@@ -32,11 +32,10 @@ namespace Karcero.Engine.Helpers
             return values[mRandom.Next(values.Count)];
         }
 
-        public TItem GetRandomItem<TItem>(IEnumerable<TItem> collection, IEnumerable<TItem> excluded = null) 
+        public TItem GetRandomItem<TItem>(IEnumerable<TItem> collection) 
         {
-            excluded = excluded ?? new List<TItem>();
-            var cleanCollection = collection.Except(excluded).ToList();
-            return !cleanCollection.Any() ? default(TItem) : cleanCollection[(mRandom.Next(cleanCollection.Count))];
+            var list = collection.ToList();
+            return list[mRandom.Next(list.Count)];
         }
 
         public double GetRandomDouble()

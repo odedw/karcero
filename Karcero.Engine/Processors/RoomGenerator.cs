@@ -16,14 +16,16 @@ namespace Karcero.Engine.Processors
                 //Generate a room such that Wmin <= Rw <= Wmax and Hmin <= Rh <= Hmax. 
                 var room = CreateRoom(randomizer, validSizes);
                 if (room == null) break;
-                var visitedCells = new List<T>();
+                var visitedCells = new HashSet<T>();
+                var unvisitedCells = new HashSet<T>(map.AllCells);
                 var roomPlaced = false;
 
-                while (visitedCells.Count < map.AllCells.Count())
+                while (visitedCells.Count < map.Height * map.Width)
                 {
                     //get a random cell
-                    var cell = randomizer.GetRandomItem(map.AllCells, visitedCells);
+                    var cell = randomizer.GetRandomItem(unvisitedCells);
                     visitedCells.Add(cell);
+                    unvisitedCells.Remove(cell);
 
                     //place the room
                     room.Row = cell.Row;

@@ -55,16 +55,16 @@ namespace Karcero.Tests
             Assert.IsTrue(collection.Contains(item));
         }
 
-        [Test]
-        public void GetRandomItem_ValidInputWithExcludeList_ReturnsValueNotInExcludeList()
-        {
-            var collection = new List<object>() {new object(),new object(),new object(),new object()};
+        //[Test]
+        //public void GetRandomItem_ValidInputWithExcludeList_ReturnsValueNotInExcludeList()
+        //{
+        //    var collection = new List<object>() {new object(),new object(),new object(),new object()};
 
-            var randomizer = new Randomizer();
-            var item = randomizer.GetRandomItem(collection, collection.Skip(1));
+        //    var randomizer = new Randomizer();
+        //    var item = randomizer.GetRandomItem(collection, collection.Skip(1));
 
-            Assert.AreEqual(collection[0], item);
-        }
+        //    Assert.AreEqual(collection[0], item);
+        //}
 
         private enum SomeEnum
         {
