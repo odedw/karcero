@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Karcero.Engine;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
@@ -16,8 +17,56 @@ namespace Karcero.Tests
     public class BenchmarkTests
     {
         const int ITERATIONS = 5;
+        object mLock = new object();
 
         [Test]
+        public void ParallelMapGenerationTest()
+        {
+            const int SIZE = 1000;
+            const int NUMBER_OF_ROOMS = 320;
+            const int NUMBER_OF_PARALLEL_CALLS = 16;
+            var generator = new DungeonGenerator<Cell>();
+            DateTime start = DateTime.Now;
+            //One big map
+            for (var i = 0; i < ITERATIONS; i++)
+            {
+                Console.Write(i + ",");
+
+                generator.GenerateA()
+                         .DungeonOfSize(SIZE, SIZE)
+                         .VeryRandom()
+                         .SomewhatSparse()
+                         .WithMediumChanceToRemoveDeadEnds()
+                         .WithLargeSizeRooms()
+                         .WithRoomCount(NUMBER_OF_ROOMS)
+                         .Now();
+
+            }
+            Console.WriteLine("One Big map: Average of {0} seconds", DateTime.Now.Subtract(start).TotalSeconds / ITERATIONS);
+
+            var sizeOfSmallMap = (int)(SIZE / Math.Sqrt(NUMBER_OF_PARALLEL_CALLS));
+            var roomsPerMap = NUMBER_OF_ROOMS / NUMBER_OF_PARALLEL_CALLS;
+            start = DateTime.Now;
+            //Several small maps in parallel
+            for (var i = 0; i < ITERATIONS; i++)
+            {
+                Console.Write(i + ",");
+
+                Parallel.For(0, NUMBER_OF_PARALLEL_CALLS, (j) => generator.GenerateA()
+                    .DungeonOfSize(sizeOfSmallMap, sizeOfSmallMap)
+                    .VeryRandom()
+                    .SomewhatSparse()
+                    .WithMediumChanceToRemoveDeadEnds()
+                    .WithLargeSizeRooms()
+                    .WithRoomCount(roomsPerMap)
+                    .Now());
+
+            }
+            Console.WriteLine("Several small maps in parallel: Average of {0} seconds", DateTime.Now.Subtract(start).TotalSeconds / ITERATIONS);
+        }
+
+        [Test]
+        
         public void SpeedTest()
         {
             var generator = new DungeonGenerator<Cell>();
@@ -59,19 +108,20 @@ namespace Karcero.Tests
         public void SinglePreProcessorTest()
         {
             var config = new DungeonConfigurationGenerator<Cell>(null)
-                    .HugeDungeon()
-                    .VeryRandom()
+                    .DungeonOfSize(500,500)
+                    .NotRandom()
                     .GetConfiguration();
             var mazeGenerator = new MazeGenerator<BinaryCell>();
 
             for (var i = 0; i < ITERATIONS; i++)
             {
-                Console.WriteLine("Iteration {0}", i);
+                Console.Write("{0},", i);
                 var map = new Map<BinaryCell>(config.Width / 2, config.Height / 2);
                 mazeGenerator.ProcessMap(map, config, new Randomizer());
             }
+            Console.WriteLine();
             StaticTimer.WriteResults(ITERATIONS);
-        }
+        }        
 
         [TestCase(typeof(BenchmarkResultsCsvWriter))]
         [TestCase(typeof(BenchmarkResultsHtmlWriter))]

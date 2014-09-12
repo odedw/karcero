@@ -53,7 +53,7 @@ namespace Karcero.Engine
         {
             var randomizer = new Randomizer();
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();
-            Console.WriteLine(seed);
+            //Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
             var halfHeight = config.Height / 2;
             var halfWidth = config.Width / 2;
@@ -91,7 +91,6 @@ namespace Karcero.Engine
 
             var randomizer = new Randomizer();
             var seed = Guid.NewGuid().GetHashCode();
-            Console.WriteLine(seed);
             randomizer.SetSeed(seed);
             var halfHeight = config.Height / 2;
             var halfWidth = config.Width / 2;
