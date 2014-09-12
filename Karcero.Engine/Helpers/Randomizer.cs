@@ -34,8 +34,7 @@ namespace Karcero.Engine.Helpers
 
         public TItem GetRandomItem<TItem>(IEnumerable<TItem> collection) 
         {
-            var list = collection.ToList();
-            return list[mRandom.Next(list.Count)];
+            return collection.ElementAt(mRandom.Next(collection.Count()));
         }
 
         public double GetRandomDouble()
