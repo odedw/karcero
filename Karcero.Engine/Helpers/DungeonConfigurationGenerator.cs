@@ -29,7 +29,7 @@ namespace Karcero.Engine.Helpers
         internal const int SMALL_SIZE = 25;
         internal const int MEDIUM_SIZE = 33;
         internal const int LARGE_SIZE = 45;
-        internal const int HUGE_SIZE = 300;
+        internal const int HUGE_SIZE = 100;
         public DungeonConfigurationGenerator<T> DungeonOfSize(int width, int height)
         {
             mConfiguration.Width = width;

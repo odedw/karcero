@@ -129,7 +129,7 @@ namespace Karcero.Tests
         {
             var start = DateTime.Now;
 
-            var roomCounts = new List<int> { 50, 100, 150, 200, 250 };
+            var roomCounts = new List<int> { 10, 15, 20, 25, 30,35,40 };
             var roomSizeFuncs = new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
             {
 
@@ -140,8 +140,8 @@ namespace Karcero.Tests
             var dungeonSizeFuncs = new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
             {
                 {"Huge", builder => builder.HugeDungeon()},
-//                {"Large", builder => builder.LargeDungeon()},
-//                {"Medium", builder => builder.MediumDungeon()},
+                {"Large", builder => builder.LargeDungeon()},
+                {"Medium", builder => builder.MediumDungeon()},
             };
 
             var writer = Activator.CreateInstance(writerImplementationType) as IBenchmarkResultsWriter;
