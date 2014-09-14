@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+    {% include head.html %}
+
+    <body>
+
+            <div class="container content">
+                <div id="title">
+                    <h1>Karcero</h1>
+                    <div id="sub-header">Random dungeon tile based map generator</div>
+                    <nav>
+                        <a href="https://github.com/odedw/karcero">Github</a><span> • </span>
+                        <a href="#">Documentation</a><span> • </span>
+                        <a href="/demo">Live Demo</a>
+                    </nav>
+                </div>
+                {{ content }}
+
+            </div>
+
+        </div>
+        {% include footer.html %}
+        {% include analytics.html %}
+        <script src="/javascripts/app.js"></script>
+    </body>
+</html>

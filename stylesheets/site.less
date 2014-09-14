@@ -101,40 +101,44 @@ a{
 //    }
 //  }
 //}
+#title {
+  border: 0;
+  outline: none;
+  margin: 0;
+  padding: 0 0 5px 0;
+  margin-top:50px;
+
+  h1 {
+    font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 40px;
+    text-align: center;
+    line-height: 36px;
+    margin-bottom: 5px;
+  }
+  #sub-header {
+    color: #d7cfbe;
+    font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 18px;
+    text-align: center;
+  }
+  nav{
+    text-align: center;
+    a {
+      color: #bbb;
+      &:hover{
+        color: #fff;
+      }
+    }
+  }
+}
+
 section {
   max-width: 650px;
   padding: 30px 0px 50px 0px;
   margin: 30px 0 20px;
-  #title {
-    border: 0;
-    outline: none;
-    margin: 0;
-    padding: 0 0 5px 0;
-    h1 {
-      font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-weight: normal;
-      font-size: 40px;
-      text-align: center;
-      line-height: 36px;
-      margin-bottom: 5px;
-    }
-    #sub-header {
-      color: #d7cfbe;
-      font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-weight: normal;
-      font-size: 18px;
-      text-align: center;
-    }
-    nav{
-      text-align: center;
-      a {
-        color: #bbb;
-        &:hover{
-          color: #fff;
-        }
-      }
-    }
-  }
+
   h3{
     clear: both;
   }

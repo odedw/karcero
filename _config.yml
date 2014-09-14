@@ -1,0 +1,12 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      rouge
+
+# Setup
+title:            Karcero
+description:      'A Dungeon Generation Library for C#.'
+url:              http://www.odedwelgreen.com/karcero
+
+author:
+  name:           'Oded Welgreen'
+  url:            https://twitter.com/InjaGames
