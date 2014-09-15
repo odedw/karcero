@@ -42,18 +42,20 @@ layout: page
         </h3>
         <p>
             Here is an example for a generation call using the fluent API and receiving the result asynchronously:
-            <pre><code>var generator = new DungeonGenerator&lt;Cell&gt;();
-                generator.GenerateA()
-                .MediumDungeon()
-                .ABitRandom()
-                .SomewhatSparse()
-                .WithMediumChanceToRemoveDeadEnds()
-                .WithMediumSizeRooms()
-                .WithLargeNumberOfRooms()
-                .AndTellMeWhenItsDone(map =>
-                {
-                //Do stuff with map
-                });</code></pre>
+            {% highlight csharp %}
+            var generator = new DungeonGenerator<Cell>();
+generator.GenerateA()
+         .MediumDungeon()
+         .ABitRandom()
+         .SomewhatSparse()
+         .WithMediumChanceToRemoveDeadEnds()
+         .WithMediumSizeRooms()
+         .WithLargeNumberOfRooms()
+         .AndTellMeWhenItsDone(map =>
+         {
+            //Do stuff with map
+         });
+            {% endhighlight %}
         And an example for a map generated from that call:
         <img class="example-image" src="images/example1.png" title="Quick start example"/>
         </p>
@@ -79,20 +81,23 @@ layout: page
             If you would like to extend the map generation you can implement the <span class="code">IMapProcessor</span> interface which contains a single <span class="code">ProcessMap</span> method
             and adding it to the <span class="code">DungeonGenerator</span>. <br>
             For example, let's say we want to place treasure as part of the map generation. Here's an implementation of a treasure placing processor:
-             <pre><code>public class PlaceTreasureProcessor&lt;T&gt; :
-                 IMapProcessor&lt;T&gt; where T : class, ICell, new()
-                 {
-                 public void ProcessMap(Map&lt;T&gt; map,
-                 DungeonConfiguration configuration,
-                 IRandomizer randomizer)
-                 {
-                 //Place treasure
-                 }
-                 }</code></pre>
+            {% highlight csharp %}
+            public class PlaceTreasureProcessor<T> :
+            IMapProcessor<T> where T : class, ICell, new()
+{
+    public void ProcessMap(Map<T> map,
+                           DungeonConfiguration configuration,
+                           IRandomizer randomizer)
+    {
+        //Place treasure
+    }
+}
+                {% endhighlight %}
         And now just add it before calling generate:
-         <pre><code>var generator = new DungeonGenerator&lt;Cell&gt;();
-             generator.AddMapProcessor(new PlaceTreasureProcessor&lt;Cell&gt;());
-             generator.Generate(configuration);</code></pre>
+                {% highlight csharp %}var generator = new DungeonGenerator<Cell>();
+generator.AddMapProcessor(new PlaceTreasureProcessor<Cell>());
+generator.Generate(configuration);
+                {% endhighlight %}
         </p>
         <h3 id="parameters">
             Controllable Parameters
