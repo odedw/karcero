@@ -1,6 +1,5 @@
 # Dependencies
 markdown:         redcarpet
-highlighter:      rouge
 
 # Setup
 title:            Karcero
