@@ -8,38 +8,38 @@ layout: page
     </p>
     <pre><code>var generator = new DungeonGenerator<Cell>();
 generator.GenerateA()
-         .<select>
+         .<select class='api-select'>
             <option>TinyDungeon</option>
             <option>SmallDungeon</option>
             <option selected>MediumDungeon</option>
             <option>LargeDungeon</option>
             <option>HugeDungeon</option>
          </select>()
-         .<select>
+         .<select class='api-select'>
             <option>NotRandom</option>
             <option>ABitRandom</option>
             <option selected>SomewhatRandom</option>
             <option>VeryRandom</option>
          </select>()
-         .<select>
+         .<select class='api-select'>
             <option>NotSparse</option>
             <option>ABitSparse</option>
             <option selected>SomewhatSparse</option>
             <option>VerySparse</option>
          </select>()
-         .<select>
+         .<select class='api-select'>
             <option>DontRemoveDeadEnds</option>
             <option>WithSmallChanceToRemoveDeadEnds</option>
             <option selected>WithMediumChanceToRemoveDeadEnds</option>
             <option>WithBigChanceToRemoveDeadEnds</option>
             <option>RemoveAllDeadEnds</option>
          </select>()
-         .<select>
+         .<select class='api-select'>
             <option>WithSmallSizeRooms</option>
             <option selected>WithMediumSizeRooms</option>
             <option>WithLargeSizeRooms</option>
          </select>()
-         .<select>
+         .<select class='api-select'>
             <option>WithSmallNumberOfRooms</option>
             <option selected>WithMediumNumberOfRooms</option>
             <option>WithLargeNumberOfRooms</option>
@@ -50,5 +50,6 @@ generator.GenerateA()
 <script>
     $(function(){
         mixpanel.track('Page View - Karcero Demo');
+        $(".api-select").dropkick()
     });
 </script>
