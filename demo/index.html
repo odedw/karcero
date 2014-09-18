@@ -9,13 +9,41 @@ layout: page
     <pre><code>var generator = new DungeonGenerator<Cell>();
 generator.GenerateA()
          .<select>
-             <option selected>MediumDungeon</option>
+            <option>TinyDungeon</option>
+            <option>SmallDungeon</option>
+            <option selected>MediumDungeon</option>
+            <option>LargeDungeon</option>
+            <option>HugeDungeon</option>
          </select>()
-         .ABitRandom()
-         .SomewhatSparse()
-         .WithMediumChanceToRemoveDeadEnds()
-         .WithMediumSizeRooms()
-         .WithLargeNumberOfRooms()
+         .<select>
+            <option>NotRandom</option>
+            <option>ABitRandom</option>
+            <option selected>SomewhatRandom</option>
+            <option>VeryRandom</option>
+         </select>()
+        .<select>
+            <option>NotSparse</option>
+            <option>ABitSparse</option>
+            <option selected>SomewhatSparse</option>
+            <option>VerySparse</option>
+         </select>()
+         .<select>
+            <option>DontRemoveDeadEnds</option>
+            <option>WithSmallChanceToRemoveDeadEnds</option>
+            <option selected>WithMediumChanceToRemoveDeadEnds</option>
+            <option>WithBigChanceToRemoveDeadEnds</option>
+            <option>RemoveAllDeadEnds</option>
+         </select>()
+         .<select>
+            <option>WithSmallSizeRooms</option>
+            <option selected>WithMediumSizeRooms</option>
+            <option>WithLargeSizeRooms</option>
+         </select>()
+         .<select>
+            <option>WithSmallNumberOfRooms</option>
+            <option selected>WithMediumNumberOfRooms</option>
+            <option>WithLargeNumberOfRooms</option>
+         </select>()
          .Now();
             </code></pre>
 </div>
