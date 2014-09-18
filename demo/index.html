@@ -6,8 +6,7 @@ layout: page
         Click each method to change it, click the map to re-generate. This demo requires the Unity Web Player.
      
     </p>
-    {% highlight csharp %}
-    var generator = new DungeonGenerator<Cell>();
+    <pre><code>var generator = new DungeonGenerator<Cell>();
 generator.GenerateA()
          .<select>
              <option selected>MediumDungeon</option>
@@ -18,7 +17,7 @@ generator.GenerateA()
          .WithMediumSizeRooms()
          .WithLargeNumberOfRooms()
          .Now();
-            {% endhighlight %}
+            </code></pre>
 </div>
 <script>
     $(function(){
