@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-
+﻿
 namespace Karcero.Engine.Models
 {
     public class Room

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Karcero.Engine</RootNamespace>
     <AssemblyName>Karcero</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,10 +38,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -55,6 +54,8 @@
     <Compile Include="Helpers\DungeonConfigurationGenerator.cs" />
     <Compile Include="Helpers\GetAll.cs" />
     <Compile Include="Helpers\StaticTimer.cs" />
+    <Compile Include="Models\Size.cs" />
+    <Compile Include="Models\Tuple.cs" />
     <Compile Include="Processors\DeadendsRemover.cs" />
     <Compile Include="Processors\DoorGenerator.cs" />
     <Compile Include="Processors\MapDoubler.cs" />

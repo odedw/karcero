@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
@@ -79,11 +78,10 @@ namespace Karcero.Engine
 
         public void BeginGenerate(Action<Map<T>> callback, DungeonConfiguration config, int? seed = null)
         {
-            Task.Run(() =>
-            {
+            new Thread(() => {
                 var map = Generate(config, seed);
                 callback(map);
-            });
+            }).Start();
         }
 
         internal Tuple<Map<T>, Dictionary<string, double>> GenerateAndMeasure(DungeonConfiguration config)

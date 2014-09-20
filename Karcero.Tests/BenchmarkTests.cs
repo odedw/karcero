@@ -66,7 +66,7 @@ namespace Karcero.Tests
         }
 
         [Test]
-        
+      
         public void SpeedTest()
         {
             var generator = new DungeonGenerator<Cell>();
@@ -77,7 +77,7 @@ namespace Karcero.Tests
                     .SomewhatSparse()
                     .WithMediumChanceToRemoveDeadEnds()
                     .WithLargeSizeRooms()
-                    .WithRoomCount(250)
+                    .WithRoomCount(100)
                     .GetConfiguration();
             for (var i = 0; i < ITERATIONS; i++)
             {
@@ -148,7 +148,7 @@ namespace Karcero.Tests
             writer.Init();
             foreach (var dungeonKvp in dungeonSizeFuncs)
             {
-                var resultsByRoomSize = new Dictionary<string, List<Tuple<double, double>>>();
+                var resultsByRoomSize = new Dictionary<string, List<Engine.Models.Tuple<double, double>>>();
                 foreach (var kvp in roomSizeFuncs)
                 {
                     var results = roomCounts.Select(i => RunGeneration(dungeonKvp.Value, kvp.Value, i)).ToList();
@@ -160,7 +160,7 @@ namespace Karcero.Tests
             writer.Close();
         }
 
-        private static Tuple<double, double> RunGeneration(Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> dungeonSizeFunc,
+        private static Engine.Models.Tuple<double, double> RunGeneration(Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> dungeonSizeFunc,
             Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> roomSizeFunc,
             int numberOfRooms)
         {
@@ -180,13 +180,13 @@ namespace Karcero.Tests
 
             var totalSecs = DateTime.Now.Subtract(start).TotalMilliseconds / ITERATIONS;
             var averageRoomCount = roomCount / ITERATIONS;
-            return new Tuple<double, double>(totalSecs, averageRoomCount);
+            return new Engine.Models.Tuple<double, double>(totalSecs, averageRoomCount);
         }
 
         public interface IBenchmarkResultsWriter
         {
             void Init();
-            void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Tuple<double, double>>> results);
+            void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Engine.Models.Tuple<double, double>>> results);
             void WriteTotalRunningTime(TimeSpan span);
             void Close();
         }
@@ -209,7 +209,7 @@ namespace Karcero.Tests
                 mWriter = new StreamWriter(filename);
             }
 
-            public void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Tuple<double, double>>> results)
+            public void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Engine.Models.Tuple<double, double>>> results)
             {
                 mWriter.WriteLine(@"{0} Dungeon,{1}", dungeonSize, String.Join(",", roomCounts.Select(i => i.ToString(CultureInfo.InvariantCulture) + " Rooms")));
                 foreach (var kvp in results)
@@ -246,7 +246,7 @@ namespace Karcero.Tests
                 mWriter = new StreamWriter("Benchamrk.html");
             }
 
-            public void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Tuple<double, double>>> results)
+            public void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Engine.Models.Tuple<double, double>>> results)
             {
                 mWriter.WriteLine("<table>");
                 mWriter.WriteLine("<tr>");

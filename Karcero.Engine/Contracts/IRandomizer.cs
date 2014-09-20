@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using Karcero.Engine.Models;
 
 namespace Karcero.Engine.Contracts
