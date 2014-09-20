@@ -79,7 +79,7 @@ namespace Karcero.Visualizer
                 mZoomValue -= 0.3;
             }
 
-            mZoomValue = Math.Max(mZoomValue, 1);
+            mZoomValue = Math.Max(mZoomValue, 0.1);
             scaleTransform.ScaleX = mZoomValue;
             scaleTransform.ScaleY = mZoomValue;
 

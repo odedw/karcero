@@ -13,20 +13,6 @@ namespace Karcero.Visualizer
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        private readonly DungeonConfiguration mConfiguration = new DungeonConfiguration()
-        {
-            Height = 16,
-            Width = 16,
-            ChanceToRemoveDeadends = 0.5,
-            Sparseness = 0.5,
-            Randomness = 0.5,
-            MinRoomHeight = 3,
-            MaxRoomHeight = 6,
-            MinRoomWidth = 3,
-            MaxRoomWidth = 6,
-            RoomCount = 10
-        };
-
         public Dispatcher Dispatcher { get; set; }
         private BindingList<Cell> mCells = new BindingList<Cell>();
         public BindingList<Cell> Cells
@@ -74,8 +60,6 @@ namespace Karcero.Visualizer
 
         public ViewModel()
         {
-            Width = mConfiguration.Width;
-
             GenerateCommand = new RelayCommand(StartGeneration);
             RefreshCommand = new RelayCommand(o =>
             {
@@ -90,24 +74,24 @@ namespace Karcero.Visualizer
 
         private void StartGeneration(object input)
         {
-            Width = mConfiguration.Width;
-
             Cells.Clear();
 
             IsRunning = true;
             mGenerator.GenerateA()
-                .MediumDungeon()
-         .ABitRandom()
-         .SomewhatSparse()
-         .WithMediumChanceToRemoveDeadEnds()
-         .WithMediumSizeRooms()
-         .WithLargeNumberOfRooms()
+               .MediumDungeon()
+        .ABitRandom()
+        .SomewhatSparse()
+        .WithMediumChanceToRemoveDeadEnds()
+        .WithMediumSizeRooms()
+        .WithLargeNumberOfRooms()
+                         
                 .AndTellMeWhenItsDone(map =>
                 {
 
                     Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() =>
                     {
                         Map = map;
+                        Width = map.Width;
                         if (Cells.Count == 0)
                         {
                             for (int i = 0; i < map.Height; i++)
