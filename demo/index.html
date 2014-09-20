@@ -1,51 +1,76 @@
 ---
 layout: page
 ---
+
 <div class="wrapper">
     <p>
         Click each method to change it, click the map to re-generate. This demo requires the Unity Web Player.
-     
+
     </p>
     <pre id='demo-code'><code>var generator = new DungeonGenerator&lt;Cell&gt;();
-generator.GenerateA()
-         .<select class='api-select' id="size">
+        generator.GenerateA()
+        .<select class='api-select' id="size">
             <option>TinyDungeon</option>
             <option>SmallDungeon</option>
             <option selected>MediumDungeon</option>
             <option>LargeDungeon</option>
             <option>HugeDungeon</option>
-         </select>()
-         .<select class='api-select' id="randomness">
+        </select>()
+        .<select class='api-select' id="randomness">
             <option>NotRandom</option>
             <option>ABitRandom</option>
             <option selected>SomewhatRandom</option>
             <option>VeryRandom</option>
-         </select>()
-         .<select class='api-select' id="sparseness">
+        </select>()
+        .<select class='api-select' id="sparseness">
             <option>NotSparse</option>
             <option>ABitSparse</option>
             <option selected>SomewhatSparse</option>
             <option>VerySparse</option>
-         </select>()
-         .<select class='api-select' id="deadends">
+        </select>()
+        .<select class='api-select' id="deadends">
             <option>DontRemoveDeadEnds</option>
             <option>WithSmallChanceToRemoveDeadEnds</option>
             <option selected>WithMediumChanceToRemoveDeadEnds</option>
             <option>WithBigChanceToRemoveDeadEnds</option>
             <option>RemoveAllDeadEnds</option>
-         </select>()
-         .<select class='api-select' id="room-size">
+        </select>()
+        .<select class='api-select' id="room-size">
             <option>WithSmallSizeRooms</option>
             <option selected>WithMediumSizeRooms</option>
             <option>WithLargeSizeRooms</option>
-         </select>()
-         .<select class='api-select' id="room-count">
+        </select>()
+        .<select class='api-select' id="room-count">
             <option>WithSmallNumberOfRooms</option>
             <option selected>WithMediumNumberOfRooms</option>
             <option>WithLargeNumberOfRooms</option>
-         </select>()
-         .Now();
-            </code></pre>
+        </select>()
+        .Now();
+    </code></pre>
+    <div class="content">
+        <div id="unityPlayer">
+            <div class="missing">
+                <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+                    <img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+                </a>
+            </div>
+            <div class="broken">
+                <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now! Restart your browser after install.">
+                    <img alt="Unity Web Player. Install now! Restart your browser after install." src="http://webplayer.unity3d.com/installation/getunityrestart.png" width="193" height="63" />
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+<script type="text/javascript">
+    <!--
+    var unityObjectUrl = "http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js";
+    if (document.location.protocol == 'https:')
+        unityObjectUrl = unityObjectUrl.replace("http://", "https://ssl-");
+    document.write('<script type="text\/javascript" src="' + unityObjectUrl + '"><\/script>');
+    -->
+</script>
+
+
 <script src="/karcero/javascripts/demo.js"></script>
 
