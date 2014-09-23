@@ -123,7 +123,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: .0196078438}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -182,7 +182,7 @@ Transform:
   m_GameObject: {fileID: 1270196957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -197,3 +197,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abb0fa1512f64c4c923102cec5429ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DoorV: {fileID: 100000, guid: f98193a4f6d246c4e97eafe9326484b8, type: 2}
+  DoorH: {fileID: 100000, guid: f2021ccf3e12a8843b2ed3c206a14182, type: 2}
+  E: {fileID: 100000, guid: bf1fc7d13a881f541a55466fdb6570b1, type: 2}
+  EW: {fileID: 100000, guid: caaa99f9546915d4b9bd1fa404b1c849, type: 2}
+  N: {fileID: 100000, guid: 9ebd152eb8612bb40b2f6691c05b1a08, type: 2}
+  NE: {fileID: 100000, guid: 8f38b87c25e13424aaa445382c3af714, type: 2}
+  NES: {fileID: 100000, guid: 194e94175bc07444bac21d1529b5094f, type: 2}
+  NEW: {fileID: 100000, guid: 31661d0e95aa8d2459fa40d5a041fff3, type: 2}
+  NEWS: {fileID: 100000, guid: 65153a1d2a1142a40b11849ffe0c7188, type: 2}
+  NS: {fileID: 100000, guid: dfa2043b1d215154285ab5265cf4ca1f, type: 2}
+  NSW: {fileID: 100000, guid: 500dc1b8e76be894fbf0f39b33929b1b, type: 2}
+  NW: {fileID: 100000, guid: aa168e7af9eae3c4c8b4feaafd7e9088, type: 2}
+  OPEN: {fileID: 100000, guid: 6b789b11f5f902a4e97a3cd167131d69, type: 2}
+  S: {fileID: 100000, guid: 0c9a7b705e3302f4aa497109e553cf7a, type: 2}
+  SE: {fileID: 100000, guid: 352de626380750e4f9a3d930b6de9c36, type: 2}
+  SEW: {fileID: 100000, guid: 8ba0bd45c4ae1d04e8d8ac56681bf3e9, type: 2}
+  SW: {fileID: 100000, guid: ac6818a674dedd14eb35acc0b3ae73bf, type: 2}
+  W: {fileID: 100000, guid: a8d86d9561c832a438d2d541bf8d6173, type: 2}
