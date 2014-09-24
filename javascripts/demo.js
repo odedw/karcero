@@ -3,17 +3,7 @@
  */
 $(function(){
     mixpanel.track('Page View - Karcero Demo');
-
-    var keys = ['size','randomness','sparseness','deadends','room-size','room-count'];
-    function methodChanged(){
-        var definitions = {};
-        for(var i=0;i<keys.length;i++){
-            definitions[keys[i]] = $('#'+keys[i]).val();
-        }
-    };
-    $(".api-select").dropkick({
-        change:methodChanged
-    });
+    var u = undefined;
     setTimeout(function(){
 
         var config = {
@@ -22,7 +12,7 @@ $(function(){
             params: { enableDebugging:"1" }
         };
         console.log($('.wrapper').css('width'));
-        var u = new UnityObject2(config);
+        u = new UnityObject2(config);
 
         var $missingScreen = jQuery("#unityPlayer").find(".missing");
         var $brokenScreen = jQuery("#unityPlayer").find(".broken");
@@ -57,6 +47,20 @@ $(function(){
             }
         });
         u.initPlugin(jQuery("#unityPlayer")[0], "/karcero/content/Unity.unity3d");
+    });
+
+    var keys = ['size','randomness','sparseness','deadends','room-size','room-count'];
+    function methodChanged(){
+        var definitions = [];
+        for(var i=0;i<keys.length;i++){
+            definitions.push($('#'+keys[i]).val());
+        }
+        if (u){
+            u.getUnity().SendMessage("ControllerObject", "GenerateWithParameters", JSON.stringify(definitions));
+        }
+    };
+    $(".api-select").dropkick({
+        change:methodChanged
     });
 
 });
