@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using Karcero.Engine;
+using Karcero.Engine.Helpers;
 using Karcero.Engine.Models;
+using SimpleJSON;
 using UnityEngine;
 using System.Collections;
 
 public class Controller : MonoBehaviour
 {
     private DungeonGenerator<Cell> mGenerator;
+    private DungeonConfigurationGenerator<Cell> mBuilder;
     private Vector3 mScaleVector;
     public GameObject DoorV;
     public GameObject DoorH;
@@ -41,6 +44,13 @@ public class Controller : MonoBehaviour
     void Start()
     {
         mGenerator = new DungeonGenerator<Cell>();
+        mBuilder = mGenerator.GenerateA()
+            .MediumDungeon()
+            .ABitRandom()
+            .SomewhatSparse()
+            .WithMediumChanceToRemoveDeadEnds()
+            .WithMediumSizeRooms()
+            .WithLargeNumberOfRooms();
         mPrefabByWalls[EAST] = E;
         mPrefabByWalls[EAST | WEST] = EW;
         mPrefabByWalls[NORTH] = N;
@@ -61,6 +71,8 @@ public class Controller : MonoBehaviour
         mCamHalfHeight = Camera.main.orthographicSize;
         mCamHalfWidth = Camera.main.aspect * mCamHalfHeight;
         mTopLeftPosition = new Vector3(-mCamHalfWidth + mMargin, mCamHalfHeight + mMargin, 0) + Camera.main.transform.position;
+        Generate();
+
     }
 
     // Update is called once per frame
@@ -68,39 +80,56 @@ public class Controller : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            foreach (var obj in mLiveObjects)
-            {
-                DestroyObject(obj);
-            }
-            var map = mGenerator.GenerateA()
-                .MediumDungeon()
-                .ABitRandom()
-                .SomewhatSparse()
-                .WithMediumChanceToRemoveDeadEnds()
-                .WithMediumSizeRooms()
-                .WithLargeNumberOfRooms()
-                .Now();
-                      //.AndTellMeWhenItsDone(map =>
-               //{
-                   //Debug.Log("Worked! room count - " + map.Rooms.Count);
+            Generate();
+        }
+    }
 
-               //});
+    public void GenerateWithParameters(string parameters)
+    {
+        var parametersArr = JSON.Parse(parameters);
+        mBuilder = mGenerator.GenerateA();
+        for (int i = 0; i < parametersArr.Count; i++)
+        {
+            mBuilder = ParseParamToMethod(parametersArr[i].Value, mBuilder);            
+        }
 
-            var scaleW = (mCamHalfWidth * 2 - mMargin*2) / (SPRITE_SIZE * map.Width);
-            var scaleH = (mCamHalfHeight*2 - mMargin*2) /(SPRITE_SIZE * map.Height);
-            mScaleVector = new Vector3(scaleW, scaleH);
-            foreach (var cell in map.AllCells)
-            {
-                var prefab = GetPrefab(cell, map);
-                if (prefab == null) continue;
+        Generate();
+    }
 
-                prefab.transform.position = new Vector3(mTopLeftPosition.x + SPRITE_SIZE * scaleW * cell.Column,
-                                                        mCamHalfHeight * 2 - (mTopLeftPosition.y + SPRITE_SIZE * scaleH * cell.Row),
-                                                        cell.Terrain == TerrainType.Door ? 1 : 0);
-                
-                prefab.transform.localScale = mScaleVector;
-                mLiveObjects.Add(prefab);
-            }
+   
+
+    private void Generate()
+    {        
+        var map = mBuilder.Now();
+        BuildMap(map);
+    }
+
+    private void Clear()
+    {
+        foreach (var obj in mLiveObjects)
+        {
+            DestroyObject(obj);
+        }
+    }
+
+    private void BuildMap(Map<Cell> map)
+    {
+        Clear();
+
+        var scaleW = (mCamHalfWidth*2 - mMargin*2)/(SPRITE_SIZE*map.Width);
+        var scaleH = (mCamHalfHeight*2 - mMargin*2)/(SPRITE_SIZE*map.Height);
+        mScaleVector = new Vector3(scaleW, scaleH);
+        foreach (var cell in map.AllCells)
+        {
+            var prefab = GetPrefab(cell, map);
+            if (prefab == null) continue;
+
+            prefab.transform.position = new Vector3(mTopLeftPosition.x + SPRITE_SIZE*scaleW*cell.Column,
+                mCamHalfHeight*2 - (mTopLeftPosition.y + SPRITE_SIZE*scaleH*cell.Row),
+                cell.Terrain == TerrainType.Door ? 1 : 0);
+
+            prefab.transform.localScale = mScaleVector;
+            mLiveObjects.Add(prefab);
         }
     }
 
@@ -132,5 +161,67 @@ public class Controller : MonoBehaviour
     {
         Cell adjacentCell;
         return !map.TryGetAdjacentCell(cell, direction, out adjacentCell) || adjacentCell.Terrain == TerrainType.Rock;
+    }
+
+    private DungeonConfigurationGenerator<Cell> ParseParamToMethod(string methodName, DungeonConfigurationGenerator<Cell> builder)
+    {
+        switch (methodName)
+        {
+            //size
+            case "TinyDungeon":
+                return builder.TinyDungeon();
+            case "SmallDungeon":
+                return builder.SmallDungeon();
+            case "MediumDungeon":
+                return builder.MediumDungeon();
+            case "LargeDungeon":
+                return builder.LargeDungeon();
+            case "HugeDungeon":
+                return builder.HugeDungeon();
+            //randomness
+            case "NotRandom":
+                return builder.NotRandom();
+            case "ABitRandom":
+                return builder.ABitRandom();
+            case "SomewhatRandom":
+                return builder.SomewhatRandom();
+            case "VeryRandom":
+                return builder.VeryRandom();
+            //sparseness
+            case "NotSparse":
+                return builder.NotSparse();
+            case "ABitSparse":
+                return builder.ABitSparse();
+            case "SomewhatSparse":
+                return builder.SomewhatSparse();
+            case "VerySparse":
+                return builder.VerySparse();
+            //deadends
+            case "DontRemoveDeadEnds":
+                return builder.DontRemoveDeadEnds();
+            case "WithSmallChanceToRemoveDeadEnds":
+                return builder.WithSmallChanceToRemoveDeadEnds();
+            case "WithMediumChanceToRemoveDeadEnds":
+                return builder.WithMediumChanceToRemoveDeadEnds();
+            case "WithBigChanceToRemoveDeadEnds":
+                return builder.WithBigChanceToRemoveDeadEnds();
+            case "RemoveAllDeadEnds":
+                return builder.RemoveAllDeadEnds();
+            //room size
+            case "WithSmallSizeRooms":
+                return builder.WithSmallSizeRooms();
+            case "WithMediumSizeRooms":
+                return builder.WithMediumSizeRooms();
+            case "WithLargeSizeRooms":
+                return builder.WithLargeSizeRooms();
+            //room count
+            case "WithSmallNumberOfRooms":
+                return builder.WithSmallNumberOfRooms();
+            case "WithMediumNumberOfRooms":
+                return builder.WithMediumNumberOfRooms();
+            case "WithLargeNumberOfRooms":
+                return builder.WithLargeNumberOfRooms();
+        }
+        return builder;
     }
 }
