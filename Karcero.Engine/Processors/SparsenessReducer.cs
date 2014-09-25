@@ -17,6 +17,7 @@ namespace Karcero.Engine.Processors
                 var changedCells = new HashSet<T>();
                 
                 var deadEndCells = map.AllCells.Where(cell => cell.Sides.Values.Count(side => side) == 1).ToList();
+                if (!deadEndCells.Any()) break;
                 foreach (var deadEndCell in deadEndCells)
                 {
                     deadEndCell.IsOpen = false;

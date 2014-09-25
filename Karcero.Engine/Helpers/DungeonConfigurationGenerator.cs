@@ -94,7 +94,7 @@ namespace Karcero.Engine.Helpers
         internal const double NOT_SPARSE = 0;
         internal const double A_BIT_SPARSE = 0.3;
         internal const double SOMEWHAT_SPARSE = 0.6;
-        internal const double VERY_SPARSE = 1;
+        internal const double VERY_SPARSE = 0.8;
 
         public DungeonConfigurationGenerator<T> WithSparseness(double sparseness)
         {
