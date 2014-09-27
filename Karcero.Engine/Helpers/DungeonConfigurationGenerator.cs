@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Karcero.Engine.Contracts;
 using Karcero.Engine.Models;
 
@@ -187,32 +188,49 @@ namespace Karcero.Engine.Helpers
         #endregion
 
         #region Room Count
-        internal const int SMALL_NUMBER_OF_ROOMS = 3;
-        internal const int MEDIUM_NUMBER_OF_ROOMS = 6;
-        internal const int LARGE_NUMBER_OF_ROOMS = 10;
-
+        internal const float SMALL_NUMBER_OF_ROOMS = 0.25f;
+        internal const float MEDIUM_NUMBER_OF_ROOMS = 0.5f;
+        internal const float LARGE_NUMBER_OF_ROOMS = 0.75f;
+        internal const float ROOM_COUNT_PERCENTAGE_FACTOR = 0.5f;
+        internal float? mRoomCountPercentage;
 
         public DungeonConfigurationGenerator<T> WithRoomCount(int roomCount)
         {
             mConfiguration.RoomCount = roomCount;
-
+            return this;
+        }
+        public DungeonConfigurationGenerator<T> WithRoomCountByPercentage(float roomCountByPercentage)
+        {
+            mRoomCountPercentage = roomCountByPercentage;
             return this;
         }
 
         public DungeonConfigurationGenerator<T> WithSmallNumberOfRooms()
         {
-            return WithRoomCount(SMALL_NUMBER_OF_ROOMS);
+            return WithRoomCountByPercentage(SMALL_NUMBER_OF_ROOMS);
         }
         public DungeonConfigurationGenerator<T> WithMediumNumberOfRooms()
         {
-            return WithRoomCount(MEDIUM_NUMBER_OF_ROOMS);
+            return WithRoomCountByPercentage(MEDIUM_NUMBER_OF_ROOMS);
+
         }
         public DungeonConfigurationGenerator<T> WithLargeNumberOfRooms()
         {
-            return WithRoomCount(LARGE_NUMBER_OF_ROOMS);
+           return WithRoomCountByPercentage(LARGE_NUMBER_OF_ROOMS);
         }
         #endregion
 
+        public void WrapUp()
+        {
+            if (mRoomCountPercentage.HasValue)
+            {
+                var medianRoomHeight = (mConfiguration.MaxRoomHeight + mConfiguration.MinRoomHeight)/2f;
+                var medianRoomWidth = (mConfiguration.MaxRoomWidth + mConfiguration.MinRoomWidth)/2f;
+                var maxPotentialRooms = (int) (mConfiguration.Width/medianRoomWidth)*
+                                        (int) (mConfiguration.Height/medianRoomHeight)*ROOM_COUNT_PERCENTAGE_FACTOR;
+                mConfiguration.RoomCount = (int) (maxPotentialRooms*mRoomCountPercentage.Value);
+            }
+        }
         public DungeonConfigurationGenerator<T> WithSeed(int seed)
         {
             mSeed = seed;
@@ -221,16 +239,19 @@ namespace Karcero.Engine.Helpers
 
         public Map<T> Now()
         {
+            WrapUp();
             return mGenerator.Generate(mConfiguration, mSeed);
         }
 
         public void AndTellMeWhenItsDone(Action<Map<T>> callback)
         {
+            WrapUp();
             mGenerator.BeginGenerate(callback, mConfiguration, mSeed);
         }
 
         public DungeonConfiguration GetConfiguration()
         {
+            WrapUp();
             return mConfiguration;
         }
 

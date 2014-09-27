@@ -39,7 +39,7 @@ namespace Karcero.Visualizer
             }
         }
 
-        
+
 
         public bool IsRunning { get; set; }
         private int mWidth;
@@ -69,7 +69,7 @@ namespace Karcero.Visualizer
                 {
                     Cells.Add(cell);
                 }
-            });       
+            });
         }
 
         private void StartGeneration(object input)
@@ -78,13 +78,13 @@ namespace Karcero.Visualizer
 
             IsRunning = true;
             mGenerator.GenerateA()
-               .MediumDungeon()
-        .ABitRandom()
-        .SomewhatSparse()
-        .WithMediumChanceToRemoveDeadEnds()
-        .WithMediumSizeRooms()
-        .WithLargeNumberOfRooms()
-                         
+                      .MediumDungeon()
+                      .ABitRandom()
+                      .SomewhatSparse()
+                      .WithMediumChanceToRemoveDeadEnds()
+                      .WithSmallSizeRooms()
+                      .WithLargeNumberOfRooms()
+
                 .AndTellMeWhenItsDone(map =>
                 {
 

@@ -121,7 +121,109 @@ namespace Karcero.Tests
             }
             Console.WriteLine();
             StaticTimer.WriteResults(ITERATIONS);
-        }        
+        }
+
+        [Test]
+        public void FindMaxRoomCountTest()
+        {
+            var dimensions = new List<Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>>()
+            {
+                //size
+                new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
+                {
+                    {"Small", builder => builder.SmallDungeon()},
+                    {"Medium", builder => builder.MediumDungeon()},
+                    {"Large", builder => builder.LargeDungeon()},
+                },
+
+                //sparseness
+                new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
+                {
+                    {"NotSparse", builder => builder.NotSparse()},
+                    {"ABitSparse", builder => builder.ABitSparse()},
+                    {"SomewhatSparse", builder => builder.SomewhatSparse()},
+                    {"VerySparse", builder => builder.VerySparse()}
+                },
+
+                //sparseness
+                new Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>
+                {
+                    {"WithSmallSizeRooms", builder => builder.WithSmallSizeRooms()},
+                    {"WithMediumSizeRooms", builder => builder.WithMediumSizeRooms()},
+                    {"WithLargeSizeRooms", builder => builder.WithLargeSizeRooms()}
+                },
+            };
+
+            var defaultBuilder = new DungeonGenerator<Cell>()
+                .GenerateA()
+                .SomewhatRandom()
+                .WithMediumChanceToRemoveDeadEnds();
+
+            Console.WriteLine("{0},{1},{2},{3}", "CellCount", "Sparseness", "MedianRoomSize", "MaxRooms");
+
+            CallRecursivelyWithFixedDimensions(defaultBuilder,
+                new List<KeyValuePair<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>>(), 
+                dimensions);
+        }
+
+        private void CallRecursivelyWithFixedDimensions(DungeonConfigurationGenerator<Cell> defaultBuilder, 
+            List<KeyValuePair<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>> fixedDimensions, 
+            List<Dictionary<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>> restOfDimensions)
+        {
+            if (restOfDimensions.Count > 0)
+            {
+                foreach (var dimension in restOfDimensions[0])
+                {
+                    var newFixed = fixedDimensions.ToList();
+                    newFixed.Add(dimension);
+                    CallRecursivelyWithFixedDimensions(defaultBuilder, newFixed, restOfDimensions.Skip(1).ToList());
+                }
+                return;
+            }
+
+            TestWithFixedDimensions(defaultBuilder, fixedDimensions);
+        }
+
+        private void TestWithFixedDimensions(DungeonConfigurationGenerator<Cell> defaultBuilder, 
+            IEnumerable<KeyValuePair<string, Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>>>> fixedDimensions)
+        {
+            var maxRooms = 5;
+            var failedIterationCount = 0;
+            const int MAX_FAILED_ITERATION_COUNT = 3;
+            var kvps = fixedDimensions.ToList();
+            defaultBuilder = kvps.Aggregate(defaultBuilder, (current, dimension) => dimension.Value(current));
+
+            try
+            {
+                while (failedIterationCount < MAX_FAILED_ITERATION_COUNT)
+                {
+                    defaultBuilder = defaultBuilder.WithRoomCount(maxRooms);
+                    var map = defaultBuilder.Now();
+                    if (map.Rooms.Count == maxRooms)
+                    {
+                        maxRooms++;
+                    }
+                    else
+                    {
+                        failedIterationCount++;
+                    }
+                }
+                var config = defaultBuilder.GetConfiguration();
+                var medianRoomHeight = (config.MaxRoomHeight + config.MinRoomHeight) / 2f;
+                var medianRoomWidth = (config.MaxRoomWidth + config.MinRoomWidth) / 2f;
+                var maxPotentialRooms = (int) (config.Width/medianRoomWidth)*(int) (config.Height/medianRoomHeight);
+                var result = (maxPotentialRooms*(1 - config.Sparseness));
+                Console.WriteLine("{0},{1},{2},{3}, ratio: {4}", (config.Width * config.Height), config.Sparseness, maxRooms-1,
+                    (maxPotentialRooms * (1-config.Sparseness)),
+                    (maxRooms-1)/result);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(String.Join(" ", kvps.Select(kvp => kvp.Key)) + ": failed on " + (maxRooms-1));    
+            }
+            
+
+        }
 
         [TestCase(typeof(BenchmarkResultsCsvWriter))]
         [TestCase(typeof(BenchmarkResultsHtmlWriter))]

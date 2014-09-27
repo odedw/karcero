@@ -149,22 +149,6 @@ namespace Karcero.Tests
            
          }
 
-        [Test]
-        public void GenerateConfiguration_DifferentNumberOfRooms_CorrespondingRoomCountSet()
-        {
-            var SOME_NUMBER = 5;
-
-            GenerateAndAssert(generator => generator.WithRoomCount(SOME_NUMBER),
-                configuration => Assert.AreEqual(SOME_NUMBER, configuration.RoomCount));
-            GenerateAndAssert(generator => generator.WithSmallNumberOfRooms(),
-                 configuration => Assert.AreEqual(DungeonConfigurationGenerator<Cell>.SMALL_NUMBER_OF_ROOMS, configuration.RoomCount));
-            GenerateAndAssert(generator => generator.WithMediumNumberOfRooms(),
-                 configuration => Assert.AreEqual(DungeonConfigurationGenerator<Cell>.MEDIUM_NUMBER_OF_ROOMS, configuration.RoomCount));
-            GenerateAndAssert(generator => generator.WithLargeNumberOfRooms(),
-                 configuration => Assert.AreEqual(DungeonConfigurationGenerator<Cell>.LARGE_NUMBER_OF_ROOMS, configuration.RoomCount));
-            
-        }
-
         private void GenerateAndAssert(
             Func<DungeonConfigurationGenerator<Cell>, DungeonConfigurationGenerator<Cell>> method,
             Action<DungeonConfiguration> assertMethod)

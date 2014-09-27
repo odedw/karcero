@@ -155,7 +155,7 @@ namespace Karcero.Visualizer
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Console.WriteLine("Width = {0}, Height = {1}", ActualWidth, ActualHeight);
+            //Console.WriteLine("Width = {0}, Height = {1}", ActualWidth, ActualHeight);
 
         }
 
