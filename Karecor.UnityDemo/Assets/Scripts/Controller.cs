@@ -92,7 +92,6 @@ public class Controller : MonoBehaviour
         {
             mBuilder = ParseParamToMethod(parametersArr[i].Value, mBuilder);            
         }
-
         Generate();
     }
 
