@@ -8,6 +8,10 @@ using Karcero.Engine.Processors;
 
 namespace Karcero.Engine
 {
+    /// <summary>
+    /// Generates a map of cells of type T.
+    /// </summary>
+    /// <typeparam name="T">The type of cells the map is comprised of.</typeparam>
     public class DungeonGenerator<T> where T : class, ICell, new()
     {
         #region Properties
@@ -17,6 +21,9 @@ namespace Karcero.Engine
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public DungeonGenerator()
         {
             mPreProcessors = new List<IMapPreProcessor<BinaryCell>>()
@@ -38,21 +45,34 @@ namespace Karcero.Engine
 
         #region Methods
 
+        /// <summary>
+        /// Add a map processor that will be called at the end of the map generation library to further modify the map.
+        /// </summary>
+        /// <param name="mapProcessor">The processor to add.</param>
         public void AddMapProcessor(IMapProcessor<T> mapProcessor)
         {
             mPostProcessors.Add(mapProcessor);
         }
 
+        /// <summary>
+        /// Creates an instance of the DungeonConfigurationGenerator that is linked to this instance.
+        /// </summary>
+        /// <returns>An instance of DungeonConfigurationGenerator linked to this instance of DungeonGenerator.</returns>
         public DungeonConfigurationGenerator<T> GenerateA()
         {
             return new DungeonConfigurationGenerator<T>(this);
         }
 
+        /// <summary>
+        /// Generate a map according the configuration received.
+        /// </summary>
+        /// <param name="config">The configuration used to generate the map.</param>
+        /// <param name="seed">A seed to be used for the generation. If null a random seed will be generated.</param>
+        /// <returns>The generated map.</returns>
         public virtual Map<T> Generate(DungeonConfiguration config, int? seed = null)
         {
             var randomizer = new Randomizer();
             if (!seed.HasValue) seed = Guid.NewGuid().GetHashCode();
-            //Console.WriteLine(seed);
             randomizer.SetSeed(seed.Value);
             var halfHeight = config.Height / 2;
             var halfWidth = config.Width / 2;
@@ -76,6 +96,12 @@ namespace Karcero.Engine
             return postMap;
         }
 
+        /// <summary>
+        /// Generates a map on a different thread.
+        /// </summary>
+        /// <param name="callback">Will be called when the generation is complete (on a different thread).</param>
+        /// <param name="config">The configuration used to generate the map.</param>
+        /// <param name="seed">A seed to be used for the generation. If null a random seed will be generated.</param>
         public void BeginGenerate(Action<Map<T>> callback, DungeonConfiguration config, int? seed = null)
         {
             new Thread(() => {
