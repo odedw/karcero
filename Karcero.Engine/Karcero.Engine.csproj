@@ -65,7 +65,6 @@
     <Compile Include="DungeonGenerator.cs" />
     <Compile Include="Helpers\DungeonConfigurationGenerator.cs" />
     <Compile Include="Helpers\GetAll.cs" />
-    <Compile Include="Helpers\StaticTimer.cs" />
     <Compile Include="Models\Size.cs" />
     <Compile Include="Models\Tuple.cs" />
     <Compile Include="Processors\DeadendsRemover.cs" />
@@ -77,7 +76,6 @@
     <Compile Include="Processors\SparsenessReducer.cs" />
     <Compile Include="Models\BinaryCell.cs" />
     <Compile Include="Models\Cell.cs" />
-    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\DungeonConfiguration.cs" />
     <Compile Include="Contracts\ICell.cs" />
     <Compile Include="Models\Map.cs" />

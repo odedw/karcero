@@ -129,7 +129,7 @@ namespace Karcero.Engine.Processors
 
         public void PlaceRoom(Map<T> map, Room room)
         {
-            map.AddRoom(room);
+            map.Rooms.Add(room);
             foreach (var cell in map.GetRoomCells(room))
             {
                 cell.Terrain = TerrainType.Floor;

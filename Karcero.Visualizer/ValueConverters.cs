@@ -44,42 +44,7 @@ namespace Karcero.Visualizer
             return null;
         }
     }
-    public class SideTypeToVisibility : IValueConverter
-    {
-        public object Convert(object value, Type targetType,
-            object parameter, CultureInfo culture)
-        {
-            var sides = (Dictionary<Direction, SideType>)value;
-            return sides[(Direction)Enum.Parse(typeof(Direction), parameter.ToString())] == SideType.Open ?
-                Visibility.Hidden : Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType,
-            object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-    }
-    public class SidesToBorderThickness : IValueConverter
-    {
-        public object Convert(object value, Type targetType,
-            object parameter, CultureInfo culture)
-        {
-            var sides = (Dictionary<Direction, SideType>)value;
-            return new Thickness(
-                sides[Direction.West] == SideType.Open ? 0.2 : 1,
-                sides[Direction.North] == SideType.Open ? 0.2 : 1,
-                sides[Direction.East] == SideType.Open ? 0.2 : 1,
-                sides[Direction.South] == SideType.Open ? 0.2 : 1);
-        }
-
-        public object ConvertBack(object value, Type targetType,
-            object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-    }
-
+   
     public class CellToDoorConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

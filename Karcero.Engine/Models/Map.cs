@@ -6,14 +6,30 @@ using Karcero.Engine.Helpers;
 
 namespace Karcero.Engine.Models
 {
+    /// <summary>
+    /// A matrix of cells.
+    /// </summary>
+    /// <typeparam name="T">The type of cells the map is comprised of.</typeparam>
     public class Map<T> where T : class, IBaseCell, new()
     {
         #region Properties
+        /// <summary>
+        /// The height of the map.
+        /// </summary>
         public int Height { get; set; }
+        /// <summary>
+        /// The width of the map.
+        /// </summary>
         public int Width { get; set; }
 
+        /// <summary>
+        /// A collection of rooms that the are contained in the map.
+        /// </summary>
         public List<Room> Rooms { get; set; }
 
+        /// <summary>
+        /// A collection of all of the cells in the map generated with a LINQ operation (order not guaranteed).
+        /// </summary>
         public IEnumerable<T> AllCells
         {
             get
@@ -22,10 +38,15 @@ namespace Karcero.Engine.Models
             }
         }
 
-        private T[][] mMap;
+        private readonly T[][] mMap;
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Returns an instance initialized to the sizes specified.
+        /// </summary>
+        /// <param name="width">The desired width of the map.</param>
+        /// <param name="height">The desired height of the map.</param>
         public Map(int width, int height)
         {
             Height = height;
@@ -45,6 +66,13 @@ namespace Karcero.Engine.Models
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Returns an the adjacent cell of the specified cell to a certain direction and distance.
+        /// </summary>
+        /// <param name="cell">The initial cell.</param>
+        /// <param name="direction">The direction of the desired adjacent cell.</param>
+        /// <param name="distance">How many cells apart the adjacent cell returned is (defaults to 1).</param>
+        /// <returns>The adjacent cell to the direction and distance specified.</returns>
         public T GetAdjacentCell(T cell, Direction direction, int distance = 1)
         {
             switch (direction)
@@ -61,17 +89,35 @@ namespace Karcero.Engine.Models
             return null;
         }
 
+        /// <summary>
+        /// Try and get the adjacent cell of the specified cell to a certain direction and distance.
+        /// </summary>
+        /// <param name="cell">The initial cell.</param>
+        /// <param name="direction">The direction of the desired adjacent cell.</param>
+        /// <param name="adjacentCell">Will be set to the adjacent cell if exists, null otherwise.</param>
+        /// <returns>True if the desired adjacent exists.</returns>
         public bool TryGetAdjacentCell(T cell, Direction direction, out T adjacentCell)
         {
             adjacentCell = GetAdjacentCell(cell, direction);
             return adjacentCell != null;
         }
 
+        /// <summary>
+        /// Returns the cell in a specified location.
+        /// </summary>
+        /// <param name="row">The row of the desired cell.</param>
+        /// <param name="column">The column of the desired cell.</param>
+        /// <returns>The desired cell if exists, null otherwise.</returns>
         public T GetCell(int row, int column)
         {
             return row >= 0 && column >= 0 && row < Height && column < Width ? mMap[row][column] : null;
         }
 
+        /// <summary>
+        /// Get the cells the specified room is comprised of.
+        /// </summary>
+        /// <param name="room">The desired room.</param>
+        /// <returns>The cells the specified room is comprised of.</returns>
         public IEnumerable<T> GetRoomCells(Room room)
         {
             var cells = new List<T>();
@@ -85,6 +131,12 @@ namespace Karcero.Engine.Models
             return cells;
         }
 
+        /// <summary>
+        /// Get the cells adjacent to all of the edges of the room specified in a certain distance.
+        /// </summary>
+        /// <param name="room">The desired room.</param>
+        /// <param name="distance">The desired distance (defaults to 1).</param>
+        /// <returns>A collection of all of the cells adjacent to all of the edges of the room specified in the desired distance.</returns>
         public IEnumerable<T> GetCellsAdjacentToRoom(Room room, int distance = 1)
         {
             var cells = new List<T>();
@@ -104,16 +156,23 @@ namespace Karcero.Engine.Models
             return cells;
         } 
 
+        /// <summary>
+        /// Returns true if a cell location is inside any room on the map.
+        /// </summary>
+        /// <param name="row">The desired row.</param>
+        /// <param name="column">The desired column.</param>
+        /// <returns>True if the specified location is in any room on the map.</returns>
         public bool IsLocationInRoom(int row, int column)
         {
             return Rooms.Any(room => room.IsLocationInRoom(row, column));
         }
 
-        public void AddRoom(Room room)
-        {
-            Rooms.Add(room);
-        }
-
+        /// <summary>
+        /// Returns all of the adjacent cells of the specified cell.
+        /// </summary>
+        /// <param name="cell">The desired cell.</param>
+        /// <param name="includeDiagonalCells">True if diagonal adjacent cells should be included (defaults to false).</param>
+        /// <returns>All of the adjacent cells of the specified cell.</returns>
         public IEnumerable<T> GetAllAdjacentCells(T cell, bool includeDiagonalCells = false)
         {
             var cells = GetAll.ValuesOf<Direction>()
@@ -130,6 +189,11 @@ namespace Karcero.Engine.Models
             return cells;
         }
 
+        /// <summary>
+        /// Returns all of the adjacent cells of the specified cell by cardinal direction.
+        /// </summary>
+        /// <param name="cell">The desired cell.</param>
+        /// <returns>All of the adjacent cells of the specified cell by cardinal direction..</returns>
         public Dictionary<Direction, T> GetAllAdjacentCellsByDirection(T cell)
         {
             return GetAll.ValuesOf<Direction>()

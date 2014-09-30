@@ -120,7 +120,7 @@ namespace Karcero.Tests
                 mazeGenerator.ProcessMap(map, config, new Randomizer());
             }
             Console.WriteLine();
-            StaticTimer.WriteResults(ITERATIONS);
+            //StaticTimer.WriteResults(ITERATIONS);
         }
 
         [Test]
@@ -285,7 +285,7 @@ namespace Karcero.Tests
             return new Engine.Models.Tuple<double, double>(totalSecs, averageRoomCount);
         }
 
-        public interface IBenchmarkResultsWriter
+        internal interface IBenchmarkResultsWriter
         {
             void Init();
             void WriteResultsForDungeonSize(string dungeonSize, List<int> roomCounts, Dictionary<string, List<Engine.Models.Tuple<double, double>>> results);
@@ -293,7 +293,7 @@ namespace Karcero.Tests
             void Close();
         }
 
-        public class BenchmarkResultsCsvWriter : IBenchmarkResultsWriter
+        internal class BenchmarkResultsCsvWriter : IBenchmarkResultsWriter
         {
             private StreamWriter mWriter;
 
@@ -339,7 +339,7 @@ namespace Karcero.Tests
             }
         }
 
-        public class BenchmarkResultsHtmlWriter : IBenchmarkResultsWriter
+        internal class BenchmarkResultsHtmlWriter : IBenchmarkResultsWriter
         {
             private StreamWriter mWriter;
 
