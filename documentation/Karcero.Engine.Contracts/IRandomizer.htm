@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+    <title>IRandomizer - Karcero Documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <link type="text/css" rel="stylesheet" href="../main.css"/>
+    <script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.scrollTo-min.js"></script>
+    <script type="text/javascript" src="../js/navigation.js"></script>
+    <script type="text/javascript" src="../js/example.js"></script>
+  </head>
+  <body>
+  	<header><h1>Karcero : API Documentation</h1>
+	</header>
+<nav id="namespaces">
+	<h2 class="fixed">Namespaces</h2>
+	<div class="scroll">
+		<ul>
+			<li>
+          <a href="../Karcero.Engine/index.htm">Karcero.Engine</a>
+      </li>
+			<li>
+          <a href="../Karcero.Engine.Contracts/index.htm" class="current">Karcero.Engine.Contracts</a>
+      </li>
+			<li>
+          <a href="../Karcero.Engine.Helpers/index.htm">Karcero.Engine.Helpers</a>
+      </li>
+			<li>
+          <a href="../Karcero.Engine.Models/index.htm">Karcero.Engine.Models</a>
+      </li>
+		</ul>
+	</div>
+</nav><nav id="types">
+  <h2 class="fixed">Types in Karcero.Engine.Contracts</h2>
+	<div class="scroll">
+		<ul>
+				<li>
+            <a href="../Karcero.Engine.Contracts/IBaseCell.htm">IBaseCell</a>
+        </li>
+				<li>
+            <a href="../Karcero.Engine.Contracts/ICell.htm">ICell</a>
+        </li>
+				<li>
+            <a href="../Karcero.Engine.Contracts/IMapProcessor`1.htm">IMapProcessor&lt;T&gt;</a>
+        </li>
+				<li>
+            <a href="../Karcero.Engine.Contracts/IRandomizer.htm" class="current">IRandomizer</a>
+        </li>
+		</ul>
+	</div>
+</nav>
+	<article>
+    <header>
+		<p class="class"><strong>Type</strong> IRandomizer</p>
+	</header>
+	<section>
+		<header>
+		<p><strong>Namespace</strong> Karcero.Engine.Contracts</p>
+		</header>
+    <div class="sub-header">
+			<div id="summary">Contains several methods that fetch a value randomly. 
+			</div>
+		
+		
+			<h3 class="section">Methods</h3>
+			<ul>
+				<li><a href="../Karcero.Engine.Contracts/IRandomizer.htm#GetRandomCell``1">GetRandomCell&lt;T&gt;</a></li>
+				<li><a href="../Karcero.Engine.Contracts/IRandomizer.htm#GetRandomDouble">GetRandomDouble</a></li>
+				<li><a href="../Karcero.Engine.Contracts/IRandomizer.htm#GetRandomEnumValue``1">GetRandomEnumValue&lt;TItem&gt;</a></li>
+				<li><a href="../Karcero.Engine.Contracts/IRandomizer.htm#GetRandomItem``1">GetRandomItem&lt;TItem&gt;</a></li>
+				<li><a href="../Karcero.Engine.Contracts/IRandomizer.htm#GetRandomRoomSize">GetRandomRoomSize</a></li>
+				<li><a href="../Karcero.Engine.Contracts/IRandomizer.htm#SetSeed">SetSeed</a></li>
+			</ul>
+		
+		
+	</div>
+	
+	<h3 class="section">Public instance methods</h3>
+
+	<div id="GetRandomCell``1" class="method">
+		<h4>
+			<span title="Karcero.Engine.Contracts.T">T</span> <strong>GetRandomCell&lt;T&gt;</strong>(<a href="../Karcero.Engine.Models/Map`1.htm">Map&lt;T&gt;</a> map)
+		</h4>
+		<div class="content">Get a random cell of any terrain from the map. 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><a href="../Karcero.Engine.Models/Map`1.htm">Map&lt;T&gt;</a></code> map
+						</dt>
+						<dd>The map. 
+						</dd>
+				</dl>
+			</div>
+
+			<div class="return">
+
+				<h5>Returns</h5>
+				<dl>
+					<dt>
+						<code><span title="Karcero.Engine.Contracts.T">T</span></code>
+					</dt>
+					<dd>A random cell from the map. 
+					</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+	<div id="GetRandomDouble" class="method">
+		<h4>
+			<span title="System.double">double</span> <strong>GetRandomDouble</strong>()
+		</h4>
+		<div class="content">Get a random double. 
+
+
+
+			<div class="return">
+
+				<h5>Returns</h5>
+				<dl>
+					<dt>
+						<code><span title="System.double">double</span></code>
+					</dt>
+					<dd>A random double. 
+					</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+	<div id="GetRandomEnumValue``1" class="method">
+		<h4>
+			<span title="Karcero.Engine.Contracts.TItem">TItem</span> <strong>GetRandomEnumValue&lt;TItem&gt;</strong>(<span title="System.Collections.Generic.IEnumerable<TItem>">IEnumerable&lt;TItem&gt;</span> excluded)
+		</h4>
+		<div class="content">Get a random value from the values of an enum. 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.Collections.Generic.IEnumerable<TItem>">IEnumerable&lt;TItem&gt;</span></code> excluded
+						</dt>
+						<dd>Any values to be excluded from the enum's set of values. 
+						</dd>
+				</dl>
+			</div>
+
+			<div class="return">
+
+				<h5>Returns</h5>
+				<dl>
+					<dt>
+						<code><span title="Karcero.Engine.Contracts.TItem">TItem</span></code>
+					</dt>
+					<dd>A random value of TItem. 
+					</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+	<div id="GetRandomItem``1" class="method">
+		<h4>
+			<span title="Karcero.Engine.Contracts.TItem">TItem</span> <strong>GetRandomItem&lt;TItem&gt;</strong>(<span title="System.Collections.Generic.IEnumerable<TItem>">IEnumerable&lt;TItem&gt;</span> collection)
+		</h4>
+		<div class="content">Get a random value from a collection. 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.Collections.Generic.IEnumerable<TItem>">IEnumerable&lt;TItem&gt;</span></code> collection
+						</dt>
+						<dd>The collection of values. 
+						</dd>
+				</dl>
+			</div>
+
+			<div class="return">
+
+				<h5>Returns</h5>
+				<dl>
+					<dt>
+						<code><span title="Karcero.Engine.Contracts.TItem">TItem</span></code>
+					</dt>
+					<dd>A random item from the collection. 
+					</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+	<div id="GetRandomRoomSize" class="method">
+		<h4>
+			<a href="../Karcero.Engine.Models/Size.htm">Size</a> <strong>GetRandomRoomSize</strong>(<span title="System.int">int</span> minWidth, <span title="System.int">int</span> maxWidth, <span title="System.int">int</span> minHeight, <span title="System.int">int</span> maxHeight)
+		</h4>
+		<div class="content">Get a random room size within the measurements supplied. 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.int">int</span></code> minWidth
+						</dt>
+						<dd>The min room width. 
+						</dd>
+						<dt>
+							<code><span title="System.int">int</span></code> maxWidth
+						</dt>
+						<dd>the max room width. 
+						</dd>
+						<dt>
+							<code><span title="System.int">int</span></code> minHeight
+						</dt>
+						<dd>The min room height. 
+						</dd>
+						<dt>
+							<code><span title="System.int">int</span></code> maxHeight
+						</dt>
+						<dd>The max room height. 
+						</dd>
+				</dl>
+			</div>
+
+			<div class="return">
+
+				<h5>Returns</h5>
+				<dl>
+					<dt>
+						<code><a href="../Karcero.Engine.Models/Size.htm">Size</a></code>
+					</dt>
+					<dd>A random room size within the measurements supplied. 
+					</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+	<div id="SetSeed" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>SetSeed</strong>(<span title="System.int">int</span> seed)
+		</h4>
+		<div class="content">The seed for any randomized operation. A random seed will be generated if one is not supplied. 
+
+
+
+
+		</div>
+	</div>
+	
+	
+	</section>
+	</article><footer>
+	<span id="version">Built from v0.4.0.0 of Karcero Dungeon Generator (Karcero)</span>
+	<span id="docu-link">
+		Generated by <a href="http://docu.jagregory.com">docu</a>
+	</span>
+</footer>
+  </body>
+</html>
