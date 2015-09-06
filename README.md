@@ -1,6 +1,6 @@
 # Karcero
 
-A dungeon/cave map generation library for C# with a fluent API and generic models open for extention.
+A dungeon/cave map generation library for C# with a fluent API and generic models open for extension.
 
 ## Dungeon Map Generation
 
