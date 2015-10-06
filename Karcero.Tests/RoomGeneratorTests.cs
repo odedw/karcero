@@ -135,13 +135,13 @@ namespace Karcero.Tests
 
             foreach (var room in map.Rooms)
             {
-                Assert.IsTrue(map.GetCell(room.Row - 1, room.Column - 1) == null || 
+                Assert.IsTrue(map.GetCell(room.Row - 1, room.Column - 1) != null && 
                     map.GetCell(room.Row - 1, room.Column - 1).Terrain == TerrainType.Rock); //NW corner
-                Assert.IsTrue(map.GetCell(room.Row - 1, room.Right) == null ||
+                Assert.IsTrue(map.GetCell(room.Row - 1, room.Right) != null &&
                     map.GetCell(room.Row - 1, room.Right).Terrain == TerrainType.Rock); //NE corner
-                Assert.IsTrue(map.GetCell(room.Bottom, room.Column - 1) == null ||
+                Assert.IsTrue(map.GetCell(room.Bottom, room.Column - 1) != null &&
                     map.GetCell(room.Bottom, room.Column -1).Terrain == TerrainType.Rock); //SW corner
-                Assert.IsTrue(map.GetCell(room.Bottom, room.Right) == null ||
+                Assert.IsTrue(map.GetCell(room.Bottom, room.Right) != null &&
                     map.GetCell(room.Bottom, room.Right).Terrain == TerrainType.Rock); //SE corner
             }
 

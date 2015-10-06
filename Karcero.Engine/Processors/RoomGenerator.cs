@@ -29,7 +29,7 @@ namespace Karcero.Engine.Processors
                     //place the room
                     room.Row = cell.Row;
                     room.Column = cell.Column;
-                    if (room.Right > map.Width || room.Bottom > map.Height) continue; //out of bounds
+                    if (room.Column <= 0 || room.Right >= map.Width || room.Row <= 0 || room.Bottom >= map.Height) continue; //out of bounds
 
                     var cells = map.GetRoomCells(room).ToList();
 
